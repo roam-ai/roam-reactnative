@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/react-native-geospark.svg)](https://badge.fury.io/js/react-native-geospark)
 
-[Roam](https://https://roam.ai) is the location intelligence platform.
+[Roam](https://roam.ai) is the location intelligence platform.
 
 ## Documentation
 
