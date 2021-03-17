@@ -1,17 +1,17 @@
 //
-//  RNGeoSpark.m
-//  RNGeoSpark
+//  RNRoam.m
+//  RNRoam
 //
 //  Copyright © 2018 GeoSpark, Inc. All rights reserved.
 //
 
-#import "RNGeoSpark.h"
+#import "RNRoam.h"
 #import <GeoSpark/GeoSpark.h>
 #import <React/RCTConvert.h>
 #import <React/RCTUtils.h>
 
 
-@implementation RNGeoSpark{
+@implementation RNRoam{
   BOOL hasListeners;
 }
 RCT_EXTERN_METHOD(supportedEvents)

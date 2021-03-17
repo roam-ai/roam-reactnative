@@ -1,6 +1,6 @@
 //
-//  RNGeoSpark.h
-//  RNGeoSpark
+//  RNRoam.h
+//  RNRoam
 //
 //  Created by GeoSpark Mac #1 on 12/06/18.
 //  Copyright © 2018 GeoSpark. All rights reserved.
@@ -14,5 +14,5 @@
 
 @import CoreLocation;
 
-@interface RNGeoSpark : RCTEventEmitter <RCTBridgeModule>
+@interface RNRoam : RCTEventEmitter <RCTBridgeModule>
 @end
