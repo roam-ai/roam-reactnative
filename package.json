@@ -1,0 +1,20 @@
+{
+  "name": "react-native-roam",
+  "description": "React Native module for Roam, the location intelligence platform.",
+  "homepage": "https://roam.ai",
+  "license": "Apache-2.0",
+  "version": "0.0.1",
+  "main": "js/index.js",
+  "dependencies": {},
+  "peerDependencies": {
+    "react": ">= 15.4.2",
+    "react-native": ">= 0.40.0"
+  },
+  "bugs": {
+    "url": "https://github.com/geosparks/react-native-roam/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geosparks/react-native-roam"
+  }
+}
