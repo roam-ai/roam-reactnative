@@ -1,12 +1,12 @@
-![GeoSpark](https://raw.githubusercontent.com/geosparklabs/react-native-roam/master/logo.png?v=3)
+![GeoSpark](https://raw.githubusercontent.com/geosparklabs/roam-reactnative/master/logo.png?v=3)
 
-[![npm version](https://badge.fury.io/js/react-native-geospark.svg)](https://badge.fury.io/js/react-native-geospark)
+[![npm version](https://badge.fury.io/js/roam-reactnative.svg)](https://badge.fury.io/js/roam-reactnative)
 
 [Roam](https://roam.ai) is the location intelligence platform.
 
 ## Documentation
 
-See the full documentation [here](https://github.com/geosparks/react-native-roam/wiki).
+See the full documentation [here](https://github.com/geosparks/roam-reactnative/wiki).
 
 ## Support
 
