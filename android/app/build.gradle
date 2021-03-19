@@ -15,5 +15,5 @@ android {
 
 dependencies {
     implementation 'com.facebook.react:react-native:+'
-    implementation 'com.geospark.android:geospark:3.1.4'
+    implementation 'com.geospark.android:geospark:3.1.5'
 }
