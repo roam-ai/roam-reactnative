@@ -212,12 +212,12 @@ const startTracking = (trackingMode) => {
   NativeModules.RNRoam.startTracking(trackingMode);
 };
 
-const startTrackingCustom = (allowBackground,pauseAutomatic,activityType,desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter) => {
-  NativeModules.RNRoam.startTrackingCustom(allowBackground,pauseAutomatic,activityType,desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter);
+const startTrackingCustom = (allowBackground,pauseAutomatic,activityType,desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter,updateInterval) => {
+  NativeModules.RNRoam.startTrackingCustom(allowBackground,pauseAutomatic,activityType,desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter,updateInterval);
 };
 
-const startSelfTrackingCustom = (allowBackground,pauseAutomatic,activityType,desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter) => {
-  NativeModules.RNRoam.startSelfTrackingCustom(allowBackground,pauseAutomatic,activityType,desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter);
+const startSelfTrackingCustom = (allowBackground,pauseAutomatic,activityType,desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter,updateInterval) => {
+  NativeModules.RNRoam.startSelfTrackingCustom(allowBackground,pauseAutomatic,activityType,desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter,updateInterval);
 };
 
 const startTrackingTimeInterval = (timeInterval,desiredAccuracy) => {
