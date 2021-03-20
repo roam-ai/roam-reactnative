@@ -1,8 +1,8 @@
 {
   "name": "roam-reactnative",
-  "description": "React Native module for Roam, the location intelligence platform.",
+  "description": "This plugin allows to use the Roam.ai SDK in your React Native mobile application on iOS and Android.",
   "homepage": "https://roam.ai",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "version": "0.0.1",
   "main": "js/index.js",
   "dependencies": {},
@@ -16,5 +16,16 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/geosparks/roam-reactnative"
-  }
+  },
+  "keywords": [
+    "location",
+    "android",
+    "roam",
+    "sdk",
+    "ios",
+    "gps",
+    "tracking",
+    "react",
+    "react-native"
+  ]
 }
