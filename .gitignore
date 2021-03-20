@@ -6,6 +6,8 @@
 
 # Files for the ART/Dalvik VM
 *.dex
+android/.DS_Store
+android/app/.DS_Store
 
 # Java class files
 *.class
@@ -38,6 +40,7 @@ captures/
 
 # IntelliJ
 *.iml
+.idea/
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
@@ -83,3 +86,4 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+.DS_Store
