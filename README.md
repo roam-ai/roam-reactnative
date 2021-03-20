@@ -7,7 +7,14 @@
 
 [![npm version](https://badge.fury.io/js/roam-reactnative.svg)](https://badge.fury.io/js/roam-reactnative)
 
-[Roam](https://roam.ai) is the location intelligence platform.
+# Official Roam React Native SDK
+This is the official Roam React Native SDK developed and maintained by Roam B.V
+
+# Quick Start
+The Roam React Native SDK makes it quick and easy to build a
+location tracker for your React Native app. We provide powerful and
+customizable tracking modes and features that can be used to collect
+your users location updates.
 
 ## Documentation
 
