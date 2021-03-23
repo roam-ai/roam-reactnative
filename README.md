@@ -8,8 +8,13 @@
 [![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.1&x2=0)](https://badge.fury.io/js/roam-reactnative)
 [![Npm Publish](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml/badge.svg?branch=0.0.1)](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml)
 
-# Official Roam React Native SDK
-This is the official Roam React Native SDK developed and maintained by Roam B.V
+# Roam.ai React Native Location SDK
+High accuracy and battery efficient location SDK for iOS and Android build and maintained by Roam BV
+
+Reactnative SDK Customers: 
+
+<a href="https://sprintcrowd.com"><img src="https://sprintcrowd.com/wp-content/uploads/2020/08/sc-logo_400.png" width="100"></a>
+
 
 # Quick Start
 The Roam React Native SDK makes it quick and easy to build a
