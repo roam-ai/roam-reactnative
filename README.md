@@ -11,7 +11,8 @@
 # Roam.ai React Native Location SDK
 High accuracy and battery efficient location SDK for iOS and Android build and maintained by Roam BV
 
-Reactnative SDK Customers: 
+
+Currently used by: 
 
 <a href="https://sprintcrowd.com"><img src="https://sprintcrowd.com/wp-content/uploads/2020/08/sc-logo_400.png" width="100"></a>
 
