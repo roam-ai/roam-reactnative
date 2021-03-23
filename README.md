@@ -8,7 +8,7 @@
 [![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.1&x2=0)](https://badge.fury.io/js/roam-reactnative)
 [![Npm Publish](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml/badge.svg?branch=0.0.1)](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml)
 
-# React Native Location SDK by Roam.ai
+# React Native Location SDK
 High accuracy and battery efficient location SDK for iOS and Android developed and maintained by Roam BV
 
 
