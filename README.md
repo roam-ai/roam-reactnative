@@ -12,7 +12,7 @@
 High accuracy and battery efficient location SDK for iOS and Android developed and maintained by Roam BV
 
 
-Featured users: 
+## Featured users 
 
 <a href="https://sprintcrowd.com"><img src="https://sprintcrowd.com/wp-content/uploads/2020/08/sc-logo_400.png" width="100"></a>
 
