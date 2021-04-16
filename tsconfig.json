@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+    "target": "es6",
+    "allowJs": true,
+    "jsx": "react",
+    "outDir": "artifacts",
+    "rootDir": "js",
+    "sourceMap": true,
+    "noImplicitAny": true
+   },
+   "filesGlob": [
+   "js/**/*.d.ts",
+   "js/**/*.ts",
+   "js/**/*.tsx"
+   ],
+   "exclude": [
+   "node_modules"
+   ]
+}
