@@ -17,7 +17,7 @@ Note: Before you get started [signup to our dashboard](https://roam.ai) to get y
 ## Featured Apps 
 
 <a href="https://sprintcrowd.com"><img src="https://sprintcrowd.com/wp-content/uploads/2020/08/sc-logo_400.png" width="100"></a>
-<a href="https://www.relive.cc/images/logo/logo-relive-black-icon.svg?v=1616782710000" width="100"></a>
+<a href="https://www.relive.cc/images/logo/logo-relive-black-icon.svg" width="100"></a>
 
 
 
