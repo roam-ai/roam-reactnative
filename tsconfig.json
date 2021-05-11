@@ -6,7 +6,8 @@
     "outDir": "artifacts",
     "rootDir": "js",
     "sourceMap": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "moduleResolution": "node"
    },
    "filesGlob": [
    "js/**/*.d.ts",
