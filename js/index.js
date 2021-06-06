@@ -176,6 +176,10 @@ const pauseTrip = (tripId,successCallback,errorCallback) => {
   NativeModules.RNRoam.pauseTrip(tripId,successCallback,errorCallback);
 };
 
+const getTripSummary = (tripId,successCallback,errorCallback) => {
+  NativeModules.RNRoam.getTripSummary(tripId,successCallback,errorCallback);
+};
+
 const stopTrip = (tripId,successCallback,errorCallback) => {
   NativeModules.RNRoam.stopTrip(tripId,successCallback,errorCallback);
 };
@@ -345,6 +349,7 @@ forceStopTrip,
 deleteTrip,
 syncTrip,
 activeTrips,
+getTripSummary,
 publishOnly,
 publishAndSave,
 stopPublishing,
