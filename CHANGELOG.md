@@ -4,4 +4,8 @@
 
 ## 0.0.2
 
-* Add support for Typescript
+* Added support for Typescript
+
+## 0.0.3
+
+* Added support for Get Trip Summary
