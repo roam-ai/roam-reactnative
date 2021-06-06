@@ -3,6 +3,7 @@ package com.roam.reactnative;
 import android.location.Location;
 
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.geospark.lib.models.ActiveTrips;
 import com.geospark.lib.models.GeoSparkError;
@@ -11,6 +12,8 @@ import com.geospark.lib.models.createtrip.Coordinates;
 import com.geospark.lib.models.createtrip.Destination;
 import com.geospark.lib.models.createtrip.GeoSparkCreateTrip;
 import com.geospark.lib.models.createtrip.Origin;
+import com.geospark.lib.models.tripsummary.GeoSparkTripSummary;
+import com.geospark.lib.models.tripsummary.Route;
 
 import java.util.List;
 
@@ -76,6 +79,39 @@ class RNRoamUtils {
         map.putBoolean("movingGeofenceEvents", geoSparkUser.getMovingGeofenceEvents());
         map.putBoolean("eventListenerStatus", geoSparkUser.getEventListenerStatus());
         map.putBoolean("locationListenerStatus", geoSparkUser.getLocationListenerStatus());
+        return map;
+    }
+
+    static WritableMap mapForTrip(GeoSparkTripSummary geoSparkTripSummary) {
+        if (geoSparkTripSummary == null) {
+            return null;
+        }
+        WritableMap map = Arguments.createMap();
+        map.putDouble("distance", geoSparkTripSummary.getDistance_covered());
+        map.putDouble("duration", geoSparkTripSummary.getDuration());
+        if (geoSparkTripSummary.getRoute() != null && geoSparkTripSummary.getRoute().size() > 0) {
+            WritableArray routeArray = Arguments.createArray();
+            for (int i = 0; i < geoSparkTripSummary.getRoute().size(); i++) {
+                WritableMap routeMap = Arguments.createMap();
+                Route route = geoSparkTripSummary.getRoute().get(i);
+                if (route.getRecorded_at() != null) {
+                    routeMap.putString("recordedAt", route.getRecorded_at());
+                }
+                if (route.getActivity() != null) {
+                    routeMap.putString("activity", route.getActivity());
+                }
+                if (route.getAltitude() != 0) {
+                    routeMap.putDouble("altitude", route.getAltitude());
+                }
+                Coordinates coordinates = route.getCoordinates();
+                if (coordinates != null && coordinates.getCoordinates().size() > 0) {
+                    routeMap.putDouble("latitude", coordinates.getCoordinates().get(1));
+                    routeMap.putDouble("longitude", coordinates.getCoordinates().get(0));
+                }
+                routeArray.pushMap(routeMap);
+            }
+            map.putArray("route",routeArray);
+        }
         return map;
     }
 

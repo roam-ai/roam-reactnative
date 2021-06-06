@@ -22,10 +22,12 @@ import com.geospark.lib.callback.GeoSparkLocationCallback;
 import com.geospark.lib.callback.GeoSparkLogoutCallback;
 import com.geospark.lib.callback.GeoSparkSyncTripCallback;
 import com.geospark.lib.callback.GeoSparkTripCallback;
+import com.geospark.lib.callback.GeoSparkTripSummaryCallback;
 import com.geospark.lib.models.GeoSparkError;
 import com.geospark.lib.models.GeoSparkTrip;
 import com.geospark.lib.models.GeoSparkUser;
 import com.geospark.lib.models.createtrip.GeoSparkCreateTrip;
+import com.geospark.lib.models.tripsummary.GeoSparkTripSummary;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -385,6 +387,21 @@ public class RNRoam extends ReactContextBaseJavaModule {
                 WritableMap map = Arguments.createMap();
                 map.putString("message", msg);
                 successCallback.invoke(map);
+            }
+
+            @Override
+            public void onFailure(GeoSparkError geoSparkError) {
+                errorCallback.invoke(RNRoamUtils.mapForError(geoSparkError));
+            }
+        });
+    }
+
+    @ReactMethod
+    public void getTripSummary(String tripId, final Callback successCallback, final Callback errorCallback) {
+        GeoSpark.getTripSummary(tripId, new GeoSparkTripSummaryCallback() {
+            @Override
+            public void onSuccess(GeoSparkTripSummary geoSparkTripSummary) {
+                successCallback.invoke(RNRoamUtils.mapForTrip(geoSparkTripSummary));
             }
 
             @Override

@@ -176,6 +176,10 @@ const pauseTrip = (tripId: any, successCallback: any, errorCallback: any) => {
   NativeModules.RNRoam.pauseTrip(tripId, successCallback, errorCallback);
 };
 
+const getTripSummary = (tripId: any, successCallback: any, errorCallback: any) => {
+  NativeModules.RNRoam.getTripSummary(tripId, successCallback, errorCallback);
+};
+
 const stopTrip = (tripId: any, successCallback: any, errorCallback: any) => {
   NativeModules.RNRoam.stopTrip(tripId, successCallback, errorCallback);
 };
@@ -372,6 +376,7 @@ enableAccuracyEngine,
 disableAccuracyEngine,
 startListener,
 stopListener,
+getTripSummary,
 };
 
 export default Roam;
