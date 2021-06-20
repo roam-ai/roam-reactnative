@@ -5,16 +5,16 @@
   <br />
 </p>
 
-[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.3&x2=0)](https://badge.fury.io/js/roam-reactnative)
+[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.4&x2=0)](https://badge.fury.io/js/roam-reactnative)
 [![Npm Publish](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml/badge.svg?branch=0.0.1)](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml)
 
 # React Native Location SDK
 High accuracy and battery efficient location SDK for iOS and Android developed and maintained by Roam BV.
 
-Note: Before you get started [signup to our dashboard](https://roam.ai) to get your API Keys. 
+Note: Before you get started [signup to our dashboard](https://roam.ai) to get your API Keys.
 
 
-## Featured Apps 
+## Featured Apps
 
 <a href="https://sprintcrowd.com"><img src="https://sprintcrowd.com/wp-content/uploads/2020/08/sc-logo_400.png" width="100"></a>
 <a href="https://letstransport.in"><img src="https://i.imgur.com/pDIb2BK.png" width="100"></a>
@@ -40,7 +40,7 @@ $ npm install roam-reactnative --save
 $ react-native link roam-reactnative
 ```
 
-**Installation** 
+**Installation**
 ================
 
 
@@ -85,11 +85,11 @@ Embed Swift Standard Libraries' to 'Yes'.
 Install the SDK to your project via `Gradle` in Android Studio, add the maven below in your `project build.gradle` file.
 
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: groovy; gutter: false; theme: Confluence" data-theme="Confluence"}
-repositories { 
-    maven { 
-        url 'https://com-geospark-android.s3.amazonaws.com/' 
-    } 
-} 
+repositories {
+    maven {
+        url 'https://com-geospark-android.s3.amazonaws.com/'
+    }
+}
 ```
 add the dependencies below in your `app build.gradle` file.
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: groovy; gutter: false; theme: Confluence" data-theme="Confluence"}
@@ -98,14 +98,14 @@ dependencies {
 }
 ```
 
-**Initialize SDK** 
+**Initialize SDK**
 ==================
 
 
 Import the module in `App.js` file
 
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-import Roam from 'roam-reactnative'; 
+import Roam from 'roam-reactnative';
 ```
 
 **Android**
@@ -115,13 +115,13 @@ Initialize the SDK with your `publishable key`.
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
 //In onCreate method of your Application class include the code below.
 public class MainApplication extends Application implements ReactApplication {
-  @Override   
-  public void onCreate() {        
-    super.onCreate();        
-    SoLoader.init(this, /* native exopackage */ false);     
-    GeoSpark.initialize(this, "PUBLISH_KEY");   
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    SoLoader.init(this, /* native exopackage */ false);
+    GeoSpark.initialize(this, "PUBLISH_KEY");
   }
-};    
+};
 ```
 
 **iOS**
@@ -140,13 +140,13 @@ GeoSpark methods under this `application:didFinishLaunchingWithOptions:`
 **Objective-C**
 
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-   [GeoSpark intialize:@"PUBLISHABLEKEY" :nil :nil :nil :nil :AWSRegionUnknown];  
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+   [GeoSpark intialize:@"PUBLISHABLEKEY" :nil :nil :nil :nil :AWSRegionUnknown];
     return YES;
 }
 ```
 
-Creating Users 
+Creating Users
 ==============
 
 
@@ -157,7 +157,7 @@ developer APIs. We can call it as Roam userId.
 
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
 Roam.createUser("Description", success => {
- // do something on success    
+ // do something on success
 },
 error => {
 // do something on error
@@ -181,7 +181,7 @@ instead of creating a new user, use the below to get user session.
 
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
 Roam.getUser("USER-ID", success => {
-// do something on success    
+// do something on success
 },
 error => {
 // do something on error
@@ -193,14 +193,14 @@ To do that, you need to set the location and event listener to `true` using the 
 
 ```
 Roam.toggleListener(locations, events, success => {
- // do something on success    
+ // do something on success
 },
 error => {
 // do something on error
 });
 ```
 
-**Request Permissions** 
+**Request Permissions**
 =======================
 
 
@@ -210,7 +210,7 @@ get motion permission for iOS.
 
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
 // Call this method to check Location Permission for Android & iOS
-Roam.checkLocationPermission( status => {    
+Roam.checkLocationPermission( status => {
 // do something with status
 });
 
@@ -222,9 +222,9 @@ Roam.requestLocationPermission();
 
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
 // Call this method to check Location services for Android
-Roam.checkLocationServices( status => {    
+Roam.checkLocationServices( status => {
 // do something with status
-}); 
+});
 ​// Call this method to request Location services for Android
 Roam.requestLocationServices();
 ```
@@ -233,18 +233,18 @@ To start tracking the location above Android 10
 
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
 // Call this method to check background location permission for Android
-Roam.checkBackgroundLocationPermission( status => {        
+Roam.checkBackgroundLocationPermission( status => {
 // do something with status
 });
 // Call this method to request background location Permission for Android
 Roam.requestBackgroundLocationPermission();
 ```
 
-Location Tracking 
+Location Tracking
 =================
 
 
-### Start Tracking 
+### Start Tracking
 
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
 Roam.startTracking(TrackingMode);
@@ -253,7 +253,7 @@ Roam.startTracking(TrackingMode);
 Use the tracking modes while you use the startTracking method
 `Roam.startTracking`
 
-### **Tracking Modes** 
+### **Tracking Modes**
 
 Roam has three default tracking modes along with a custom version.
 They differ based on the frequency of location updates and battery
@@ -282,7 +282,7 @@ Roam.startTracking(Roam.TrackingMode.BALANCED);
 Roam.startTracking(Roam.TrackingMode.PASSIVE);
 ```
 
-### Custom Tracking Modes 
+### Custom Tracking Modes
 
 The SDK also allows you define a custom tracking mode that allows you to
 customize and build your own tracking modes.
@@ -329,7 +329,7 @@ Roam.startTrackingCustom(true,true,Roam.ActivityType.FITNESS,
 You may see a delay if the user's device is in low power mode or has
 connectivity issues.
 
-Stop Tracking 
+Stop Tracking
 -------------
 
 To stop the tracking use the below method.
@@ -338,7 +338,7 @@ To stop the tracking use the below method.
 Roam.stopTracking();
 ```
 
-Publish Messages 
+Publish Messages
 =================
 
 It will both publish location data and these data will be sent to Roam servers for further processing and data will be saved in our database servers.
@@ -367,7 +367,7 @@ Roam.stopPublishing();
 Subscribe Messages
 =================
 
-Now that you have enabled the location listener, use the below method to subscribe to your own or other user's location updates and events. 
+Now that you have enabled the location listener, use the below method to subscribe to your own or other user's location updates and events.
 
 **Subscribe**
 ``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
@@ -380,11 +380,11 @@ Roam.unSubscribe(TYPE, "USER-ID");
 
 <div class="table-wrap">
 
-| **Type**                        | **Description** | 
-| --------------------------------| -------- | 
-| Roam.SubscribeListener.LOCATION | Subscribe to your own location (or) other user's location updates.   | 
-| Roam.SubscribeListener.EVENTS   | Subscribe to your own events.  | 
-| Roam.SubscribeListener.BOTH     | Subscribe to your own events and location (or) other user's location updates.  | 
+| **Type**                        | **Description** |
+| --------------------------------| -------- |
+| Roam.SubscribeListener.LOCATION | Subscribe to your own location (or) other user's location updates.   |
+| Roam.SubscribeListener.EVENTS   | Subscribe to your own events.  |
+| Roam.SubscribeListener.BOTH     | Subscribe to your own events and location (or) other user's location updates.  |
 
 
 ## Documentation

@@ -8,4 +8,8 @@
 
 ## 0.0.3
 
-* Added support for Get Trip Summary
+* Added support for Get Trip Summary (Android)
+
+## 0.0.4
+
+* Added support for total elevation gain to trip summary along with elevation gain, distance and duration for location date in trip summary. (Android)

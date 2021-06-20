@@ -89,6 +89,7 @@ class RNRoamUtils {
         WritableMap map = Arguments.createMap();
         map.putDouble("distance", geoSparkTripSummary.getDistance_covered());
         map.putDouble("duration", geoSparkTripSummary.getDuration());
+        map.putDouble("elevationGain", geoSparkTripSummary.getTotal_elevation_gain());
         if (geoSparkTripSummary.getRoute() != null && geoSparkTripSummary.getRoute().size() > 0) {
             WritableArray routeArray = Arguments.createArray();
             for (int i = 0; i < geoSparkTripSummary.getRoute().size(); i++) {
@@ -102,6 +103,15 @@ class RNRoamUtils {
                 }
                 if (route.getAltitude() != 0) {
                     routeMap.putDouble("altitude", route.getAltitude());
+                }
+                if (route.getDistance() != 0) {
+                    routeMap.putDouble("distance", route.getDistance());
+                }
+                if (route.getDuration() != 0) {
+                    routeMap.putDouble("duration", route.getDuration());
+                }
+                if (route.getElevation_gain() != 0) {
+                    routeMap.putDouble("elevationGain", route.getElevation_gain());
                 }
                 Coordinates coordinates = route.getCoordinates();
                 if (coordinates != null && coordinates.getCoordinates().size() > 0) {
