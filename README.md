@@ -18,7 +18,6 @@ Note: Before you get started [signup to our dashboard](https://roam.ai) to get y
 
 <a href="https://sprintcrowd.com"><img src="https://sprintcrowd.com/wp-content/uploads/2020/08/sc-logo_400.png" width="100"></a>
 <a href="https://letstransport.in"><img src="https://i.imgur.com/pDIb2BK.png" width="100"></a>
-<a href="https://relive.cc"><img src="https://i.imgur.com/Iwr4Q2X.png" width="100"></a>
 <a href="https://stoovo.com"><img src="https://i.imgur.com/y78DcOn.png" width="100"></a>
 
 
