@@ -1,19 +1,17 @@
-//
-//  RNRoam.m
-//  RNRoam
-//
-//  Copyright © 2018 GeoSpark, Inc. All rights reserved.
-//
 
 #import "RNRoam.h"
-#import <GeoSpark/GeoSpark.h>
-#import <React/RCTConvert.h>
-#import <React/RCTUtils.h>
-
+#import <Roam/Roam.h>
+#import <CoreLocation/CoreLocation.h>
 
 @implementation RNRoam{
   BOOL hasListeners;
 }
+
+- (dispatch_queue_t)methodQueue
+{
+  return dispatch_get_main_queue();
+}
+
 RCT_EXTERN_METHOD(supportedEvents)
 
 RCT_EXPORT_MODULE();
@@ -21,7 +19,7 @@ RCT_EXPORT_MODULE();
 - (instancetype)init {
   self = [super init];
   if (self) {
-    [GeoSpark setDelegate:self];
+    [Roam setDelegate:self];
   }
   return self;
 }
@@ -30,25 +28,25 @@ RCT_EXPORT_MODULE();
   return @[@"location", @"location_received", @"trip_status", @"error"];
 }
 
-- (void)didUpdateLocation:(GeoSparkLocation *)location {
+- (void)didUpdateLocation:(RoamLocation *)location {
   if (hasListeners) {
     [self sendEventWithName:@"location" body:[self userLocation:location]];
   }
 }
 
-- (void)didReceiveTripStatus:(TripStatusListener *)tripStatus{
+- (void)didReceiveTripStatus:(RoamTripStatusListener *)tripStatus{
   if (hasListeners) {
     [self sendEventWithName:@"trip_status" body:[self didTripStatus:tripStatus]];
   }
 }
 
-- (void)didReceiveUserLocation:(GeoSparkLocationReceived *)location{
+- (void)didReceiveUserLocation:(RoamLocationReceived *)location{
   if (hasListeners) {
     [self sendEventWithName:@"location_received" body:[self didUserLocation:location]];
   }
 }
 
-- (void)onError:(GeoSparkError *)error{
+- (void)onError:(RoamError *)error{
   if (hasListeners) {
     [self sendEventWithName:@"error" body:[self error:error]];
   }
@@ -65,7 +63,7 @@ RCT_EXPORT_MODULE();
 
 // Create User
 RCT_EXPORT_METHOD(createUser:(NSString *)userDescription :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark createUser:userDescription handler:^(GeoSparkUser * user, GeoSparkError * error) {
+  [Roam createUser:userDescription handler:^(RoamUser * user, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self userData:user], nil];
       successCallback(success);
@@ -77,7 +75,7 @@ RCT_EXPORT_METHOD(createUser:(NSString *)userDescription :(RCTResponseSenderBloc
 
 // Get User
 RCT_EXPORT_METHOD(getUser:(NSString *)userId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark getUser:userId handler:^(GeoSparkUser * user, GeoSparkError * error) {
+  [Roam getUser:userId handler:^(RoamUser * user, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self userData:user], nil];
       successCallback(success);
@@ -89,12 +87,12 @@ RCT_EXPORT_METHOD(getUser:(NSString *)userId :(RCTResponseSenderBlock)successCal
 
 // Set Description User
 RCT_EXPORT_METHOD(setDescription:(NSString *)userDescription){
-  [GeoSpark setDescription:userDescription];
+  [Roam setDescription:userDescription];
 }
 
 // toggle Events
 RCT_EXPORT_METHOD(toggleEvents:(BOOL)geofence trip:(BOOL)trip location:(BOOL)location movingGeofence:(BOOL)movingGeofence :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark toggleEventsWithGeofence:geofence Trip:trip Location:location MovingGeofence:movingGeofence handler:^(GeoSparkUser * user, GeoSparkError * error) {
+  [Roam toggleEventsWithGeofence:geofence Trip:trip Location:location MovingGeofence:movingGeofence handler:^(RoamUser * user, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self userData:user], nil];
       successCallback(success);
@@ -106,7 +104,7 @@ RCT_EXPORT_METHOD(toggleEvents:(BOOL)geofence trip:(BOOL)trip location:(BOOL)loc
 
 // Toggle Listener
 RCT_EXPORT_METHOD(toggleListener:(BOOL)location event:(BOOL)event :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark toggleListenerWithEvents:event Locations:event handler:^(GeoSparkUser * user, GeoSparkError * error) {
+  [Roam toggleListenerWithEvents:event Locations:event handler:^(RoamUser * user, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self userData:user], nil];
       successCallback(success);
@@ -118,7 +116,7 @@ RCT_EXPORT_METHOD(toggleListener:(BOOL)location event:(BOOL)event :(RCTResponseS
 
 //getEvents Status
 RCT_EXPORT_METHOD(getEventsStatus:(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark getEventsStatusWithHandler:^(GeoSparkUser * user, GeoSparkError * error) {
+  [Roam getEventsStatusWithHandler:^(RoamUser * user, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self userData:user], nil];
       successCallback(success);
@@ -130,7 +128,7 @@ RCT_EXPORT_METHOD(getEventsStatus:(RCTResponseSenderBlock)successCallback reject
 
 // Get listener status
 RCT_EXPORT_METHOD(getListenerStatus:(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark getListenerStatusWithHandler:^(GeoSparkUser * user, GeoSparkError * error) {
+  [Roam getListenerStatusWithHandler:^(RoamUser * user, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self userData:user], nil];
       successCallback(success);
@@ -142,7 +140,7 @@ RCT_EXPORT_METHOD(getListenerStatus:(RCTResponseSenderBlock)successCallback reje
 
 // Logout
 RCT_EXPORT_METHOD(logout:(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark logoutUserWithHandler:^(NSString * status, GeoSparkError * error) {
+  [Roam logoutUserWithHandler:^(NSString * status, RoamError * error) {
     if (error == nil){
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self userLogout:status], nil];
       successCallback(success);
@@ -156,18 +154,18 @@ RCT_EXPORT_METHOD(logout:(RCTResponseSenderBlock)successCallback rejecter:(RCTRe
 
 // subscribeTripStatus
 RCT_EXPORT_METHOD(subscribeTripStatus:(NSString *)tripId){
-  [GeoSpark subscribeTripStatus:tripId];
+  [Roam subscribeTripStatus:tripId];
 }
 
 // unSubscribeTripStatus
 RCT_EXPORT_METHOD(unSubscribeTripStatus:(NSString *)tripId){
-  [GeoSpark unsubscribeTripStatus:tripId];
+  [Roam unsubscribeTripStatus:tripId];
 }
 
 // Start trip
 RCT_EXPORT_METHOD(startTrip:(NSString *)tripId description:(NSString *)tripDescription :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [GeoSpark startTrip:tripId :tripDescription handler:^(NSString * status, GeoSparkError * error) {
+    [Roam startTrip:tripId :tripDescription handler:^(NSString * status, RoamError * error) {
       if (error == nil){
         NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
         successCallback(success);
@@ -180,7 +178,7 @@ RCT_EXPORT_METHOD(startTrip:(NSString *)tripId description:(NSString *)tripDescr
 
 // Resume trip
 RCT_EXPORT_METHOD(resumeTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark resumeTrip:tripId handler:^(NSString * status, GeoSparkError * error) {
+  [Roam resumeTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
@@ -192,7 +190,7 @@ RCT_EXPORT_METHOD(resumeTrip:(NSString *)tripId :(RCTResponseSenderBlock)success
 
 // Pause trip
 RCT_EXPORT_METHOD(pauseTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark pauseTrip:tripId handler:^(NSString * status, GeoSparkError * error) {
+  [Roam pauseTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
@@ -204,7 +202,7 @@ RCT_EXPORT_METHOD(pauseTrip:(NSString *)tripId :(RCTResponseSenderBlock)successC
 
 // Stop trip
 RCT_EXPORT_METHOD(stopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark stopTrip:tripId handler:^(NSString * status, GeoSparkError * error) {
+  [Roam stopTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
@@ -216,7 +214,7 @@ RCT_EXPORT_METHOD(stopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCa
 
 // ForceStop trip
 RCT_EXPORT_METHOD(forceStopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark forceEndTrip:tripId handler:^(NSString * status, GeoSparkError * error) {
+  [Roam forceEndTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
@@ -228,7 +226,7 @@ RCT_EXPORT_METHOD(forceStopTrip:(NSString *)tripId :(RCTResponseSenderBlock)succ
 
 // Delete trip
 RCT_EXPORT_METHOD(deleteTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark deleteTrip:tripId handler:^(NSString * status, GeoSparkError * error) {
+  [Roam deleteTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
@@ -240,7 +238,7 @@ RCT_EXPORT_METHOD(deleteTrip:(NSString *)tripId :(RCTResponseSenderBlock)success
 
 // Sync trip
 RCT_EXPORT_METHOD(syncTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark syncTrip:tripId handler:^(NSString * status, GeoSparkError * error) {
+  [Roam syncTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
@@ -254,7 +252,7 @@ RCT_EXPORT_METHOD(syncTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCa
 // ["origin":[[longitude1,latitude1],[longitude2,latitude2]],"destinations":[[longitude1,latitude1]]]
 
 RCT_EXPORT_METHOD(createTrip:(BOOL)offline :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark createTrip:offline :nil handler:^(GeoSparkCreateTrip * trip, GeoSparkError * error) {
+  [Roam createTrip:offline :nil handler:^(RoamCreateTrip * trip, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self createTripResponse:trip], nil];
       successCallback(success);
@@ -265,7 +263,7 @@ RCT_EXPORT_METHOD(createTrip:(BOOL)offline :(RCTResponseSenderBlock)successCallb
 }
 
 RCT_EXPORT_METHOD(activeTrips:(BOOL)offline:(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [GeoSpark activeTrips:offline handler:^(NSArray<GeoSparkTrip *> * trips, GeoSparkError * error) {
+  [Roam activeTrips:offline handler:^(NSArray<RoamTrip *> * trips, RoamError * error) {
     if (error == nil){
       successCallback([self activeTripResponse:trips]);
     }else{
@@ -277,28 +275,28 @@ RCT_EXPORT_METHOD(activeTrips:(BOOL)offline:(RCTResponseSenderBlock)successCallb
 // Request Location
 RCT_EXPORT_METHOD(requestLocationPermission){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [GeoSpark requestLocation];
+    [Roam requestLocation];
   });
 }
 
 RCT_EXPORT_METHOD(checkLocationPermission:(RCTResponseSenderBlock)callback){
-  NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:[self checkPermission:[GeoSpark isLocationEnabled]], nil];
+  NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:[self checkPermission:[Roam isLocationEnabled]], nil];
   callback(array);
 }
 
 RCT_EXPORT_METHOD(isLocationTracking:(RCTResponseSenderBlock)callback){
-  NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:[self checkPermission:[GeoSpark isLocationTracking]], nil];
+  NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:[self checkPermission:[Roam isLocationTracking]], nil];
   callback(array);
 }
 
 RCT_EXPORT_METHOD(locationPermissionStatus:(RCTResponseSenderBlock)callback){
-  NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:[self locationPermissionValue:[GeoSpark locationPermissionStatus]], nil];
+  NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:[self locationPermissionValue:[Roam locationPermissionStatus]], nil];
   callback(array);
 }
 
 RCT_EXPORT_METHOD(getCurrentLocationIos:(NSInteger)accuracy :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [GeoSpark getCurrentLocation:accuracy handler:^(CLLocation * location, GeoSparkError * error) {
+    [Roam getCurrentLocation:accuracy handler:^(CLLocation * location, RoamError * error) {
       if (error == nil) {
         NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self locationReponse:location], nil];
         successCallback(success);
@@ -313,7 +311,7 @@ RCT_EXPORT_METHOD(getCurrentLocationIos:(NSInteger)accuracy :(RCTResponseSenderB
 
 RCT_EXPORT_METHOD(updateCurrentLocationIos:(NSInteger)accuracy){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [GeoSpark updateCurrentLocation:accuracy];
+    [Roam updateCurrentLocation:accuracy];
   });
 }
 
@@ -322,11 +320,11 @@ RCT_EXPORT_METHOD(updateCurrentLocationIos:(NSInteger)accuracy){
 RCT_EXPORT_METHOD(startTracking:(NSString *)trackingMode){
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([trackingMode  isEqual:@"PASSIVE"]) {
-      [GeoSpark startTracking:GeoSparkTrackingModePassive options:nil];
+      [Roam startTracking:RoamTrackingModePassive options:nil];
     } else if ([trackingMode  isEqual:@"BALANCED"]){
-      [GeoSpark startTracking:GeoSparkTrackingModeBalanced options:nil];
+      [Roam startTracking:RoamTrackingModeBalanced options:nil];
     } else{
-      [GeoSpark startTracking:GeoSparkTrackingModeActive options:nil];
+      [Roam startTracking:RoamTrackingModeActive options:nil];
     }
   });
 }
@@ -334,9 +332,9 @@ RCT_EXPORT_METHOD(startTracking:(NSString *)trackingMode){
 // Custom Tracking
 RCT_EXPORT_METHOD(startTrackingCustom:(BOOL)allowBackground pauseAutomatic:(BOOL)pauseAutomatic activityType:(NSString *)activityType desiredAccuracy:(NSString *)desiredAccuracy showBackIndicator:(BOOL)showBackIndicator distanceFilter:(NSInteger)distanceFilter accuracyFilter:(NSInteger)accuracyFilter updateInterval:(NSInteger)updateInterval){
   dispatch_async(dispatch_get_main_queue(), ^{
-    GeoSparkTrackingCustomMethodsObjcWrapper *wrapper = [[GeoSparkTrackingCustomMethodsObjcWrapper alloc] init];
-    [wrapper setUpCustomOptionsWithDesiredAccuracy:[self getDesireAccuracy:desiredAccuracy] useVisit:nil showsBackgroundLocationIndicator:showBackIndicator distanceFilter:distanceFilter useSignificant:nil useRegionMonitoring:nil useDynamicGeofencRadius:nil geofenceRadius:nil allowBackgroundLocationUpdates:allowBackground activityType:[self getActivityType:activityType] pausesLocationUpdatesAutomatically:pauseAutomatic useStandardLocationServices:nil accuracyFilter:accuracyFilter updateInterval:updateInterval];
-    [GeoSpark startTracking:GeoSparkTrackingModeCustom options:wrapper.customMethods];
+    RoamTrackingCustomMethodsObjcWrapper *wrapper = [[RoamTrackingCustomMethodsObjcWrapper alloc] init];
+    [wrapper setUpCustomOptionsWithDesiredAccuracy:[self getDesireAccuracy:desiredAccuracy] useVisit:nil showsBackgroundLocationIndicator:showBackIndicator distanceFilter:distanceFilter useSignificant:nil useRegionMonitoring:nil useDynamicGeofencRadius:nil geofenceRadius:nil allowBackgroundLocationUpdates:allowBackground activityType:[self getActivityType:activityType] pausesLocationUpdatesAutomatically:pauseAutomatic useStandardLocationServices:nil accuracyFilter:accuracyFilter];
+    [Roam startTracking:RoamTrackingModeCustom options:wrapper.customMethods];
   });
 }
 
@@ -344,78 +342,78 @@ RCT_EXPORT_METHOD(startTrackingCustom:(BOOL)allowBackground pauseAutomatic:(BOOL
 RCT_EXPORT_METHOD(startSelfTracking:(NSString *)trackingMode){
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([trackingMode  isEqual:@"PASSIVE"]) {
-      [GeoSpark startTracking:GeoSparkTrackingModePassive options:nil];
+      [Roam startTracking:RoamTrackingModePassive options:nil];
     } else if ([trackingMode  isEqual:@"BALANCED"]){
-      [GeoSpark startTracking:GeoSparkTrackingModeBalanced options:nil];
+      [Roam startTracking:RoamTrackingModeBalanced options:nil];
     } else{
-      [GeoSpark startTracking:GeoSparkTrackingModeActive options:nil];
+      [Roam startTracking:RoamTrackingModeActive options:nil];
     }
   });
 }
 
 RCT_EXPORT_METHOD(startSelfTrackingCustom:(BOOL)allowBackground pauseAutomatic:(BOOL)pauseAutomatic activityType:(NSString *)activityType desiredAccuracy:(NSString *)desiredAccuracy showBackIndicator:(BOOL)showBackIndicator distanceFilter:(NSInteger)distanceFilter accuracyFilter:(NSInteger)accuracyFilter updateInterval:(NSInteger)updateInterval){
   dispatch_async(dispatch_get_main_queue(), ^{
-    GeoSparkTrackingCustomMethodsObjcWrapper *wrapper = [[GeoSparkTrackingCustomMethodsObjcWrapper alloc] init];
-    [wrapper setUpCustomOptionsWithDesiredAccuracy:[self getDesireAccuracy:desiredAccuracy] useVisit:nil showsBackgroundLocationIndicator:showBackIndicator distanceFilter:distanceFilter useSignificant:nil useRegionMonitoring:nil useDynamicGeofencRadius:nil geofenceRadius:nil allowBackgroundLocationUpdates:allowBackground activityType:[self getActivityType:activityType] pausesLocationUpdatesAutomatically:pauseAutomatic useStandardLocationServices:nil accuracyFilter:accuracyFilter updateInterval:updateInterval];
-    [GeoSpark startTracking:GeoSparkTrackingModeCustom options:wrapper.customMethods];
+    RoamTrackingCustomMethodsObjcWrapper *wrapper = [[RoamTrackingCustomMethodsObjcWrapper alloc] init];
+    [wrapper setUpCustomOptionsWithDesiredAccuracy:[self getDesireAccuracy:desiredAccuracy] useVisit:nil showsBackgroundLocationIndicator:showBackIndicator distanceFilter:distanceFilter useSignificant:nil useRegionMonitoring:nil useDynamicGeofencRadius:nil geofenceRadius:nil allowBackgroundLocationUpdates:allowBackground activityType:[self getActivityType:activityType] pausesLocationUpdatesAutomatically:pauseAutomatic useStandardLocationServices:nil accuracyFilter:accuracyFilter];
+    [Roam startTracking:RoamTrackingModeCustom options:wrapper.customMethods];
   });
 }
 
 
 RCT_EXPORT_METHOD(stopSelfTracking){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [GeoSpark stopSelfTracking];
+    [Roam stopSelfTracking];
   });
 }
 
 RCT_EXPORT_METHOD(stopTracking){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [GeoSpark stopTracking];
+    [Roam stopTracking];
   });
 }
 
 RCT_EXPORT_METHOD(enableAccuracyEngine){
-  [GeoSpark enableAccuracyEngine];
+  [Roam enableAccuracyEngine];
 }
 
 RCT_EXPORT_METHOD(disableAccuracyEngine){
-  [GeoSpark disableAccuracyEngine];
+  [Roam disableAccuracyEngine];
 }
 
 
 RCT_EXPORT_METHOD(setTrackingInAppState:(NSString *)appState){
   if ([appState  isEqual:@"ALWAYS_ON"]) {
-    [GeoSpark setTrackingInAppState:GeoSparkTrackingStateAlwaysOn];
+    [Roam setTrackingInAppState:RoamTrackingStateAlwaysOn];
   } else if ([appState  isEqual:@"FOREGROUND"]){
-    [GeoSpark setTrackingInAppState:GeoSparkTrackingStateForeground];
+    [Roam setTrackingInAppState:RoamTrackingStateForeground];
   } else {
-    [GeoSpark setTrackingInAppState:GeoSparkTrackingStateBackground];
+    [Roam setTrackingInAppState:RoamTrackingStateBackground];
   }
 }
 
 RCT_EXPORT_METHOD(offlineLocationTracking:(BOOL)offline){
-  [GeoSpark offlineLocationTracking:offline];
+  [Roam offlineLocationTracking:offline];
 }
 
 // Subscribe events & location
 
 RCT_EXPORT_METHOD(subscribe:(NSString *)type userId:(NSString *)userId){
   if ([type  isEqual:@"LOCATION"]){
-    [GeoSpark subscribe:GeoSparkSubscribeLocation :userId];
+    [Roam subscribe:RoamSubscribeLocation :userId];
   }else if ([type isEqual:@"EVENTS"]){
-    [GeoSpark subscribe:GeoSparkSubscribeEvents :userId];
+    [Roam subscribe:RoamSubscribeEvents :userId];
   }else{
-    [GeoSpark subscribe:GeoSparkSubscribeEvents :userId];
+    [Roam subscribe:RoamSubscribeEvents :userId];
   }
 }
 
 RCT_EXPORT_METHOD(unsubscribe:(NSString *)type userId:(NSString *)userId){
   if ([type  isEqual:@"LOCATION"]){
-    [GeoSpark unsubscribe:GeoSparkSubscribeLocation :userId];
+    [Roam unsubscribe:RoamSubscribeLocation :userId];
   }else if ([type isEqual:@"EVENTS"]){
-    [GeoSpark unsubscribe:GeoSparkSubscribeEvents :userId];
+    [Roam unsubscribe:RoamSubscribeEvents :userId];
   }else{
-    [GeoSpark unsubscribe:GeoSparkSubscribeEvents :userId];
+    [Roam unsubscribe:RoamSubscribeEvents :userId];
   }
 }
 
@@ -424,11 +422,11 @@ RCT_EXPORT_METHOD(unsubscribe:(NSString *)type userId:(NSString *)userId){
 RCT_EXPORT_METHOD(publishAndSave:(NSDictionary *)dict){
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([[dict allKeys] count] != 0) {
-      GeoSparkPublish *publish = [[GeoSparkPublish alloc] init];
+      RoamPublish *publish = [[RoamPublish alloc] init];
       publish.meta_data = dict;
-      [GeoSpark publishSave:publish];
+      [Roam publishSave:publish];
     }else{
-      [GeoSpark publishSave:nil];
+      [Roam publishSave:nil];
     }
   });
 }
@@ -437,21 +435,21 @@ RCT_EXPORT_METHOD(publishOnly:(NSArray *)array metaData:(NSDictionary *)metaData
   
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([array count] != 0) {
-      GeoSparkPublish *publish = [self publish:array metaData:metaData];
-      [GeoSpark publishOnly:publish];
+      RoamPublish *publish = [self publish:array metaData:metaData];
+      [Roam publishOnly:publish];
     }else{
-      [GeoSpark publishOnly:nil];
+      [Roam publishOnly:nil];
     }
   });
 }
 
 RCT_EXPORT_METHOD(stopPublishing){
-  [GeoSpark stopPublishing];
+  [Roam stopPublishing];
 }
 
 
 
-- (NSMutableDictionary *) userData:(GeoSparkUser *)user{
+- (NSMutableDictionary *) userData:(RoamUser *)user{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:user.userId forKey:@"userId"];
   [dict setValue:user.userId forKey:@"description"];
@@ -476,7 +474,7 @@ RCT_EXPORT_METHOD(stopPublishing){
   return dict;
 }
 
-- (NSError *)error:(GeoSparkError *)error{
+- (NSError *)error:(RoamError *)error{
   return [NSError errorWithDomain:error.message code:[self removeString:error.code] userInfo:nil];
 }
 
@@ -519,7 +517,7 @@ RCT_EXPORT_METHOD(stopPublishing){
   }
 }
 
-- (NSMutableDictionary *) createTripResponse:(GeoSparkCreateTrip *)trip{
+- (NSMutableDictionary *) createTripResponse:(RoamCreateTrip *)trip{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:trip.tripId forKey:@"id"];
   [dict setValue:trip.userId forKey:@"userId"];
@@ -536,7 +534,7 @@ RCT_EXPORT_METHOD(stopPublishing){
     for (int i = 0; i < trip.origins.count; i++)
     {
       NSMutableDictionary *originDict = [[NSMutableDictionary alloc] init];
-      GeoSparkTripOrigin *origin = [trip.origins objectAtIndex:i];
+      RoamTripOrigin *origin = [trip.origins objectAtIndex:i];
       [originDict setValue:origin.id forKey:@"id"];
       [originDict setValue:origin.tripId forKey:@"tripId"];
       [originDict setValue:origin.createdAt forKey:@"createdAt"];
@@ -560,7 +558,7 @@ RCT_EXPORT_METHOD(stopPublishing){
     for (int i = 0; i < trip.destinations.count; i++)
     {
       NSMutableDictionary *originDict = [[NSMutableDictionary alloc] init];
-      GeoSparkTripDestination *destination = [trip.destinations objectAtIndex:i];
+      RoamTripDestination *destination = [trip.destinations objectAtIndex:i];
       [originDict setValue:destination.id forKey:@"id"];
       [originDict setValue:destination.tripId forKey:@"tripId"];
       [originDict setValue:destination.createdAt forKey:@"createdAt"];
@@ -592,12 +590,12 @@ RCT_EXPORT_METHOD(stopPublishing){
   return  dict;
 }
 
-- (NSArray *)activeTripResponse:(NSArray<GeoSparkTrip *>*)trips{
+- (NSArray *)activeTripResponse:(NSArray<RoamTrip *>*)trips{
   
   NSMutableArray *tripsArray = [[NSMutableArray alloc] init];
   for (int i = 0; i < trips.count; i++){
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    GeoSparkTrip *trip = [trips objectAtIndex:i];
+    RoamTrip *trip = [trips objectAtIndex:i];
     [dict setValue:trip.tripId forKey:@"tripId"];
     [dict setValue:trip.createdAt forKey:@"createdAt"];
     [dict setValue:trip.updatedAt forKey:@"updatedAt"];
@@ -646,7 +644,7 @@ RCT_EXPORT_METHOD(stopPublishing){
   }
 }
 
-- (NSMutableDictionary *) userLocation:(GeoSparkLocation *)location{
+- (NSMutableDictionary *) userLocation:(RoamLocation *)location{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:location.userId forKey:@"userId"];
   [dict setValue:location.activity forKey:@"activity"];
@@ -656,7 +654,7 @@ RCT_EXPORT_METHOD(stopPublishing){
   return  dict;
 }
 
-- (NSMutableDictionary *) didUserLocation:(GeoSparkLocationReceived *)location{
+- (NSMutableDictionary *) didUserLocation:(RoamLocationReceived *)location{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:location.userId forKey:@"userId"];
   [dict setValue:location.locationId forKey:@"locationId"];
@@ -677,7 +675,7 @@ RCT_EXPORT_METHOD(stopPublishing){
   return dict;
 }
 
-- (NSMutableDictionary *) didTripStatus:(TripStatusListener *)trip{
+- (NSMutableDictionary *) didTripStatus:(RoamTripStatusListener *)trip{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:[NSNumber numberWithDouble:trip.latitude] forKey:@"latitude"];
   [dict setValue:[NSNumber numberWithDouble:trip.longitude] forKey:@"longitude"];
@@ -690,8 +688,8 @@ RCT_EXPORT_METHOD(stopPublishing){
   
 }
 
-- (GeoSparkPublish *)publish:(NSArray *)array metaData:(NSDictionary *)metaData{
-  GeoSparkPublish *publish = [[GeoSparkPublish alloc] init];
+- (RoamPublish *)publish:(NSArray *)array metaData:(NSDictionary *)metaData{
+  RoamPublish *publish = [[RoamPublish alloc] init];
   for (NSString *string in array)
   {
     if ([string isEqual:@"USER_ID"]) {
