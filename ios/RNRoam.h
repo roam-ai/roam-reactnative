@@ -1,18 +1,12 @@
-//
-//  RNRoam.h
-//  RNRoam
-//
-//  Created by GeoSpark Mac #1 on 12/06/18.
-//  Copyright © 2018 GeoSpark. All rights reserved.
-//
 
+#if __has_include("RCTBridgeModule.h")
+#import "RCTBridgeModule.h"
+#else
 #import <React/RCTBridgeModule.h>
-#import <React/RCTConvert.h>
-#import <React/RCTUtils.h>
+#endif
 #import <React/RCTEventEmitter.h>
-#import <GeoSpark/GeoSpark.h>
-
-@import CoreLocation;
 
 @interface RNRoam : RCTEventEmitter <RCTBridgeModule>
+
 @end
+  

@@ -19,7 +19,7 @@ public class RNRoamPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> nativeModules = new ArrayList<>();
-        nativeModules.add(new RNRoam(reactContext));
+        nativeModules.add(new RNRoamModule(reactContext));
         return nativeModules;
     }
 

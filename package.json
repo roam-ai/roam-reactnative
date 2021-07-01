@@ -4,13 +4,10 @@
   "homepage": "https://roam.ai",
   "license": "MIT",
   "version": "0.0.5",
+  "author": "Roam B.V",
   "main": "js/index.js",
   "dependencies": {
     "typescript": "^4.2.4"
-  },
-  "peerDependencies": {
-    "react": ">= 15.4.2",
-    "react-native": ">= 0.40.0"
   },
   "bugs": {
     "url": "https://github.com/geosparks/roam-reactnative/issues"
@@ -31,6 +28,11 @@
     "react-native"
   ],
   "devDependencies": {
-    "@types/react-native": "^0.64.5"
+    "@types/react-native": "^0.64.5",
+    "react": ">= 15.4.2",
+    "react-native": "^0.41.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

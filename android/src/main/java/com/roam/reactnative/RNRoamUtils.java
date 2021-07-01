@@ -5,15 +5,15 @@ import android.location.Location;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.geospark.lib.models.ActiveTrips;
-import com.geospark.lib.models.GeoSparkError;
-import com.geospark.lib.models.GeoSparkUser;
-import com.geospark.lib.models.createtrip.Coordinates;
-import com.geospark.lib.models.createtrip.Destination;
-import com.geospark.lib.models.createtrip.GeoSparkCreateTrip;
-import com.geospark.lib.models.createtrip.Origin;
-import com.geospark.lib.models.tripsummary.GeoSparkTripSummary;
-import com.geospark.lib.models.tripsummary.Route;
+import com.roam.sdk.models.ActiveTrips;
+import com.roam.sdk.models.RoamError;
+import com.roam.sdk.models.RoamUser;
+import com.roam.sdk.models.createtrip.Coordinates;
+import com.roam.sdk.models.createtrip.Destination;
+import com.roam.sdk.models.createtrip.Origin;
+import com.roam.sdk.models.createtrip.RoamCreateTrip;
+import com.roam.sdk.models.tripsummary.RoamTripSummary;
+import com.roam.sdk.models.tripsummary.Route;
 
 import java.util.List;
 
@@ -66,35 +66,35 @@ class RNRoamUtils {
         return "DISABLED";
     }
 
-    static WritableMap mapForUser(GeoSparkUser geoSparkUser) {
-        if (geoSparkUser == null) {
+    static WritableMap mapForUser(RoamUser roamUser) {
+        if (roamUser == null) {
             return null;
         }
         WritableMap map = Arguments.createMap();
-        map.putString("userId", geoSparkUser.getUserId());
-        map.putString("description", geoSparkUser.getDescription());
-        map.putBoolean("geofenceEvents", geoSparkUser.getGeofenceEvents());
-        map.putBoolean("locationEvents", geoSparkUser.getLocationEvents());
-        map.putBoolean("tripsEvents", geoSparkUser.getTripsEvents());
-        map.putBoolean("movingGeofenceEvents", geoSparkUser.getMovingGeofenceEvents());
-        map.putBoolean("eventListenerStatus", geoSparkUser.getEventListenerStatus());
-        map.putBoolean("locationListenerStatus", geoSparkUser.getLocationListenerStatus());
+        map.putString("userId", roamUser.getUserId());
+        map.putString("description", roamUser.getDescription());
+        map.putBoolean("geofenceEvents", roamUser.getGeofenceEvents());
+        map.putBoolean("locationEvents", roamUser.getLocationEvents());
+        map.putBoolean("tripsEvents", roamUser.getTripsEvents());
+        map.putBoolean("movingGeofenceEvents", roamUser.getMovingGeofenceEvents());
+        map.putBoolean("eventListenerStatus", roamUser.getEventListenerStatus());
+        map.putBoolean("locationListenerStatus", roamUser.getLocationListenerStatus());
         return map;
     }
 
-    static WritableMap mapForTrip(GeoSparkTripSummary geoSparkTripSummary) {
-        if (geoSparkTripSummary == null) {
+    static WritableMap mapForTrip(RoamTripSummary roamTripSummary) {
+        if (roamTripSummary == null) {
             return null;
         }
         WritableMap map = Arguments.createMap();
-        map.putDouble("distance", geoSparkTripSummary.getDistance_covered());
-        map.putDouble("duration", geoSparkTripSummary.getDuration());
-        map.putDouble("elevationGain", geoSparkTripSummary.getTotal_elevation_gain());
-        if (geoSparkTripSummary.getRoute() != null && geoSparkTripSummary.getRoute().size() > 0) {
+        map.putDouble("distance", roamTripSummary.getDistance_covered());
+        map.putDouble("duration", roamTripSummary.getDuration());
+        map.putDouble("elevationGain", roamTripSummary.getTotal_elevation_gain());
+        if (roamTripSummary.getRoute() != null && roamTripSummary.getRoute().size() > 0) {
             WritableArray routeArray = Arguments.createArray();
-            for (int i = 0; i < geoSparkTripSummary.getRoute().size(); i++) {
+            for (int i = 0; i < roamTripSummary.getRoute().size(); i++) {
                 WritableMap routeMap = Arguments.createMap();
-                Route route = geoSparkTripSummary.getRoute().get(i);
+                Route route = roamTripSummary.getRoute().get(i);
                 if (route.getRecorded_at() != null) {
                     routeMap.putString("recordedAt", route.getRecorded_at());
                 }
@@ -125,42 +125,42 @@ class RNRoamUtils {
         return map;
     }
 
-    static WritableMap mapForCreateTrip(GeoSparkCreateTrip geoSparkCreateTrip) {
-        if (geoSparkCreateTrip == null) {
+    static WritableMap mapForCreateTrip(RoamCreateTrip roamCreateTrip) {
+        if (roamCreateTrip == null) {
             return null;
         }
         WritableMap map = Arguments.createMap();
-        if (geoSparkCreateTrip.getId() != null) {
-            map.putString("id", geoSparkCreateTrip.getId());
+        if (roamCreateTrip.getId() != null) {
+            map.putString("id", roamCreateTrip.getId());
         }
-        if (geoSparkCreateTrip.getUser_id() != null) {
-            map.putString("userId", geoSparkCreateTrip.getUser_id());
+        if (roamCreateTrip.getUser_id() != null) {
+            map.putString("userId", roamCreateTrip.getUser_id());
         }
-        if (geoSparkCreateTrip.getCreated_at() != null) {
-            map.putString("createdAt", geoSparkCreateTrip.getCreated_at());
+        if (roamCreateTrip.getCreated_at() != null) {
+            map.putString("createdAt", roamCreateTrip.getCreated_at());
         }
-        if (geoSparkCreateTrip.getUpdated_at() != null) {
-            map.putString("updatedAt", geoSparkCreateTrip.getUpdated_at());
+        if (roamCreateTrip.getUpdated_at() != null) {
+            map.putString("updatedAt", roamCreateTrip.getUpdated_at());
         }
-        if (geoSparkCreateTrip.getIs_started() != null) {
-            map.putBoolean("isStarted", geoSparkCreateTrip.getIs_started());
+        if (roamCreateTrip.getIs_started() != null) {
+            map.putBoolean("isStarted", roamCreateTrip.getIs_started());
         }
-        if (geoSparkCreateTrip.getIs_paused() != null) {
-            map.putBoolean("isPaused", geoSparkCreateTrip.getIs_paused());
+        if (roamCreateTrip.getIs_paused() != null) {
+            map.putBoolean("isPaused", roamCreateTrip.getIs_paused());
         }
-        if (geoSparkCreateTrip.getIs_ended() != null) {
-            map.putBoolean("isEnded", geoSparkCreateTrip.getIs_ended());
+        if (roamCreateTrip.getIs_ended() != null) {
+            map.putBoolean("isEnded", roamCreateTrip.getIs_ended());
         }
-        if (geoSparkCreateTrip.getIs_deleted() != null) {
-            map.putBoolean("isDeleted", geoSparkCreateTrip.getIs_deleted());
+        if (roamCreateTrip.getIs_deleted() != null) {
+            map.putBoolean("isDeleted", roamCreateTrip.getIs_deleted());
         }
-        if (geoSparkCreateTrip.getTrip_tracking_url() != null) {
-            map.putString("tripTrackingUrl", geoSparkCreateTrip.getTrip_tracking_url());
+        if (roamCreateTrip.getTrip_tracking_url() != null) {
+            map.putString("tripTrackingUrl", roamCreateTrip.getTrip_tracking_url());
         }
-        if (geoSparkCreateTrip.getOrigins() != null && geoSparkCreateTrip.getOrigins().size() > 0) {
+        if (roamCreateTrip.getOrigins() != null && roamCreateTrip.getOrigins().size() > 0) {
             WritableMap originMap = Arguments.createMap();
-            for (int i = 0; i < geoSparkCreateTrip.getOrigins().size(); i++) {
-                Origin origin = geoSparkCreateTrip.getOrigins().get(i);
+            for (int i = 0; i < roamCreateTrip.getOrigins().size(); i++) {
+                Origin origin = roamCreateTrip.getOrigins().get(i);
                 if (origin.getId() != null) {
                     map.putString("id", origin.getId());
                 }
@@ -190,10 +190,10 @@ class RNRoamUtils {
             }
             map.putMap("origin", originMap);
         }
-        if (geoSparkCreateTrip.getDestinations() != null && geoSparkCreateTrip.getDestinations().size() > 0) {
+        if (roamCreateTrip.getDestinations() != null && roamCreateTrip.getDestinations().size() > 0) {
             WritableMap destinationMap = Arguments.createMap();
-            for (int i = 0; i < geoSparkCreateTrip.getDestinations().size(); i++) {
-                Destination destination = geoSparkCreateTrip.getDestinations().get(i);
+            for (int i = 0; i < roamCreateTrip.getDestinations().size(); i++) {
+                Destination destination = roamCreateTrip.getDestinations().get(i);
                 if (destination.getId() != null) {
                     map.putString("id", destination.getId());
                 }
@@ -233,15 +233,15 @@ class RNRoamUtils {
         WritableMap map = Arguments.createMap();
         for (int i = 0; i < trips.size(); i++) {
             WritableMap mapData = Arguments.createMap();
-            ActiveTrips geoSparkActiveTrips = trips.get(i);
-            mapData.putString("tripId", geoSparkActiveTrips.getTripId());
-            mapData.putBoolean("isStarted", geoSparkActiveTrips.isStarted());
-            mapData.putBoolean("isPaused", geoSparkActiveTrips.isPaused());
-            mapData.putBoolean("isEnded", geoSparkActiveTrips.getEnded());
-            mapData.putBoolean("isDeleted", geoSparkActiveTrips.getDeleted());
-            mapData.putString("createdAt", geoSparkActiveTrips.getCreatedAt());
-            mapData.putString("updatedAt", geoSparkActiveTrips.getUpdatedAt());
-            mapData.putString("syncStatus", geoSparkActiveTrips.getSyncStatus());
+            ActiveTrips roamActiveTrips = trips.get(i);
+            mapData.putString("tripId", roamActiveTrips.getTripId());
+            mapData.putBoolean("isStarted", roamActiveTrips.isStarted());
+            mapData.putBoolean("isPaused", roamActiveTrips.isPaused());
+            mapData.putBoolean("isEnded", roamActiveTrips.getEnded());
+            mapData.putBoolean("isDeleted", roamActiveTrips.getDeleted());
+            mapData.putString("createdAt", roamActiveTrips.getCreatedAt());
+            mapData.putString("updatedAt", roamActiveTrips.getUpdatedAt());
+            mapData.putString("syncStatus", roamActiveTrips.getSyncStatus());
             map.putMap(String.valueOf(i), mapData);
         }
         return map;
@@ -260,10 +260,10 @@ class RNRoamUtils {
         return map;
     }
 
-    static WritableMap mapForError(GeoSparkError geoSparkError) {
+    static WritableMap mapForError(RoamError roamError) {
         WritableMap map = Arguments.createMap();
-        map.putString("errorCode", geoSparkError.getCode());
-        map.putString("errorMessage", geoSparkError.getMessage());
+        map.putString("errorCode", roamError.getCode());
+        map.putString("errorMessage", roamError.getMessage());
         return map;
     }
 }

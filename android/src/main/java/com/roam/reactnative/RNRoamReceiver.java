@@ -10,15 +10,15 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.geospark.lib.models.GeoSparkError;
-import com.geospark.lib.models.GeoSparkLocation;
-import com.geospark.lib.models.GeoSparkLocationReceived;
-import com.geospark.lib.models.TripStatusListener;
-import com.geospark.lib.models.createtrip.Coordinates;
-import com.geospark.lib.service.GeoSparkReceiver;
+import com.roam.sdk.models.RoamError;
+import com.roam.sdk.models.RoamLocation;
+import com.roam.sdk.models.RoamLocationReceived;
+import com.roam.sdk.models.TripStatusListener;
+import com.roam.sdk.models.createtrip.Coordinates;
+import com.roam.sdk.service.RoamReceiver;
 
 
-public class RNRoamReceiver extends GeoSparkReceiver {
+public class RNRoamReceiver extends RoamReceiver {
     private ReactNativeHost mReactNativeHost;
 
     private void invokeSendEvent(ReactContext reactContext, String eventName, Object data) {
@@ -45,51 +45,51 @@ public class RNRoamReceiver extends GeoSparkReceiver {
     }
 
     @Override
-    public void onLocationUpdated(Context context, GeoSparkLocation geoSparkLocation) {
-        super.onLocationUpdated(context, geoSparkLocation);
+    public void onLocationUpdated(Context context, RoamLocation roamLocation) {
+        super.onLocationUpdated(context, roamLocation);
         ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
         mReactNativeHost = reactApplication.getReactNativeHost();
         WritableMap map = Arguments.createMap();
-        if (TextUtils.isEmpty(geoSparkLocation.getUserId())) {
+        if (TextUtils.isEmpty(roamLocation.getUserId())) {
             map.putString("userId", " ");
         } else {
-            map.putString("userId", geoSparkLocation.getUserId());
+            map.putString("userId", roamLocation.getUserId());
         }
-        map.putMap("location", RNRoamUtils.mapForLocation(geoSparkLocation.getLocation()));
-        if (TextUtils.isEmpty(geoSparkLocation.getActivity())) {
+        map.putMap("location", RNRoamUtils.mapForLocation(roamLocation.getLocation()));
+        if (TextUtils.isEmpty(roamLocation.getActivity())) {
             map.putString("activity", " ");
         } else {
-            map.putString("activity", geoSparkLocation.getActivity());
+            map.putString("activity", roamLocation.getActivity());
         }
-        map.putString("recordedAt", geoSparkLocation.getRecordedAt());
-        map.putString("timezone", geoSparkLocation.getTimezoneOffset());
+        map.putString("recordedAt", roamLocation.getRecordedAt());
+        map.putString("timezone", roamLocation.getTimezoneOffset());
         sendEvent("location", map);
     }
 
     @Override
-    public void onLocationReceived(Context context, GeoSparkLocationReceived geoSparkLocationReceived) {
-        super.onLocationReceived(context, geoSparkLocationReceived);
+    public void onLocationReceived(Context context, RoamLocationReceived roamLocationReceived) {
+        super.onLocationReceived(context, roamLocationReceived);
         ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
         mReactNativeHost = reactApplication.getReactNativeHost();
         WritableMap map = Arguments.createMap();
-        if (geoSparkLocationReceived.getUser_id() != null) {
-            map.putString("userId", geoSparkLocationReceived.getUser_id());
+        if (roamLocationReceived.getUser_id() != null) {
+            map.putString("userId", roamLocationReceived.getUser_id());
         }
-        if (geoSparkLocationReceived.getLocation_id() != null) {
-            map.putString("locationId", geoSparkLocationReceived.getLocation_id());
+        if (roamLocationReceived.getLocation_id() != null) {
+            map.putString("locationId", roamLocationReceived.getLocation_id());
         }
-        if (geoSparkLocationReceived.getActivity() != null) {
-            map.putString("activity", geoSparkLocationReceived.getActivity());
+        if (roamLocationReceived.getActivity() != null) {
+            map.putString("activity", roamLocationReceived.getActivity());
         }
-        if (geoSparkLocationReceived.getEvent_source() != null) {
-            map.putString("eventSource", geoSparkLocationReceived.getEvent_source());
+        if (roamLocationReceived.getEvent_source() != null) {
+            map.putString("eventSource", roamLocationReceived.getEvent_source());
         }
-        map.putInt("speed", geoSparkLocationReceived.getSpeed());
-        map.putDouble("altitude", geoSparkLocationReceived.getAltitude());
-        map.putDouble("horizontalAccuracy", geoSparkLocationReceived.getHorizontal_accuracy());
-        map.putDouble("verticalAccuracy", geoSparkLocationReceived.getVertical_accuracy());
-        map.putDouble("course", geoSparkLocationReceived.getCourse());
-        Coordinates coordinates = geoSparkLocationReceived.getCoordinates();
+        map.putInt("speed", roamLocationReceived.getSpeed());
+        map.putDouble("altitude", roamLocationReceived.getAltitude());
+        map.putDouble("horizontalAccuracy", roamLocationReceived.getHorizontal_accuracy());
+        map.putDouble("verticalAccuracy", roamLocationReceived.getVertical_accuracy());
+        map.putDouble("course", roamLocationReceived.getCourse());
+        Coordinates coordinates = roamLocationReceived.getCoordinates();
         if (coordinates != null && coordinates.getCoordinates().size() > 0) {
             map.putDouble("latitude", coordinates.getCoordinates().get(1));
             map.putDouble("longitude", coordinates.getCoordinates().get(0));
@@ -97,14 +97,14 @@ public class RNRoamReceiver extends GeoSparkReceiver {
                 map.putString("type", coordinates.getType());
             }
         }
-        if (geoSparkLocationReceived.getEvent_version() != null) {
-            map.putString("eventVersion", geoSparkLocationReceived.getEvent_version());
+        if (roamLocationReceived.getEvent_version() != null) {
+            map.putString("eventVersion", roamLocationReceived.getEvent_version());
         }
-        if (geoSparkLocationReceived.getRecorded_at() != null) {
-            map.putString("recordedAt", geoSparkLocationReceived.getRecorded_at());
+        if (roamLocationReceived.getRecorded_at() != null) {
+            map.putString("recordedAt", roamLocationReceived.getRecorded_at());
         }
-        if (geoSparkLocationReceived.getEvent_type() != null) {
-            map.putString("eventType", geoSparkLocationReceived.getEvent_type());
+        if (roamLocationReceived.getEvent_type() != null) {
+            map.putString("eventType", roamLocationReceived.getEvent_type());
         }
         sendEvent("location_received", map);
     }
@@ -127,11 +127,11 @@ public class RNRoamReceiver extends GeoSparkReceiver {
     }
 
     @Override
-    public void onError(Context context, GeoSparkError geoSparkError) {
-        super.onError(context, geoSparkError);
+    public void onError(Context context, RoamError roamError) {
+        super.onError(context, roamError);
         ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
         mReactNativeHost = reactApplication.getReactNativeHost();
-        sendEvent("error", RNRoamUtils.mapForError(geoSparkError));
+        sendEvent("error", RNRoamUtils.mapForError(roamError));
     }
 }
 
