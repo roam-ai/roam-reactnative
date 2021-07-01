@@ -359,7 +359,7 @@ Roam.subscribe(TYPE, "USER-ID");
 Roam.unSubscribe(TYPE, "USER-ID");
 ```
 
-### Listeners
+## Listeners
 
 Now that the location tracking is set up, you can subscribe to locations and events and use the data locally on your device or send it directly to your own backend server.
 
