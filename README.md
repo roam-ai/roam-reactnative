@@ -8,154 +8,137 @@
 [![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.4&x2=0)](https://badge.fury.io/js/roam-reactnative)
 [![Npm Publish](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml/badge.svg?branch=0.0.1)](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml)
 
-# React Native Location SDK
-High accuracy and battery efficient location SDK for iOS and Android developed and maintained by Roam BV.
+# Official Roam React Native SDK
+This is the official [Roam](https://roam.ai) iOS SDK developed and maintained by Roam B.V
 
-Note: Before you get started [signup to our dashboard](https://roam.ai) to get your API Keys.
+Note: Before you get started [signup to our dashboard](https://roam.ai/dashboard/signup) to get your API Keys. 
 
 
 ## Featured Apps
 
 <a href="https://sprintcrowd.com"><img src="https://sprintcrowd.com/wp-content/uploads/2020/08/sc-logo_400.png" width="100"></a>
 <a href="https://letstransport.in"><img src="https://i.imgur.com/pDIb2BK.png" width="100"></a>
-<a href="https://stoovo.com"><img src="https://i.imgur.com/y78DcOn.png" width="100"></a>
-
 
 
 # Quick Start
-The Roam React Native SDK makes it quick and easy to build a
-location tracker for your React Native app. We provide powerful and
-customizable tracking modes and features that can be used to collect
-your users location updates.
+The Roam React Native SDK makes it quick and easy to build a location tracker for your React Native app. We provide powerful and customizable tracking modes and features that can be used to collect your users location updates.
 
-**Install the module**
-======================
+### Requirements
+To use the Roam SDK, the following things are required:
+Get yourself a free Roam Account. No credit card required.
 
+- [x] Create a project and add an iOS app to the project.
+- [x] You need the SDK_KEY in your project settings which you’ll need to initialize the SDK.
+- [x] Now you’re ready to integrate the SDK into your React Native application.
 
-In your project directory, install from npm, and then link it.
+# Add the Roam React Native SDK to your app
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-$ npm install roam-reactnative --save
-$ react-native link roam-reactnative
+In your project directory, install from npm or yarn, and then link it.
+
+```bash
+//npm
+npm install --save roam-reactnative
+
+//yarn
+yarn add roam-reactnative
+```
+If using React Native version of 0.60 or greater, autolinking is now done automatically so you can skip this step.
+
+```
+//React Native
+react-native link roam-reactnative
+
+//Expo
+expo install roam-reactnative
 ```
 
-**Installation**
-================
+Before making any changes to your javascript code, you would need to integrate and initialize Roam SDK in your Android and iOS applications. 
 
+### Android
+1. Add the following to the build script `{repositories {}}` section of the `build.gradle` (Project)file
 
-**iOS**
+    ```java
+    mavenCentral()
+    ```
+2. Install the SDK to your project via `Gradle` in Android Studio, add the maven below in your project `build.gradle` file.
 
-Install using Cocoapods, open `podfile` and add SDK to file.
-
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-pod 'GeoSpark'
-```
-
-Once you have updated your `podfile`, run `pod install` in your
-terminal.
-
-**Configure project**
-
-To configure the location services, add following entries to the
-**Info.plist** file.
-
-![](https://gblobscdn.gitbook.com/assets%2F-LSIY5fR7w61d6wHf6iI%2F-LWA3HF19_HBBEZj1hrU%2F-LWA55gjYBsLYYd8f_Oi%2F4.png?alt=media&token=4feb38a5-d013-43ab-81a6-7b69f96e09c4)
-
-Then, in your project settings, go to `Capabilities > Background Modes`
-and turn on background fetch, location updates, remote-notifications.
-
-![](https://gblobscdn.gitbook.com/assets%2F-LSIY5fR7w61d6wHf6iI%2F-LWA3HF19_HBBEZj1hrU%2F-LWA5AepQh8EoHoIB3xS%2F3.png?alt=media&token=9436cc91-33b6-4126-8629-c610d80bb281)
-
-Then, go to Build Settings in the project targets and change 'Always
-Embed Swift Standard Libraries' to 'Yes'.
-
-**Manual Linking**
-
-1.  Open the iOS module files, located inside
-    `node_modules/react-native-geospark/ios/`.
-
-2.  Open the app workspace file `(AppName.xcworkspace)` in Xcode.
-
-3.  Move the `RNRoam.h` and `RNRoam.m` files to your project.
-    When shown a popup window, select Create groups.
-
-**Android**
-
-Install the SDK to your project via `Gradle` in Android Studio, add the maven below in your `project build.gradle` file.
-
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: groovy; gutter: false; theme: Confluence" data-theme="Confluence"}
-repositories {
-    maven {
-        url 'https://com-geospark-android.s3.amazonaws.com/'
+    ```java
+    repositories {
+        maven {
+            url 'https://com-roam-android.s3.amazonaws.com/'
+        }
     }
-}
-```
-add the dependencies below in your `app build.gradle` file.
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: groovy; gutter: false; theme: Confluence" data-theme="Confluence"}
-dependencies {
- implementation 'com.geospark.android:geospark:3.1.5'
-}
-```
+    ```
 
-**Initialize SDK**
-==================
+3. Add the dependencies below in your `app build.gradle` file. Then sync Gradle.
 
+    ```
+    dependencies {
+        implementation 'com.roam.sdk:roam-android:0.0.3'
+    }
+    ```
+4. Before initializing the SDK, the below must be imported in your Main Activity.
 
-Import the module in `App.js` file
+    ```java
+    import com.roam.sdk.Roam;
+    ```
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+5. After import, add the below code under the Application class `onCreate()` method. The SDK must be initialised before calling any of the other SDK methods.
+
+    ```java
+    Roam.initialize(this, "YOUR-SDK-KEY-GOES-HERE");
+    ```
+
+### iOS
+
+1. Run `cd ios` && `pod install`
+2. Then, configure the information property list file `Info.plist` with an XML snippet that contains data about your app. You need to add strings for `NSLocationWhenInUseUsageDescription` in the `Info.plist` file to prompt the user during location permissions for foreground location tracking. For background location tracking, you also need to add a string for `NSLocationAlwaysUsageDescription` and `NSLocationAlwaysAndWhenInUseUsageDescription` in the same` Info.plist` file.
+
+   ```xml
+   <key>NSLocationWhenInUseUsageDescription</key>
+   <string>Add description for foreground only location usage.</string>
+   <key>NSLocationAlwaysUsageDescription</key>
+   <string>Add description for background location usage. iOS 10 and below"</string>
+   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+   <string>Add description for background location usage. iOS 11 and above</string>
+   ```
+   
+   ![Screenshot 2021-06-25 at 8 40 46 PM](https://user-images.githubusercontent.com/19217956/123445597-aa8cf380-d5f5-11eb-9188-15ad742f11a8.png)
+
+3. Next you need to enable`Background fetch` and` Location updates` under `Project Setting` > `Capabilities` > `Background Modes`.
+    
+   ![Screenshot 2021-06-25 at 8 38 24 PM](https://user-images.githubusercontent.com/19217956/123445386-74e80a80-d5f5-11eb-85d6-e06ef4300734.png)
+
+4. Import Roam into your `AppDelegate` file.
+
+    ```objective-c
+    #import <Roam/Roam.h>
+    ```
+
+5. Initialize the SDK in your `AppDelegate` class before calling any other Roam methods under this `application:didFinishLaunchingWithOptions:`
+
+    ```objective-c
+    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+    {
+      [Roam initialize:@"YOUR-PUBLISHABLE-KEY" :NULL :NULL];
+    }
+    ```
+
+# Finally, lets do some javascript
+
+## Import module
+
+First, import the module.
+
+```javascript
 import Roam from 'roam-reactnative';
 ```
 
-**Android**
+## Creating Users
+Once the SDK is initialized, we need to *create* or *get a user* to start the tracking and use other methods. Every user created will have a unique Roam identifier which will be used later to login and access developer APIs. We can call it as Roam userId.
 
-Initialize the SDK with your `publishable key`.
-
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-//In onCreate method of your Application class include the code below.
-public class MainApplication extends Application implements ReactApplication {
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
-    GeoSpark.initialize(this, "PUBLISH_KEY");
-  }
-};
-```
-
-**iOS**
-
-Import GeoSpark into your `AppDelegate` file.
-
-**Objective-C**
-
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-#import <GeoSpark/GeoSpark.h>
-```
-
-Initialize the SDK in your `AppDelegate` class before calling any other
-GeoSpark methods under this `application:didFinishLaunchingWithOptions:`
-
-**Objective-C**
-
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-   [GeoSpark intialize:@"PUBLISHABLEKEY" :nil :nil :nil :nil :AWSRegionUnknown];
-    return YES;
-}
-```
-
-Creating Users
-==============
-
-
-Once the SDK is initialized, we need to *create* or *get a user* to
-start the tracking and use other methods. Every user created will have a
-unique Roam identifier which will be used later to login and access
-developer APIs. We can call it as Roam userId.
-
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-Roam.createUser("Description", success => {
+```javascript
+Roam.createUser("SET-USER-DESCRIPTION-HERE", success => {
  // do something on success
 },
 error => {
@@ -163,51 +146,30 @@ error => {
 });
 ```
 
-The option *user description* can be used to update your user
-information such as name, address or add an existing user ID. Make sure
-the information is encrypted if you are planning to save personal user
-information like email or phone number.
+The option *user description* can be used to update your user information such as name, address or add an existing user ID. Make sure the information is encrypted if you are planning to save personal user information like email or phone number.
 
-You can always set or update user descriptions later using the below
-code.
+You can always set or update user descriptions later using the below code.
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-Roam.setDescription("SET USER DESCRIPTION HERE");
+```javascript
+Roam.setDescription("SET-USER-DESCRIPTION-HERE");
 ```
 
-If you already have a GeoSpark userID which you would like to reuse
-instead of creating a new user, use the below to get user session.
+If you already have a Roam userID which you would like to reuse instead of creating a new user, use the below to get user session.
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-Roam.getUser("USER-ID", success => {
+```javascript
+Roam.getUser("ROAM-USER-ID", success => {
 // do something on success
 },
 error => {
 // do something on error
 });
 ```
-You can subscribe to locations and events and use the data locally on your device or send it directly to your own backend server.
 
-To do that, you need to set the location and event listener to `true` using the below method. By default the status will set to `false` and needs to be set to `true` in order to stream the location and events updates to the same device or other devices.
+## Request Permissions
 
-```
-Roam.toggleListener(locations, events, success => {
- // do something on success
-},
-error => {
-// do something on error
-});
-```
+Get location permission from the App user on the device. Also check if the user has turned on location services for the device. 
 
-**Request Permissions**
-=======================
-
-
-Get location permission from the App user on the device. Also check if
-the user has turned on location services for the device. In addition,
-get motion permission for iOS.
-
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+```javascript
 // Call this method to check Location Permission for Android & iOS
 Roam.checkLocationPermission( status => {
 // do something with status
@@ -217,9 +179,9 @@ Roam.checkLocationPermission( status => {
 Roam.requestLocationPermission();
 ```
 
-**Android**
+### Android
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+```javascript
 // Call this method to check Location services for Android
 Roam.checkLocationServices( status => {
 // do something with status
@@ -228,9 +190,9 @@ Roam.checkLocationServices( status => {
 Roam.requestLocationServices();
 ```
 
-To start tracking the location above Android 10
+In case of devices running above Anroid 10, you would need to get background location permissions to track locations in background.
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+```javascript
 // Call this method to check background location permission for Android
 Roam.checkBackgroundLocationPermission( status => {
 // do something with status
@@ -238,47 +200,70 @@ Roam.checkBackgroundLocationPermission( status => {
 // Call this method to request background location Permission for Android
 Roam.requestBackgroundLocationPermission();
 ```
+### SDK Configurations
 
-Location Tracking
-=================
+#### Accuracy Engine
 
+For enabling accuracy engine for Passive, Active, and Balanced tracking.
+
+```javascript
+Roam.enableAccuracyEngine();
+```
+
+For Custom tracking mores, you can pass the desired accuracy values in integers ranging from 25-150m.
+
+```javascript
+Roam.enableAccuracyEngine(50);
+```
+To disable accuracy engine
+
+```javascript
+Roam.disableAccuracyEngine();
+```
+
+#### Offline Location Tracking
+
+To modify the offline location tracking configuration, which will enabled by default. 
+
+```javascript
+Roam.offlineLocationTracking(true);
+```
+
+#### Allow Mock Location Tracking
+
+To allow mock location tracking during development, use the below code. This will be disabled by default. 
+
+```javascript
+Roam.allowMockLocation(true);
+```
+
+## Location Tracking
 
 ### Start Tracking
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+Use the tracking modes while you use the startTracking method `Roam.startTracking`
+
+```javascript
 Roam.startTracking(TrackingMode);
 ```
 
-Use the tracking modes while you use the startTracking method
-`Roam.startTracking`
+### Tracking Modes
 
-### **Tracking Modes**
+Roam has three default tracking modes along with a custom version. They differ based on the frequency of location updates and battery consumption. The higher the frequency, the higher is the battery consumption. You must use [foreground service](https://developer.android.com/about/versions/oreo/background-location-limits) for continuous tracking.
 
-Roam has three default tracking modes along with a custom version.
-They differ based on the frequency of location updates and battery
-consumption. The higher the frequency, the higher is the battery
-consumption. Android you must use [foreground
-service](https://developer.android.com/about/versions/oreo/background-location-limits)
-for continuous tracking.
+| **Mode** | **Battery usage** | **Updates every** | **Optimised for/advised for** |
+| -------- | ----------------- | ----------------- | ----------------------------- |
+| Active   | 6% - 12%          | 25 ~ 250 meters   | Ride Hailing / Sharing        |
+| Balanced | 3% - 6%           | 50 ~ 500 meters   | On Demand Services            |
+| Passive  | 0% - 1%           | 100 ~ 1000 meters | Social Apps                   |
 
-<div class="table-wrap">
-
-|          |                   |                    |                                |
-| -------- | ----------------- | ------------------ | ------------------------------ |
-| **Mode** | **Battery usage** | **Updates every ** | **Optimised for/advised for ** |
-| Active   | 6% - 12%          | 25 ~ 250 meters    | Ride Hailing / Sharing         |
-| Balanced | 3% - 6%           | 50 ~ 500 meters    | On Demand Services             |
-| Passive  | 0% - 1%           | 100 ~ 1000 meters  | Social Apps                    |
-
-</div>
-
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-//active tracking
-Roam.startTracking(Roam.TrackingMode.ACTIVE);
+```javascript
+// active tracking
+Roam.startTracking(RoamTrackingMode.ACTIVE);
 // balanced tracking
-Roam.startTracking(Roam.TrackingMode.BALANCED);
+Roam.startTracking(RoamTrackingMode.BALANCED);
 // passive tracking
-Roam.startTracking(Roam.TrackingMode.PASSIVE);
+Roam.startTracking(RoamTrackingMode.PASSIVE);
 ```
 
 ### Custom Tracking Modes
@@ -286,68 +271,59 @@ Roam.startTracking(Roam.TrackingMode.PASSIVE);
 The SDK also allows you define a custom tracking mode that allows you to
 customize and build your own tracking modes.
 
-**Android**
-
-<div class="table-wrap">
+#### Android
 
 | **Type**          | **Unit** | **Unit Range** |
 | ----------------- | -------- | -------------- |
 | Distance Interval | Meters   | 1m ~ 2500m     |
 | Time Interval     | Seconds  | 10s ~ 10800s   |
 
-</div>
 
 **Distance between location updates example code:**
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+```javascript
 //Update location based on distance between locations.
 Roam.startTrackingDistanceInterval("DISTANCE IN METERS", "STATIONARY DURATION IN SECONDS", Roam.DesiredAccuracy.HIGH);
 ```
 
 **Time between location updates example code:**
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+```javascript
 //Update location based on time interval.
 Roam.startTrackingTimeInterval("INTERVAL IN SECONDS", Roam.DesiredAccuracy.HIGH);
 ```
 
 **iOS**
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+```javascript
 Roam.startTrackingCustom(allowBackground,pauseAutomatic,activityType,
                               desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter);
 ```
 
 Example
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-Roam.startTrackingCustom(true,true,Roam.ActivityType.FITNESS,
-          Roam.DesiredAccuracyIOS.BEST,true,10,10);
+```javascript
+Roam.startTrackingCustom(true,true,Roam.ActivityType.FITNESS, Roam.DesiredAccuracyIOS.BEST,true,10,10);
 ```
 
-You may see a delay if the user's device is in low power mode or has
-connectivity issues.
-
-Stop Tracking
--------------
+## Stop Tracking
 
 To stop the tracking use the below method.
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+```javascript
 Roam.stopTracking();
 ```
 
-Publish Messages
-=================
+## Publish Messages
 
 It will both publish location data and these data will be sent to Roam servers for further processing and data will be saved in our database servers.
 We will now have an option to send meta-data as a parameter along with location updates in the below json format.
 
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+```javascript
 Roam.publishAndSave(metadataJSON);
 ```
 Example
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+```javascript
 //Metadata is not mandatory
 let metadataJSON = {"METADATA": {"1": true, "2": true, "3":true}};
 
@@ -355,29 +331,21 @@ Roam.publishAndSave(metadataJSON);
 (optional)
 Roam.publishAndSave(null);
 ```
-Stop Publishing
-================
+## Stop Publishing
 
 It will stop publishing the location data to other clients.
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+``` javascript
 Roam.stopPublishing();
 ```
 
-Subscribe Messages
-=================
+## Subscribe Messages
 
 Now that you have enabled the location listener, use the below method to subscribe to your own or other user's location updates and events.
 
-**Subscribe**
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
+### Subscribe
+``` javascript
 Roam.subscribe(TYPE, "USER-ID");
 ```
-**UnSubscribe**
-``` {.syntaxhighlighter-pre data-syntaxhighlighter-params="brush: java; gutter: false; theme: Confluence" data-theme="Confluence"}
-Roam.unSubscribe(TYPE, "USER-ID");
-```
-
-<div class="table-wrap">
 
 | **Type**                        | **Description** |
 | --------------------------------| -------- |
@@ -385,6 +353,33 @@ Roam.unSubscribe(TYPE, "USER-ID");
 | Roam.SubscribeListener.EVENTS   | Subscribe to your own events.  |
 | Roam.SubscribeListener.BOTH     | Subscribe to your own events and location (or) other user's location updates.  |
 
+
+### UnSubscribe
+``` javascript
+Roam.unSubscribe(TYPE, "USER-ID");
+```
+
+## Listeners
+
+Now that the location tracking is set up, you can subscribe to locations and events and use the data locally on your device or send it directly to your own backend server.
+
+To do that, you need to set the location and event listener to `true` using the below method. By default the status will set to `false` and needs to be set to `true` in order to stream the location and events updates to the same device or other devices.
+
+```javascript
+Roam.toggleListener(true, true, success => {
+ // do something on success
+},
+error => {
+// do something on error
+});
+```
+Once the listener toggles are set to true, to listen to location updates and events.
+
+```javascript
+Roam.startListener("location", (location) => {
+  // do something on location received
+});
+```
 
 ## Documentation
 
