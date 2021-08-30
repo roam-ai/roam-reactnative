@@ -42,6 +42,8 @@ const App: () => React$Node = () => {
   const [listenUpdatesStatus, setListenUpdatesStatus] = useState('-');
   const [updateCoutner, setUpdateCounter] = useState(0);
   const [tripId,setTripId] = useState(false);
+  const [subscriptionTripStatus, setsubscriptionTripStatus] = useState('-');
+
 
   // Permissions
   const [permissions, setPermissions] = useReducer(
@@ -259,6 +261,14 @@ const App: () => React$Node = () => {
     });
   };
 
+  const subscribeTripStatus = () => { 
+    if (sub !== 'Enabled') {
+      Alert.alert('Error', 'Please, subscribe location before');
+      return;
+    }
+
+
+  };
   if (!initialized) {
     return <Loader />;
   }
@@ -331,6 +341,10 @@ const App: () => React$Node = () => {
             <View style={styles.row}>
               <Button onPress={onSubscribeLocation}>Subscribe Location</Button>
               <TextField>{subscriptionStatus}</TextField>
+            </View>
+             <View style={styles.row}>
+              <Button onPress={subscribeTripStatus}>SubscribeTripStatus</Button>
+              <TextField>{eventStatus}</TextField>
             </View>
             <View style={styles.row}>
               <Button onPress={onListenUpdates}>Listen updates</Button>
