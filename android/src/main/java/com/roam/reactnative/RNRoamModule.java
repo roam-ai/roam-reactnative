@@ -47,7 +47,7 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void createUser(String description, final Callback successCallback, final Callback errorCallback) {
-    Roam.createUser(description, new RoamCallback() {
+    Roam.createUser(description, null, new RoamCallback() {
       @Override
       public void onSuccess(RoamUser roamUser) {
         successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
@@ -335,13 +335,13 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   public void updateCurrentLocation(String desiredAccuracy, int accuracy) {
     switch (desiredAccuracy) {
       case "MEDIUM":
-        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.MEDIUM, accuracy);
+        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.MEDIUM, accuracy, null);
         break;
       case "LOW":
-        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.LOW, accuracy);
+        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.LOW, accuracy, null);
         break;
       default:
-        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.HIGH, accuracy);
+        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.HIGH, accuracy, null);
         break;
     }
 
@@ -449,7 +449,7 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void createTrip(boolean offline, final Callback successCallback, final Callback errorCallback) {
-    Roam.createTrip(null, null, offline, new RoamCreateTripCallback() {
+    Roam.createTrip(null, null, offline, null, new RoamCreateTripCallback() {
       @Override
       public void onSuccess(RoamCreateTrip roamCreateTrip) {
         successCallback.invoke(RNRoamUtils.mapForCreateTrip(roamCreateTrip));
@@ -735,13 +735,13 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   public void startSelfTracking(String trackingMode) {
     switch (trackingMode) {
       case "ACTIVE":
-        Roam.startSelfTracking(RoamTrackingMode.ACTIVE);
+        Roam.startTracking(RoamTrackingMode.ACTIVE);
         break;
       case "BALANCED":
-        Roam.startSelfTracking(RoamTrackingMode.BALANCED);
+        Roam.startTracking(RoamTrackingMode.BALANCED);
         break;
       case "PASSIVE":
-        Roam.startSelfTracking(RoamTrackingMode.PASSIVE);
+        Roam.startTracking(RoamTrackingMode.PASSIVE);
         break;
     }
   }
@@ -760,7 +760,7 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
         builder.setDesiredAccuracy(RoamTrackingMode.DesiredAccuracy.HIGH);
         break;
     }
-    Roam.startSelfTracking(builder.build());
+    Roam.startTracking(builder.build());
   }
 
   @ReactMethod
@@ -777,11 +777,11 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
         builder.setDesiredAccuracy(RoamTrackingMode.DesiredAccuracy.HIGH);
         break;
     }
-    Roam.startSelfTracking(builder.build());
+    Roam.startTracking(builder.build());
   }
 
   @ReactMethod
   public void stopSelfTracking() {
-    Roam.stopSelfTracking();
+    Roam.stopTracking();
   }
 }

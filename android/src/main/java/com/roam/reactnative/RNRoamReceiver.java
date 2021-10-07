@@ -46,7 +46,23 @@ public class RNRoamReceiver extends RoamReceiver {
 
     @Override
     public void onLocationUpdated(Context context, RoamLocation roamLocation) {
+        Log.e("Location", "Lat " + roamLocation.getLocation().getLatitude() + " Lng " + roamLocation.getLocation().getLongitude());
         super.onLocationUpdated(context, roamLocation);
+        Log.d("Location", String.valueOf(roamLocation.getLocation().getAccuracy()));
+        Log.d("Location", String.valueOf(roamLocation.getLocation().getSpeed()));
+        Log.d("Location", String.valueOf(roamLocation.getLocation().getAltitude()));
+        Log.d("Location", String.valueOf(roamLocation.getLocation().getBearing()));
+        Log.d("Location", String.valueOf(roamLocation.getLocation().getLatitude()));
+        Log.d("Location", String.valueOf(roamLocation.getLocation().getLongitude()));
+        Log.d("Location", String.valueOf(roamLocation.getLocation().getProvider()));
+        Log.d("Location", String.valueOf(roamLocation.getLocation().getTime()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.d("Location", String.valueOf(roamLocation.getLocation().getVerticalAccuracyMeters()));
+        }
+        Log.d("Location", String.valueOf(roamLocation.getUserId()));
+        Log.d("Location", String.valueOf(roamLocation.getActivity()));
+        Log.d("Location", String.valueOf(roamLocation.getRecordedAt()));
+        Log.d("Location", String.valueOf(roamLocation.getTimezoneOffset()));
         ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
         mReactNativeHost = reactApplication.getReactNativeHost();
         WritableMap map = Arguments.createMap();
@@ -89,14 +105,8 @@ public class RNRoamReceiver extends RoamReceiver {
         map.putDouble("horizontalAccuracy", roamLocationReceived.getHorizontal_accuracy());
         map.putDouble("verticalAccuracy", roamLocationReceived.getVertical_accuracy());
         map.putDouble("course", roamLocationReceived.getCourse());
-        Coordinates coordinates = roamLocationReceived.getCoordinates();
-        if (coordinates != null && coordinates.getCoordinates().size() > 0) {
-            map.putDouble("latitude", coordinates.getCoordinates().get(1));
-            map.putDouble("longitude", coordinates.getCoordinates().get(0));
-            if (coordinates.getType() != null) {
-                map.putString("type", coordinates.getType());
-            }
-        }
+        map.putDouble("latitude", roamLocationReceived.getLatitude());
+        map.putDouble("longitude", roamLocationReceived.getLongitude());
         if (roamLocationReceived.getEvent_version() != null) {
             map.putString("eventVersion", roamLocationReceived.getEvent_version());
         }
