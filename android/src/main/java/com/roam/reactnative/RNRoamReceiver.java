@@ -46,23 +46,7 @@ public class RNRoamReceiver extends RoamReceiver {
 
     @Override
     public void onLocationUpdated(Context context, RoamLocation roamLocation) {
-        Log.e("Location", "Lat " + roamLocation.getLocation().getLatitude() + " Lng " + roamLocation.getLocation().getLongitude());
         super.onLocationUpdated(context, roamLocation);
-        Log.d("Location", String.valueOf(roamLocation.getLocation().getAccuracy()));
-        Log.d("Location", String.valueOf(roamLocation.getLocation().getSpeed()));
-        Log.d("Location", String.valueOf(roamLocation.getLocation().getAltitude()));
-        Log.d("Location", String.valueOf(roamLocation.getLocation().getBearing()));
-        Log.d("Location", String.valueOf(roamLocation.getLocation().getLatitude()));
-        Log.d("Location", String.valueOf(roamLocation.getLocation().getLongitude()));
-        Log.d("Location", String.valueOf(roamLocation.getLocation().getProvider()));
-        Log.d("Location", String.valueOf(roamLocation.getLocation().getTime()));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.d("Location", String.valueOf(roamLocation.getLocation().getVerticalAccuracyMeters()));
-        }
-        Log.d("Location", String.valueOf(roamLocation.getUserId()));
-        Log.d("Location", String.valueOf(roamLocation.getActivity()));
-        Log.d("Location", String.valueOf(roamLocation.getRecordedAt()));
-        Log.d("Location", String.valueOf(roamLocation.getTimezoneOffset()));
         ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
         mReactNativeHost = reactApplication.getReactNativeHost();
         WritableMap map = Arguments.createMap();
