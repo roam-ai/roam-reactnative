@@ -23,3 +23,15 @@
 * Updated to latest native Roam SDK versions. Android v0.0.3 and iOS v0.0.7
 * Fixed the auto linking for both iOS and Android.
 * Updated the Readme.md docs with latest quickstart guides.
+
+## 0.0.7
+
+* Added support in android native SDK(0.0.7) to listen to location updates of user from different projects which are within same account.
+
+## 0.0.8
+
+* Code cleanup in RNRoamReceiver.java file
+
+## 0.0.9
+
+* Added support in android native SDK(0.0.8) to listen to location permission changes
