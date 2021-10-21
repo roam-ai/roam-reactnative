@@ -125,7 +125,10 @@ public class RNRoamReceiver extends RoamReceiver {
         super.onError(context, roamError);
         ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
         mReactNativeHost = reactApplication.getReactNativeHost();
-        sendEvent("error", RNRoamUtils.mapForError(roamError));
+        WritableMap map = Arguments.createMap();
+        map.putString("code", roamError.getCode());
+        map.putString("message", roamError.getMessage());
+        sendEvent("error", map);
     }
 }
 
