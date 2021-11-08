@@ -35,3 +35,9 @@
 ## 0.0.9
 
 * Added support in android native SDK(0.0.8) to listen to location permission changes
+
+## 0.0.10
+
+* Added support in android native SDK(0.0.9)
+* Ability to listen to trip status with distance, duration, elevation gain and total elevation gain
+* Ability to create offline trips without user session

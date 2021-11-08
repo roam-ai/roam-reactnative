@@ -117,6 +117,9 @@ public class RNRoamReceiver extends RoamReceiver {
         map.putDouble("duration", tripStatusListener.getDuration());
         map.putDouble("pace", tripStatusListener.getPace());
         map.putDouble("speed", tripStatusListener.getSpeed());
+        map.putDouble("altitude", tripStatusListener.getAltitude());
+        map.putDouble("elevationGain", tripStatusListener.getElevationGain());
+        map.putDouble("totalElevationGain", tripStatusListener.getTotalElevation());
         sendEvent("trip_status", map);
     }
 
