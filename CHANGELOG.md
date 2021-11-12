@@ -45,3 +45,7 @@
 ## 0.0.11
 
 * Updated android native SDK(0.0.9)
+
+## 0.0.12
+
+* Refactored android native SDK (0.0.9) linking
