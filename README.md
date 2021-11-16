@@ -74,7 +74,7 @@ Before making any changes to your javascript code, you would need to integrate a
 
     ```
     dependencies {
-        implementation 'com.roam.sdk:roam-android:0.0.9'
+        implementation 'com.roam.sdk:roam-android:0.0.10'
     }
     ```
 4. Before initializing the SDK, the below must be imported in your Main Activity.

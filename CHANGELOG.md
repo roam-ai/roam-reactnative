@@ -49,3 +49,9 @@
 ## 0.0.12
 
 * Refactored android native SDK (0.0.9) linking
+
+## 0.0.13
+
+* Added support in android native SDK(0.0.10)
+* Fixed create trip when creating offline trip without user session.
+* Added support to location permission events in `locationAuthorizationChange`

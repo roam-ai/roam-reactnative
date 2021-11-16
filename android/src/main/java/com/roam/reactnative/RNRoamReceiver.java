@@ -131,6 +131,16 @@ public class RNRoamReceiver extends RoamReceiver {
         WritableMap map = Arguments.createMap();
         map.putString("code", roamError.getCode());
         map.putString("message", roamError.getMessage());
+        if(roamError.getMessage().equalsIgnoreCase("The GPS is enabled.") || roamError.getMessage().equalsIgnoreCase("The location permission is enabled"))
+        {
+            map.putBoolean("locationServicesEnabled", true);
+            sendEvent("locationAuthorizationChange", map);
+        }
+        else if (roamError.getMessage().equalsIgnoreCase("The GPS is disabled.") || roamError.getMessage().equalsIgnoreCase("The location permission is disabled"))
+        {
+            map.putBoolean("locationServicesEnabled", false);
+            sendEvent("locationAuthorizationChange", map);
+        }
         sendEvent("error", map);
     }
 }
