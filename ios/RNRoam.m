@@ -63,7 +63,7 @@ RCT_EXPORT_MODULE();
 
 // Create User
 RCT_EXPORT_METHOD(createUser:(NSString *)userDescription :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [Roam createUser:userDescription handler:^(RoamUser * user, RoamError * error) {
+  [Roam createUser:userDescription :nil handler:^(RoamUser * user, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self userData:user], nil];
       successCallback(success);
@@ -87,7 +87,7 @@ RCT_EXPORT_METHOD(getUser:(NSString *)userId :(RCTResponseSenderBlock)successCal
 
 // Set Description User
 RCT_EXPORT_METHOD(setDescription:(NSString *)userDescription){
-  [Roam setDescription:userDescription];
+  [Roam updateUser:userDescription :nil];
 }
 
 // toggle Events
@@ -165,9 +165,10 @@ RCT_EXPORT_METHOD(unSubscribeTripStatus:(NSString *)tripId){
 // Start trip
 RCT_EXPORT_METHOD(startTrip:(NSString *)tripId description:(NSString *)tripDescription :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [Roam startTrip:tripId :tripDescription handler:^(NSString * status, RoamError * error) {
+    
+    [Roam startTrip:tripId :tripDescription handler:^(RoamStartTrip * trip, RoamError * error) {
       if (error == nil){
-        NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+        NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:trip], nil];
         successCallback(success);
       }else{
         errorCallback([self error:error]);
@@ -252,7 +253,8 @@ RCT_EXPORT_METHOD(syncTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCa
 // ["origin":[[longitude1,latitude1],[longitude2,latitude2]],"destinations":[[longitude1,latitude1]]]
 
 RCT_EXPORT_METHOD(createTrip:(BOOL)offline :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [Roam createTrip:offline :nil handler:^(RoamCreateTrip * trip, RoamError * error) {
+  
+  [Roam createTrip:offline :nil :nil handler:^(RoamCreateTrip * trip, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self createTripResponse:trip], nil];
       successCallback(success);
@@ -295,12 +297,14 @@ RCT_EXPORT_METHOD(locationPermissionStatus:(RCTResponseSenderBlock)callback){
 }
 
 RCT_EXPORT_METHOD(getCurrentLocationIos:(NSInteger)accuracy :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+  
+  NSLog(@" getting current location Started %@",[[NSDate date] descriptionWithLocale:[NSLocale currentLocale]]);
   dispatch_async(dispatch_get_main_queue(), ^{
     [Roam getCurrentLocation:accuracy handler:^(CLLocation * location, RoamError * error) {
       if (error == nil) {
+        NSLog(@" getting current location After %@",[[NSDate date] descriptionWithLocale:[NSLocale currentLocale]]);
         NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self locationReponse:location], nil];
         successCallback(success);
-        
       }else{
         errorCallback([self error:error]);
         
@@ -311,7 +315,7 @@ RCT_EXPORT_METHOD(getCurrentLocationIos:(NSInteger)accuracy :(RCTResponseSenderB
 
 RCT_EXPORT_METHOD(updateCurrentLocationIos:(NSInteger)accuracy){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [Roam updateCurrentLocation:accuracy];
+    [Roam updateCurrentLocation:accuracy :nil];
   });
 }
 
@@ -333,7 +337,7 @@ RCT_EXPORT_METHOD(startTracking:(NSString *)trackingMode){
 RCT_EXPORT_METHOD(startTrackingCustom:(BOOL)allowBackground pauseAutomatic:(BOOL)pauseAutomatic activityType:(NSString *)activityType desiredAccuracy:(NSString *)desiredAccuracy showBackIndicator:(BOOL)showBackIndicator distanceFilter:(NSInteger)distanceFilter accuracyFilter:(NSInteger)accuracyFilter updateInterval:(NSInteger)updateInterval){
   dispatch_async(dispatch_get_main_queue(), ^{
     RoamTrackingCustomMethodsObjcWrapper *wrapper = [[RoamTrackingCustomMethodsObjcWrapper alloc] init];
-    [wrapper setUpCustomOptionsWithDesiredAccuracy:[self getDesireAccuracy:desiredAccuracy] useVisit:nil showsBackgroundLocationIndicator:showBackIndicator distanceFilter:distanceFilter useSignificant:nil useRegionMonitoring:nil useDynamicGeofencRadius:nil geofenceRadius:nil allowBackgroundLocationUpdates:allowBackground activityType:[self getActivityType:activityType] pausesLocationUpdatesAutomatically:pauseAutomatic useStandardLocationServices:nil accuracyFilter:accuracyFilter];
+    [wrapper setUpCustomOptionsWithDesiredAccuracy:[self getDesireAccuracy:desiredAccuracy] useVisit:nil showsBackgroundLocationIndicator:showBackIndicator distanceFilter:distanceFilter useSignificant:nil useRegionMonitoring:nil useDynamicGeofencRadius:nil geofenceRadius:nil allowBackgroundLocationUpdates:allowBackground activityType:[self getActivityType:activityType] pausesLocationUpdatesAutomatically:pauseAutomatic useStandardLocationServices:nil accuracyFilter:accuracyFilter updateInterval:updateInterval];
     [Roam startTracking:RoamTrackingModeCustom options:wrapper.customMethods];
   });
 }
@@ -351,20 +355,6 @@ RCT_EXPORT_METHOD(startSelfTracking:(NSString *)trackingMode){
   });
 }
 
-RCT_EXPORT_METHOD(startSelfTrackingCustom:(BOOL)allowBackground pauseAutomatic:(BOOL)pauseAutomatic activityType:(NSString *)activityType desiredAccuracy:(NSString *)desiredAccuracy showBackIndicator:(BOOL)showBackIndicator distanceFilter:(NSInteger)distanceFilter accuracyFilter:(NSInteger)accuracyFilter updateInterval:(NSInteger)updateInterval){
-  dispatch_async(dispatch_get_main_queue(), ^{
-    RoamTrackingCustomMethodsObjcWrapper *wrapper = [[RoamTrackingCustomMethodsObjcWrapper alloc] init];
-    [wrapper setUpCustomOptionsWithDesiredAccuracy:[self getDesireAccuracy:desiredAccuracy] useVisit:nil showsBackgroundLocationIndicator:showBackIndicator distanceFilter:distanceFilter useSignificant:nil useRegionMonitoring:nil useDynamicGeofencRadius:nil geofenceRadius:nil allowBackgroundLocationUpdates:allowBackground activityType:[self getActivityType:activityType] pausesLocationUpdatesAutomatically:pauseAutomatic useStandardLocationServices:nil accuracyFilter:accuracyFilter];
-    [Roam startTracking:RoamTrackingModeCustom options:wrapper.customMethods];
-  });
-}
-
-
-RCT_EXPORT_METHOD(stopSelfTracking){
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [Roam stopSelfTracking];
-  });
-}
 
 RCT_EXPORT_METHOD(stopTracking){
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -407,7 +397,7 @@ RCT_EXPORT_METHOD(subscribe:(NSString *)type userId:(NSString *)userId){
   }
 }
 
-RCT_EXPORT_METHOD(unsubscribe:(NSString *)type userId:(NSString *)userId){
+RCT_EXPORT_METHOD(unSubscribe:(NSString *)type userId:(NSString *)userId){
   if ([type  isEqual:@"LOCATION"]){
     [Roam unsubscribe:RoamSubscribeLocation :userId];
   }else if ([type isEqual:@"EVENTS"]){
@@ -447,7 +437,10 @@ RCT_EXPORT_METHOD(stopPublishing){
   [Roam stopPublishing];
 }
 
-
++ (BOOL)requiresMainQueueSetup
+{
+  return NO;
+}
 
 - (NSMutableDictionary *) userData:(RoamUser *)user{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -468,9 +461,9 @@ RCT_EXPORT_METHOD(stopPublishing){
   return dict;
 }
 
-- (NSMutableDictionary *)tripStatus:(NSString *)string{
+- (NSMutableDictionary *)tripStatus:(RoamStartTrip *)trip{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-  [dict setValue:string forKey:@"message"];
+  [dict setValue:trip.status forKey:@"message"];
   return dict;
 }
 

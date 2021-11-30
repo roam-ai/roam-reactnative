@@ -55,3 +55,8 @@
 * Added support in android native SDK(0.0.10)
 * Fixed create trip when creating offline trip without user session.
 * Added support to location permission events in `locationAuthorizationChange`
+
+## 0.0.14
+
+* Updated to latest native Roam SDK versions. Android v0.0.11 and iOS v0.0.13
+
