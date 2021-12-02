@@ -60,3 +60,7 @@
 
 * Updated to latest native Roam SDK versions. Android v0.0.11 and iOS v0.0.13
 
+
+## 0.0.15
+
+* Updated to latest iOS native SDK version v0.0.14 which improves `the Roam.getCurrentLocation()`  to return location faster.
