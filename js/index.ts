@@ -240,6 +240,10 @@ const isLocationTracking = (callback: any) => {
   NativeModules.RNRoam.isLocationTracking(callback);
 };
 
+const setForegroundNotification = (enabled: any, title: any, description: any, image: any, activity: any) => {
+  NativeModules.RNRoam.setForegroundNotification(enabled, title, description, image, activity);
+};
+
 const allowMockLocation = (enabled: any) => {
   NativeModules.RNRoam.allowMockLocation(enabled);
 };
@@ -359,6 +363,7 @@ startTrackingTimeInterval,
 startTrackingDistanceInterval,
 stopTracking,
 isLocationTracking,
+setForegroundNotification,
 allowMockLocation,
 getCurrentLocationListener,
 getCurrentLocation,

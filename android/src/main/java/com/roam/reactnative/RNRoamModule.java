@@ -296,6 +296,11 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void setForegroundNotification(boolean enabled, String title, String description, String image, String activity) {
+    Roam.setForegroundNotification(enabled, title, description, Integer.parseInt(image), activity);
+  }
+
+  @ReactMethod
   public void getCurrentLocationListener(int accuracy) {
     Roam.getCurrentLocation(accuracy);
   }
