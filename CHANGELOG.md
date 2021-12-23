@@ -68,3 +68,7 @@
 ## 0.0.16
 
 - Updated to latest Android native SDK version v0.0.12 with support for controlling the foreground service notification.
+
+## 0.0.17
+
+- Fixed `Roam.setForegroundNotification()` to accept the custom icons. 

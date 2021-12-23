@@ -297,7 +297,18 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void setForegroundNotification(boolean enabled, String title, String description, String image, String activity) {
-    Roam.setForegroundNotification(enabled, title, description, Integer.parseInt(image), activity);
+    try{
+      String[] split = image.split("/");
+      String firstSubString = split[0];
+      String secondSubString = split[1];
+      int resId = reactContext.getResources().getIdentifier(
+              secondSubString,
+              firstSubString,
+              reactContext.getPackageName()
+      );
+      Roam.setForegroundNotification(enabled, title, description, resId, activity);
+    }catch (Exception e){
+    }
   }
 
   @ReactMethod
