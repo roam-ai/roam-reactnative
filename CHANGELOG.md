@@ -72,3 +72,8 @@
 ## 0.0.17
 
 - Fixed `Roam.setForegroundNotification()` to accept the custom icons. 
+
+## 0.0.18
+
+- Updated to latest native Roam SDK versions. Android v0.0.13 and iOS v0.0.15
+- Added iOS native bridge for `getTripSummary()` method.

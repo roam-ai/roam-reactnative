@@ -274,6 +274,16 @@ RCT_EXPORT_METHOD(activeTrips:(BOOL)offline:(RCTResponseSenderBlock)successCallb
   }];
 }
 
+RCT_EXPORT_METHOD(getTripSummary:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+  [Roam getTripSummary:tripId handler:^(RoamTripSummary * summary, RoamError * error) {
+    if (error == nil){
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripSummary:summary], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+  }];
+}
 // Request Location
 RCT_EXPORT_METHOD(requestLocationPermission){
   dispatch_async(dispatch_get_main_queue(), ^{
@@ -768,6 +778,41 @@ RCT_EXPORT_METHOD(stopPublishing){
   return publish;
 }
 
+- (NSMutableDictionary *) tripSummary:(RoamTripSummary *)summary {
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  [dict setValue:summary.distanceCovered forKey:@"distanceCovered"];
+  [dict setValue:summary.tripId forKey:@"tripId"];
+  [dict setValue:summary.duration forKey:@"duration"];
+  [dict setValue:summary.totalElevationGain forKey:@"elevationGain"];
+  [dict setValue:summary.userId forKey:@"userid"];
+  [dict setValue:[self tripSummaryRoute:summary.route] forKey:@"route"];
+  //  [dict setValue:[NSNumber numberWithDouble:summary.distanceCovered] forKey:@"distanceCovered"];
+  
+  
+  
+  return dict;
+}
+
+- (NSMutableArray *)tripSummaryRoute:(NSMutableArray *)routes {
+  NSMutableArray *array = [[NSMutableArray alloc] init];
+  
+  for (RoamTripSummaryRoute* route in routes) {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+
+    [dict setValue:route.recordedAt forKey:@"recordedAt"];
+    [dict setValue:route.activity forKey:@"activity"];
+    [dict setValue:route.duration forKey:@"duration"];
+    [dict setValue:route.altitude forKey:@"altitude"];
+    [dict setValue:route.elevationGain forKey:@"elevationGain"];
+    [dict setValue:route.distance forKey:@"distance"];
+    [dict setValue:[route.coordinates firstObject] forKey:@"longitude"];
+    [dict setValue:[route.coordinates lastObject] forKey:@"latitude"];
+
+    [array addObject:dict];
+  }
+  
+  return array;
+}
 @end
 
 
