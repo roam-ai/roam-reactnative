@@ -77,3 +77,10 @@
 
 - Updated to latest native Roam SDK versions. Android v0.0.13 and iOS v0.0.15
 - Added iOS native bridge for `getTripSummary()` method.
+
+## 0.0.19
+
+- Updated to latest native Roam SDK versions. Android v0.0.15 and iOS v0.0.16
+- Added option in `Roam.unSubscribe()` which will now unsubscribe all users if `user_id` is passed as null or empty.
+- Added battery and network details as part of location in location receiver.
+- Fixed logical error in calculation of elevation gain in trip summary.
