@@ -84,3 +84,7 @@
 - Added option in `Roam.unSubscribe()` which will now unsubscribe all users if `user_id` is passed as null or empty.
 - Added battery and network details as part of location in location receiver.
 - Fixed logical error in calculation of elevation gain in trip summary.
+
+## 0.0.20
+
+- Removed the blue bar in iOS which was being displayed during active tracking mode.

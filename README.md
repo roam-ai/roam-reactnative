@@ -5,7 +5,7 @@
   <br />
 </p>
 
-[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.19&x2=0)](https://badge.fury.io/js/roam-reactnative)
+[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.20&x2=0)](https://badge.fury.io/js/roam-reactnative)
 [![Npm Publish](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml/badge.svg?branch=0.0.1)](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml)
 
 # Official Roam React Native SDK
@@ -349,9 +349,9 @@ Roam.subscribe(TYPE, "USER-ID");
 
 | **Type**                        | **Description** |
 | --------------------------------| -------- |
-| Roam.SubscribeListener.LOCATION | Subscribe to your own location (or) other user's location updates.   |
-| Roam.SubscribeListener.EVENTS   | Subscribe to your own events.  |
-| Roam.SubscribeListener.BOTH     | Subscribe to your own events and location (or) other user's location updates.  |
+| LOCATION | Subscribe to your own location (or) other user's location updates.   |
+| EVENTS   | Subscribe to your own events.  |
+| BOTH     | Subscribe to your own events and location (or) other user's location updates.  |
 
 
 ### UnSubscribe
