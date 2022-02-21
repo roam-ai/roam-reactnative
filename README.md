@@ -279,31 +279,86 @@ customize and build your own tracking modes.
 | Time Interval     | Seconds  | 10s ~ 10800s   |
 
 
-**Distance between location updates example code:**
+**Android: Distance between location updates:**
 
 ```javascript
 //Update location based on distance between locations.
 Roam.startTrackingDistanceInterval("DISTANCE IN METERS", "STATIONARY DURATION IN SECONDS", Roam.DesiredAccuracy.HIGH);
 ```
+Here, the `DISTANCE IN METERS` refers to distance interval for location tracking and `STATIONARY DURATION IN SECONDS` refers to duration for which location update is determined as stationary.
 
-**Time between location updates example code:**
+Below is the example for distance based tracking with distance interval as 10m and stationary duration as 2 minutes.
+
+```javascript
+//Update location based on distance between locations.
+Roam.startTrackingDistanceInterval(10, 120, Roam.DesiredAccuracy.HIGH);
+```
+
+**Android: Time between location updates:**
 
 ```javascript
 //Update location based on time interval.
 Roam.startTrackingTimeInterval("INTERVAL IN SECONDS", Roam.DesiredAccuracy.HIGH);
 ```
+Here, the `INTERVAL IN SECONDS` refers to time interval for location tracking.
 
-**iOS**
+Below is the example for time based tracking with time interval as 10s.
 
 ```javascript
-Roam.startTrackingCustom(allowBackground,pauseAutomatic,activityType,
-                              desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter);
+//Update location based on time interval.
+Roam.startTrackingTimeInterval(10, Roam.DesiredAccuracy.HIGH);
 ```
 
-Example
+#### iOS
+We have a single method for iOS which can perfrom both time and distance based tracking based on the input parameters.
 
 ```javascript
-Roam.startTrackingCustom(true,true,Roam.ActivityType.FITNESS, Roam.DesiredAccuracyIOS.BEST,true,10,10);
+// Update location on distance interval
+Roam.startTrackingCustom(allowBackground,pauseAutomatic,activityType,
+                              desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter, updateInterval);
+```
+
+**iOS: Distance between location updates:**
+
+Here, the `distanceFilter` refers to distance interval for location tracking which should be in meters. To achieve distance based tracking, the `updateInterval` value should be 0.
+
+Below is the example for distance based tracking with distance interval as 20 meters.
+
+```javascript
+Roam.startTrackingCustom(
+              true,
+              false,
+              Roam.ActivityType.FITNESS,
+              Roam.DesiredAccuracyIOS.BEST,
+              true,
+              20,
+              10,
+              0,
+            );
+```
+
+**iOS: Time between location updates:**
+
+```javascript
+// Update location on time interval
+Roam.startTrackingCustom(allowBackground,pauseAutomatic,activityType,
+                              desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter, updateInterval);
+```
+Here, the `updateInterval` refers to time interval for location tracking which should be in seconds. To achieve time based tracking, the `distanceFilter` value should be 0.
+
+Below is the example for time based tracking with time interval as 120s.
+
+```javascript
+Roam.startTrackingCustom(
+              true,
+              false,
+              Roam.ActivityType.FITNESS,
+              Roam.DesiredAccuracyIOS.BEST,
+              true,
+              0,
+              10,
+              120,
+            );
 ```
 
 ## Stop Tracking
