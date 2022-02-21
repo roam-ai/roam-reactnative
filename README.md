@@ -271,38 +271,41 @@ Roam.startTracking(RoamTrackingMode.PASSIVE);
 The SDK also allows you define a custom tracking mode that allows you to
 customize and build your own tracking modes.
 
-#### Android
-
 | **Type**          | **Unit** | **Unit Range** |
 | ----------------- | -------- | -------------- |
 | Distance Interval | Meters   | 1m ~ 2500m     |
 | Time Interval     | Seconds  | 10s ~ 10800s   |
 
+#### Android
 
-**Distance between location updates example code:**
+
+**Android: Distance between location updates example code:**
 
 ```javascript
 //Update location based on distance between locations.
 Roam.startTrackingDistanceInterval("DISTANCE IN METERS", "STATIONARY DURATION IN SECONDS", Roam.DesiredAccuracy.HIGH);
 ```
 
-**Time between location updates example code:**
+**Android: Time between location updates example code:**
 
 ```javascript
 //Update location based on time interval.
 Roam.startTrackingTimeInterval("INTERVAL IN SECONDS", Roam.DesiredAccuracy.HIGH);
 ```
+#### iOS
 
-**iOS**
+**iOS: Distance between location updates example code:**
 
 ```javascript
+//Update location based on distance between locations.
 Roam.startTrackingCustom(allowBackground,pauseAutomatic,activityType,
                               desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter);
 ```
 
-Example
+**iOS: Time between location updates example code:**
 
 ```javascript
+//Update location based on time interval.
 Roam.startTrackingCustom(true,true,Roam.ActivityType.FITNESS, Roam.DesiredAccuracyIOS.BEST,true,10,10);
 ```
 
