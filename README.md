@@ -326,14 +326,14 @@ Below is the example for distance based tracking with distance interval as 20 me
 
 ```javascript
 Roam.startTrackingCustom(
-              true,
-              false,
-              Roam.ActivityType.FITNESS,
-              Roam.DesiredAccuracyIOS.BEST,
-              true,
-              20,
-              10,
-              0,
+              true, // allowBackground
+              false, // pauseAutomatic
+              Roam.ActivityType.FITNESS, // activityType
+              Roam.DesiredAccuracyIOS.BEST, // desiredAccuracy
+              true, // showBackIndicator
+              20, // distanceFilter
+              10, // accuracyFilter
+              0, // updateInterval
             );
 ```
 
@@ -350,14 +350,14 @@ Below is the example for time based tracking with time interval as 120s.
 
 ```javascript
 Roam.startTrackingCustom(
-              true,
-              false,
-              Roam.ActivityType.FITNESS,
-              Roam.DesiredAccuracyIOS.BEST,
-              true,
-              0,
-              10,
-              120,
+              true, // allowBackground
+              false, // pauseAutomatic
+              Roam.ActivityType.FITNESS, // activityType
+              Roam.DesiredAccuracyIOS.BEST, // desiredAccuracy
+              true, // showBackIndicator
+              0, // distanceFilter
+              10, // accuracyFilter
+              120, // updateInterval
             );
 ```
 
