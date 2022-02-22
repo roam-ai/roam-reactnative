@@ -5,7 +5,7 @@
   <br />
 </p>
 
-[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.20&x2=0)](https://badge.fury.io/js/roam-reactnative)
+[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.21&x2=0)](https://badge.fury.io/js/roam-reactnative)
 [![Npm Publish](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml/badge.svg?branch=0.0.1)](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml)
 
 # Official Roam React Native SDK
@@ -360,7 +360,18 @@ Roam.startTrackingCustom(
               120, // updateInterval
             );
 ```
+### Custom Tracking Modes
+To update location based on time interval only when the user is in stationary, use the below method to achive that.
 
+```javascript
+Roam.updateLocationWhenStationary(interval)
+```
+
+The inveral value should in seconds. For example, to update location every 60s when the user becomes stationary, use the below code.
+
+```javascript
+Roam.updateLocationWhenStationary(60)
+```
 ## Stop Tracking
 
 To stop the tracking use the below method.

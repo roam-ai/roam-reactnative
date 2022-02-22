@@ -268,6 +268,10 @@ const updateCurrentLocationIos = (accuracy: any) => {
   NativeModules.RNRoam.updateCurrentLocationIos(accuracy);
 };
 
+const updateLocationWhenStationary = (interval: any) => {
+  NativeModules.RNRoam.updateLocationWhenStationary(interval);
+};
+
 const logout = (successCallback: any, errorCallback: any) => {
   NativeModules.RNRoam.logout(successCallback, errorCallback);
 };
@@ -382,6 +386,7 @@ disableAccuracyEngine,
 startListener,
 stopListener,
 getTripSummary,
+updateLocationWhenStationary,
 };
 
 export default Roam;

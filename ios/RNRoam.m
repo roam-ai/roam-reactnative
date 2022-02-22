@@ -329,6 +329,12 @@ RCT_EXPORT_METHOD(updateCurrentLocationIos:(NSInteger)accuracy){
   });
 }
 
+RCT_EXPORT_METHOD(updateLocationWhenStationary:(NSInteger)interval){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [Roam updateLocationWhenStationary:interval :nil];
+  });
+}
+
 //Tracking
 // passive,BALANCED,active
 RCT_EXPORT_METHOD(startTracking:(NSString *)trackingMode){

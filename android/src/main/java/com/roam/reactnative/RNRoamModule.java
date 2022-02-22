@@ -364,6 +364,11 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void updateLocationWhenStationary(int interval) {
+    Roam.updateLocationWhenStationary(interval);
+  }
+
+  @ReactMethod
   public void startTrip(String tripId, String description, final Callback successCallback, final Callback errorCallback) {
     Roam.startTrip(tripId, description, new RoamTripCallback() {
       @Override

@@ -88,3 +88,7 @@
 ## 0.0.20
 
 - Removed the blue bar in iOS which was being displayed during active tracking mode.
+
+## 0.0.21
+
+- Added new method for `Roam.updateLocationWhenStationary(interval)` which updates location on given interval value in seconds. 
