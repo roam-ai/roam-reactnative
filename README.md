@@ -360,14 +360,15 @@ Roam.startTrackingCustom(
               120, // updateInterval
             );
 ```
-### Custom Tracking Modes
-To update location based on time interval only when the user is in stationary, use the below method to achive that.
+### Update Location When Stationary
+By using this method updateLocationWhenStationary , location will update every x seconds when device goes to stationary state.
+
+Note: It will work on all tracking modes ie. active, passive, balance and distance based custom tracking except time based custom tracking.
 
 ```javascript
 Roam.updateLocationWhenStationary(interval)
 ```
-
-The inveral value should in seconds. For example, to update location every 60s when the user becomes stationary, use the below code.
+For example, to update location every 60s when the user becomes stationary, use the below code.
 
 ```javascript
 Roam.updateLocationWhenStationary(60)
