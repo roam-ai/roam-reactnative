@@ -445,6 +445,9 @@ Once the listener toggles are set to true, to listen to location updates and eve
 ```javascript
 Roam.startListener("location", (location) => {
   // do something on location received
+  console.log('Location', location);
+  // Console Output:
+  // {"activity": "S", "location": {"accuracy": 22.686637856849305, "altitude": 288.10509490966797, "latitude": 10.356502722371895, "longitude": 78.00075886670541, "speed": -1}, "recordedAt": "2022-03-22T11:18:04.928Z", "timezone": "+0530", "userId": "6239b06506df1f5c1c375353"}
 });
 ```
 
