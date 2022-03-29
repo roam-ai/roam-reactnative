@@ -92,3 +92,8 @@
 ## 0.0.21
 
 - Added new method for `Roam.updateLocationWhenStationary(interval)` which updates location on given interval value in seconds. 
+
+## 0.0.22
+
+- Updated to latest native Roam SDK versions. Android v0.0.17 and iOS v0.0.17. 
+- Fixed crashes for `endTrip`, `pauseTrip`, `resumeTrip` and `forceEndTrip` in iOS bridge.

@@ -181,7 +181,7 @@ RCT_EXPORT_METHOD(startTrip:(NSString *)tripId description:(NSString *)tripDescr
 RCT_EXPORT_METHOD(resumeTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam resumeTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -193,7 +193,7 @@ RCT_EXPORT_METHOD(resumeTrip:(NSString *)tripId :(RCTResponseSenderBlock)success
 RCT_EXPORT_METHOD(pauseTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam pauseTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -205,7 +205,7 @@ RCT_EXPORT_METHOD(pauseTrip:(NSString *)tripId :(RCTResponseSenderBlock)successC
 RCT_EXPORT_METHOD(stopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam stopTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -217,7 +217,7 @@ RCT_EXPORT_METHOD(stopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCa
 RCT_EXPORT_METHOD(forceStopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam forceEndTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -229,7 +229,7 @@ RCT_EXPORT_METHOD(forceStopTrip:(NSString *)tripId :(RCTResponseSenderBlock)succ
 RCT_EXPORT_METHOD(deleteTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam deleteTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -241,7 +241,7 @@ RCT_EXPORT_METHOD(deleteTrip:(NSString *)tripId :(RCTResponseSenderBlock)success
 RCT_EXPORT_METHOD(syncTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam syncTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -331,7 +331,7 @@ RCT_EXPORT_METHOD(updateCurrentLocationIos:(NSInteger)accuracy){
 
 RCT_EXPORT_METHOD(updateLocationWhenStationary:(NSInteger)interval){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [Roam updateLocationWhenStationary:interval :nil];
+    [Roam updateLocationWhenStationary:interval];
   });
 }
 
@@ -482,6 +482,13 @@ RCT_EXPORT_METHOD(stopPublishing){
   [dict setValue:trip.status forKey:@"message"];
   return dict;
 }
+
+- (NSMutableDictionary *)stopTrip:(NSString *)trip{
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  [dict setValue:trip forKey:@"message"];
+  return dict;
+}
+
 
 - (NSError *)error:(RoamError *)error{
   return [NSError errorWithDomain:error.message code:[self removeString:error.code] userInfo:nil];
