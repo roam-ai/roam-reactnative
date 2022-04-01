@@ -101,4 +101,4 @@
 ## 0.0.23
 
 - Updated to latest native Roam SDK version. iOS v0.0.18. 
-- Fixed the coordinates arrangment for `Roam.getTripSummary()` on local trips.
+- Fixed the coordinates arrangement for `Roam.getTripSummary()` on local trips.
