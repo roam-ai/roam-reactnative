@@ -97,3 +97,8 @@
 
 - Updated to latest native Roam SDK versions. Android v0.0.17 and iOS v0.0.17. 
 - Fixed crashes for `endTrip`, `pauseTrip`, `resumeTrip` and `forceEndTrip` in iOS bridge.
+
+## 0.0.23
+
+- Updated to latest native Roam SDK version. iOS v0.0.18. 
+- Fixed the coordinates arrangment for `Roam.getTripSummary()` on local trips.
