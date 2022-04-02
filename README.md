@@ -259,11 +259,11 @@ Roam has three default tracking modes along with a custom version. They differ b
 
 ```javascript
 // active tracking
-Roam.startTracking(RoamTrackingMode.ACTIVE);
+Roam.startTracking(Roam.TrackingMode.ACTIVE);
 // balanced tracking
-Roam.startTracking(RoamTrackingMode.BALANCED);
+Roam.startTracking(Roam.TrackingMode.BALANCED);
 // passive tracking
-Roam.startTracking(RoamTrackingMode.PASSIVE);
+Roam.startTracking(Roam.TrackingMode.PASSIVE);
 ```
 
 ### Custom Tracking Modes
