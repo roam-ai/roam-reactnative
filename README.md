@@ -253,17 +253,17 @@ Roam has three default tracking modes along with a custom version. They differ b
 
 | **Mode** | **Battery usage** | **Updates every** | **Optimised for/advised for** |
 | -------- | ----------------- | ----------------- | ----------------------------- |
-| Active   | 6% - 12%          | 25 ~ 250 meters   | Ride Hailing / Sharing        |
-| Balanced | 3% - 6%           | 50 ~ 500 meters   | On Demand Services            |
-| Passive  | 0% - 1%           | 100 ~ 1000 meters | Social Apps                   |
+| ACTIVE   | 6% - 12%          | 25 ~ 250 meters   | Ride Hailing / Sharing        |
+| BALANCED | 3% - 6%           | 50 ~ 500 meters   | On Demand Services            |
+| PASSIVE  | 0% - 1%           | 100 ~ 1000 meters | Social Apps                   |
 
 ```javascript
 // active tracking
-Roam.startTracking(RoamTrackingMode.ACTIVE);
+Roam.startTracking('ACTIVE');
 // balanced tracking
-Roam.startTracking(RoamTrackingMode.BALANCED);
+Roam.startTracking('BALANCED');
 // passive tracking
-Roam.startTracking(RoamTrackingMode.PASSIVE);
+Roam.startTracking('PASSIVE');
 ```
 
 ### Custom Tracking Modes
