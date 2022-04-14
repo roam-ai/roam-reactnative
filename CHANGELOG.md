@@ -102,3 +102,12 @@
 
 - Updated to latest native Roam SDK version. iOS v0.0.18. 
 - Fixed the coordinates arrangement for `Roam.getTripSummary()` on local trips.
+
+## 0.0.24
+
+- Updated to latest native Roam SDK versions. Android v0.0.19 and iOS v0.0.19. 
+- Modified updateCurrentLocation method to support metadata as null.
+- Updated location noise filter to remove inaccurate locations.
+- Added individual distance, duration, and elevation gain for location data inside trip routes for local trips.
+- Trip summary response for the local trip will have the route sorted by recorded timestamp.
+- Fixed background location tracking for time-based tracking mode when location permission is given as 'Allow while using'
