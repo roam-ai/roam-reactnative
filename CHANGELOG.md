@@ -111,3 +111,8 @@
 - Added individual distance, duration, and elevation gain for location data inside trip routes for local trips.
 - Trip summary response for the local trip will have the route sorted by recorded timestamp.
 - Fixed background location tracking for time-based tracking mode when location permission is given as 'Allow while using'
+
+## 0.0.25
+
+- Updated to latest native Roam SDK versions - iOS v0.0.20. 
+- Fixed calculation for distance and duration for individual location data in trip summary route.
