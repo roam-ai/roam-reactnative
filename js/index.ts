@@ -312,12 +312,8 @@ const startListener = (event: string, callback: (...args: any[]) => any) => (
   eventEmitter.addListener(event, callback)
 );
 
-const stopListener = (event: string, callback: (...args: any[]) => any) => {
-  if (callback) {
-    eventEmitter.removeListener(event, callback);
-  } else {
-    eventEmitter.removeAllListeners(event);
-  }
+const stopListener = (event: string) => {
+  eventEmitter.removeAllListeners(event);
 };
 
 const Roam = {
