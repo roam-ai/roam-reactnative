@@ -10,11 +10,14 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.roam.sdk.NetworkState;
 import com.roam.sdk.Roam;
 import com.roam.sdk.RoamPublish;
 import com.roam.sdk.RoamTrackingMode;
 import com.roam.sdk.callback.RoamActiveTripsCallback;
+import com.roam.sdk.callback.RoamBatchReceiverCallback;
 import com.roam.sdk.callback.RoamCallback;
 import com.roam.sdk.callback.RoamCreateTripCallback;
 import com.roam.sdk.callback.RoamDeleteTripCallback;
@@ -23,6 +26,7 @@ import com.roam.sdk.callback.RoamLogoutCallback;
 import com.roam.sdk.callback.RoamSyncTripCallback;
 import com.roam.sdk.callback.RoamTripCallback;
 import com.roam.sdk.callback.RoamTripSummaryCallback;
+import com.roam.sdk.models.BatchReceiverConfig;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamTrip;
 import com.roam.sdk.models.RoamUser;
@@ -31,6 +35,8 @@ import com.roam.sdk.models.tripsummary.RoamTripSummary;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class RNRoamModule extends ReactContextBaseJavaModule {
   ReactApplicationContext reactContext;
@@ -570,6 +576,66 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
     } catch (Exception e) {
     }
   }
+
+  @ReactMethod
+  public void setBatchReceiverConfig(String networkState,
+                                     int batchCount,
+                                     int batchWindow,
+                                     final Callback successCallback,
+                                     final Callback errorCallback){
+    NetworkState state = NetworkState.BOTH;
+    switch (networkState){
+      case "OFFLINE":
+        state = NetworkState.OFFLINE;
+        break;
+      case "ONLINE":
+        state = NetworkState.ONLINE;
+        break;
+    }
+    Roam.setBatchReceiverConfig(state, batchCount, batchWindow, new RoamBatchReceiverCallback() {
+      @Override
+      public void onSuccess(List<BatchReceiverConfig> list) {
+        WritableArray writableArray = RNRoamUtils.mapForBatchReceiverConfig(list);
+        successCallback.invoke(writableArray);
+      }
+
+      @Override
+      public void onFailure(RoamError roamError) {
+        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+      }
+    });
+  }
+
+  @ReactMethod
+  public void getBatchReceiverConfig(Callback successCallback, Callback errorCallback){
+    Roam.getBatchReceiverConfig(new RoamBatchReceiverCallback() {
+      @Override
+      public void onSuccess(List<BatchReceiverConfig> list) {
+        successCallback.invoke(RNRoamUtils.mapForBatchReceiverConfig(list));
+      }
+
+      @Override
+      public void onFailure(RoamError roamError) {
+        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+      }
+    });
+  }
+
+  @ReactMethod
+  public void resetBatchReceiverConfig(Callback successCallback, Callback errorCallback){
+    Roam.resetBatchReceiverConfig(new RoamBatchReceiverCallback() {
+      @Override
+      public void onSuccess(List<BatchReceiverConfig> list) {
+        successCallback.invoke(RNRoamUtils.mapForBatchReceiverConfig(list));
+      }
+
+      @Override
+      public void onFailure(RoamError roamError) {
+        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+      }
+    });
+  }
+
 
   @ReactMethod
   public void offlineLocationTracking(boolean value) {

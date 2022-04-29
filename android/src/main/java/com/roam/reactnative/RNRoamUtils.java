@@ -1,12 +1,15 @@
 package com.roam.reactnative;
 
 import android.location.Location;
+import android.text.TextUtils;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.roam.sdk.models.ActiveTrips;
+import com.roam.sdk.models.BatchReceiverConfig;
 import com.roam.sdk.models.RoamError;
+import com.roam.sdk.models.RoamLocation;
 import com.roam.sdk.models.RoamUser;
 import com.roam.sdk.models.createtrip.Coordinates;
 import com.roam.sdk.models.createtrip.Destination;
@@ -246,6 +249,41 @@ class RNRoamUtils {
         }
         return map;
     }
+
+    static WritableArray mapForBatchReceiverConfig(List<BatchReceiverConfig> configs){
+        WritableArray array = Arguments.createArray();
+        for (BatchReceiverConfig config: configs){
+            WritableMap map = Arguments.createMap();
+            map.putInt("batchCount", config.getBatchCount());
+            map.putInt("batchWindow", config.getBatchWindow().intValue());
+            map.putString("networkState", config.getNetworkState());
+            array.pushMap(map);
+        }
+        return array;
+    }
+
+    static WritableArray mapForLocationList(List<RoamLocation> locationList){
+        WritableArray array = Arguments.createArray();
+        for (RoamLocation roamLocation: locationList){
+            WritableMap map = Arguments.createMap();
+            if (TextUtils.isEmpty(roamLocation.getUserId())) {
+                map.putString("userId", " ");
+            } else {
+                map.putString("userId", roamLocation.getUserId());
+            }
+            map.putMap("location", RNRoamUtils.mapForLocation(roamLocation.getLocation()));
+            if (TextUtils.isEmpty(roamLocation.getActivity())) {
+                map.putString("activity", " ");
+            } else {
+                map.putString("activity", roamLocation.getActivity());
+            }
+            map.putString("recordedAt", roamLocation.getRecordedAt());
+            map.putString("timezone", roamLocation.getTimezoneOffset());
+            array.pushMap(map);
+        }
+        return array;
+    }
+
 
     static WritableMap mapForLocation(Location location) {
         if (location == null) {

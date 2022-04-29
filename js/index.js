@@ -20,6 +20,12 @@ const DesiredAccuracy = {
  LOW :'LOW',
 }
 
+const NetworkState = {
+  BOTH : 'BOTH',
+  ONLINE : 'ONLINE',
+  LOW : 'LOW'
+}
+
 const AppState = {
  ALWAYS_ON : 'ALWAYS_ON',
  FOREGROUND : 'FOREGROUND',
@@ -316,10 +322,23 @@ const stopListener = (event) => {
   eventEmitter.removeAllListeners(event);
 };
 
+const setBatchReceiverConfig = (networkState, batchCount, batchWindow, successCallback, errorCallback) => {
+  NativeModules.RNRoam.setBatchReceiverConfig(networkState, batchCount, batchWindow, successCallback, errorCallback)
+}
+
+const getBatchReceiverConfig = (successCallback, errorCallback) => {
+  NativeModules.RNRoam.getBatchReceiverConfig(successCallback, errorCallback)
+}
+
+const resetBatchReceiverConfig = (successCallback, errorCallback) => {
+  NativeModules.RNRoam.resetBatchReceiverConfig(successCallback, errorCallback)
+}
+
 const Roam = {
 TrackingMode,
 DesiredAccuracy,
 AppState,
+NetworkState,
 DesiredAccuracyIOS,
 ActivityType,
 SubscribeListener,
@@ -383,6 +402,9 @@ disableAccuracyEngine,
 startListener,
 stopListener,
 updateLocationWhenStationary,
+setBatchReceiverConfig,
+getBatchReceiverConfig,
+resetBatchReceiverConfig
 };
 
 export default Roam;

@@ -8,6 +8,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.roam.sdk.models.RoamError;
@@ -16,6 +17,8 @@ import com.roam.sdk.models.RoamLocationReceived;
 import com.roam.sdk.models.TripStatusListener;
 import com.roam.sdk.models.createtrip.Coordinates;
 import com.roam.sdk.service.RoamReceiver;
+
+import java.util.List;
 
 
 public class RNRoamReceiver extends RoamReceiver {
@@ -45,25 +48,12 @@ public class RNRoamReceiver extends RoamReceiver {
     }
 
     @Override
-    public void onLocationUpdated(Context context, RoamLocation roamLocation) {
-        super.onLocationUpdated(context, roamLocation);
+    public void onLocationUpdated(Context context, List<RoamLocation> locationList) {
+        super.onLocationUpdated(context, locationList);
         ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
         mReactNativeHost = reactApplication.getReactNativeHost();
-        WritableMap map = Arguments.createMap();
-        if (TextUtils.isEmpty(roamLocation.getUserId())) {
-            map.putString("userId", " ");
-        } else {
-            map.putString("userId", roamLocation.getUserId());
-        }
-        map.putMap("location", RNRoamUtils.mapForLocation(roamLocation.getLocation()));
-        if (TextUtils.isEmpty(roamLocation.getActivity())) {
-            map.putString("activity", " ");
-        } else {
-            map.putString("activity", roamLocation.getActivity());
-        }
-        map.putString("recordedAt", roamLocation.getRecordedAt());
-        map.putString("timezone", roamLocation.getTimezoneOffset());
-        sendEvent("location", map);
+        WritableArray array = RNRoamUtils.mapForLocationList(locationList);
+        sendEvent("location", array);
     }
 
     @Override
