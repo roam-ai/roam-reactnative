@@ -182,7 +182,7 @@ RCT_EXPORT_METHOD(startTrip:(NSString *)tripId description:(NSString *)tripDescr
 RCT_EXPORT_METHOD(resumeTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam resumeTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self roamTripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -194,7 +194,7 @@ RCT_EXPORT_METHOD(resumeTrip:(NSString *)tripId :(RCTResponseSenderBlock)success
 RCT_EXPORT_METHOD(pauseTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam pauseTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self userLogout:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -206,7 +206,7 @@ RCT_EXPORT_METHOD(pauseTrip:(NSString *)tripId :(RCTResponseSenderBlock)successC
 RCT_EXPORT_METHOD(stopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam stopTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self roamTripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -218,7 +218,7 @@ RCT_EXPORT_METHOD(stopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCa
 RCT_EXPORT_METHOD(forceStopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam forceEndTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self roamTripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -230,7 +230,7 @@ RCT_EXPORT_METHOD(forceStopTrip:(NSString *)tripId :(RCTResponseSenderBlock)succ
 RCT_EXPORT_METHOD(deleteTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam deleteTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self roamTripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -242,7 +242,7 @@ RCT_EXPORT_METHOD(deleteTrip:(NSString *)tripId :(RCTResponseSenderBlock)success
 RCT_EXPORT_METHOD(syncTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam syncTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self roamTripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -510,6 +510,12 @@ RCT_EXPORT_METHOD(resetBatchReceiverConfig){
 }
 
 - (NSMutableDictionary *) userLogout:(NSString *)status{
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  [dict setValue:status forKey:@"message"];
+  return dict;
+}
+
+- (NSMutableDictionary *) roamTripStatus:(NSString *)status{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:status forKey:@"message"];
   return dict;
