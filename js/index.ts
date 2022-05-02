@@ -334,6 +334,10 @@ const resetBatchReceiverConfig = (successCallback: any, errorCallback: any) => {
   NativeModules.RNRoam.resetBatchReceiverConfig(successCallback, errorCallback)
 }
 
+const resetBatchReceiverConfigIOS = () => {
+  NativeModules.RNRoam.resetBatchReceiverConfig()
+}
+
 const Roam = {
 TrackingMode,
 DesiredAccuracy,
@@ -404,7 +408,8 @@ getTripSummary,
 updateLocationWhenStationary,
 setBatchReceiverConfig,
 getBatchReceiverConfig,
-resetBatchReceiverConfig
+resetBatchReceiverConfig,
+resetBatchReceiverConfigIOS
 };
 
 export default Roam;
