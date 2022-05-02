@@ -28,9 +28,10 @@ RCT_EXPORT_MODULE();
   return @[@"location", @"location_received", @"trip_status", @"error"];
 }
 
-- (void)didUpdateLocation:(RoamLocation *)location {
+// Roam Delegate Methods
+- (void)didUpdateLocation:(NSArray<RoamLocation *> *)locations {
   if (hasListeners) {
-    [self sendEventWithName:@"location" body:[self userLocation:location]];
+    //    [self sendEventWithName:@"location" body:[self userLocation:location]];
   }
 }
 
@@ -181,7 +182,7 @@ RCT_EXPORT_METHOD(startTrip:(NSString *)tripId description:(NSString *)tripDescr
 RCT_EXPORT_METHOD(resumeTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam resumeTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -193,7 +194,7 @@ RCT_EXPORT_METHOD(resumeTrip:(NSString *)tripId :(RCTResponseSenderBlock)success
 RCT_EXPORT_METHOD(pauseTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam pauseTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -205,7 +206,7 @@ RCT_EXPORT_METHOD(pauseTrip:(NSString *)tripId :(RCTResponseSenderBlock)successC
 RCT_EXPORT_METHOD(stopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam stopTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -217,7 +218,7 @@ RCT_EXPORT_METHOD(stopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCa
 RCT_EXPORT_METHOD(forceStopTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam forceEndTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -229,7 +230,7 @@ RCT_EXPORT_METHOD(forceStopTrip:(NSString *)tripId :(RCTResponseSenderBlock)succ
 RCT_EXPORT_METHOD(deleteTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam deleteTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -241,7 +242,7 @@ RCT_EXPORT_METHOD(deleteTrip:(NSString *)tripId :(RCTResponseSenderBlock)success
 RCT_EXPORT_METHOD(syncTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam syncTrip:tripId handler:^(NSString * status, RoamError * error) {
     if (error == nil){
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self stopTrip:status], nil];
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripStatus:status], nil];
       successCallback(success);
     }else{
       errorCallback([self error:error]);
@@ -453,6 +454,43 @@ RCT_EXPORT_METHOD(stopPublishing){
   [Roam stopPublishing];
 }
 
+
+// Batch Config
+
+RCT_EXPORT_METHOD(setBatchReceiverConfig:(NSString *)state
+                  batchCount:(NSInteger)batchCount
+                  batchwindow:(NSInteger)batchWindow
+                  success: (RCTResponseSenderBlock)successCallback
+                  error:(RCTResponseErrorBlock)errorCallback){
+  [Roam setBatchReceiverConfigWithNetworkState: [self networkState:state] batchCount:batchCount batchWindow:batchWindow handler:^(RoamBatchConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self BatchConfigResonse:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+      
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(getBatchReceiverConfig
+                  : (RCTResponseSenderBlock)successCallback
+                  error:(RCTResponseErrorBlock)errorCallback){
+  [Roam getBatchReceiverConfigWithHandler:^(RoamBatchConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self BatchConfigResonse:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(resetBatchReceiverConfig){
+  [Roam clearBatchReceiverConfig];
+}
+
+
 + (BOOL)requiresMainQueueSetup
 {
   return NO;
@@ -482,13 +520,6 @@ RCT_EXPORT_METHOD(stopPublishing){
   [dict setValue:trip.status forKey:@"message"];
   return dict;
 }
-
-- (NSMutableDictionary *)stopTrip:(NSString *)trip{
-  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-  [dict setValue:trip forKey:@"message"];
-  return dict;
-}
-
 
 - (NSError *)error:(RoamError *)error{
   return [NSError errorWithDomain:error.message code:[self removeString:error.code] userInfo:nil];
@@ -660,14 +691,20 @@ RCT_EXPORT_METHOD(stopPublishing){
   }
 }
 
-- (NSMutableDictionary *) userLocation:(RoamLocation *)location{
-  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-  [dict setValue:location.userId forKey:@"userId"];
-  [dict setValue:location.activity forKey:@"activity"];
-  [dict setValue:location.recordedAt forKey:@"recordedAt"];
-  [dict setValue:location.timezoneOffset forKey:@"timezone"];
-  [dict setObject:[self locationReponse:location.location] forKey:@"location"];
-  return  dict;
+- (NSMutableArray *) userLocation:(NSArray<RoamLocation *> *)locations{
+  
+  NSMutableArray *array = [[NSMutableArray alloc] init];
+  for (RoamLocation* location in locations) {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    [dict setValue:location.userId forKey:@"userId"];
+    [dict setValue:location.activity forKey:@"activity"];
+    [dict setValue:location.recordedAt forKey:@"recordedAt"];
+    [dict setValue:location.timezoneOffset forKey:@"timezone"];
+    [dict setObject:[self locationReponse:location.location] forKey:@"location"];
+    [array addObject:dict];
+  }
+  
+  return array;
 }
 
 - (NSMutableDictionary *) didUserLocation:(RoamLocationReceived *)location{
@@ -811,7 +848,7 @@ RCT_EXPORT_METHOD(stopPublishing){
   
   for (RoamTripSummaryRoute* route in routes) {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-
+    
     [dict setValue:route.recordedAt forKey:@"recordedAt"];
     [dict setValue:route.activity forKey:@"activity"];
     [dict setValue:route.duration forKey:@"duration"];
@@ -820,12 +857,31 @@ RCT_EXPORT_METHOD(stopPublishing){
     [dict setValue:route.distance forKey:@"distance"];
     [dict setValue:[route.coordinates firstObject] forKey:@"longitude"];
     [dict setValue:[route.coordinates lastObject] forKey:@"latitude"];
-
+    
     [array addObject:dict];
   }
   
   return array;
 }
+
+- (RoamNetworkState)networkState:(NSString *)stringValue{
+  if ([stringValue isEqualToString:@"BOTH"]) {
+    return  RoamNetworkStateBoth;
+  }else if ([stringValue isEqualToString:@"ONLINE"]) {
+    return  RoamNetworkStateOnline;
+  }else{
+    return  RoamNetworkStateOffline;
+  }
+}
+
+- (NSMutableDictionary *)BatchConfigResonse:(RoamBatchConfig *)config{
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  [dict setValue:[NSNumber numberWithInt:config.batchCount] forKey:@"batchCount"];
+  [dict setValue:[NSNumber numberWithInt:config.batchWindow] forKey:@"batchCount"];
+  [dict setValue:config.networkState forKey:@"batchCount"];
+  return  dict;
+}
+
 @end
 
 
