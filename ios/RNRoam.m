@@ -31,7 +31,7 @@ RCT_EXPORT_MODULE();
 // Roam Delegate Methods
 - (void)didUpdateLocation:(NSArray<RoamLocation *> *)locations {
   if (hasListeners) {
-    //    [self sendEventWithName:@"location" body:[self userLocation:location]];
+        [self sendEventWithName:@"location" body:[self userLocation:locations]];
   }
 }
 
