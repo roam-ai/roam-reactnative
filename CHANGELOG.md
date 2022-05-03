@@ -116,3 +116,16 @@
 
 - Updated to latest native Roam SDK versions - iOS v0.0.20. 
 - Fixed calculation for distance and duration for individual location data in trip summary route.
+
+## 0.0.26
+
+Added:
+- Added new methods for batch configurations in location receiver.
+
+Modified:
+- Location data in location receiver is changed from single location object to list of location updates.
+
+Fixed:
+- Trip error changed for few error scenarios to success callbacks.
+     - Trip Already Started
+     - Trip Already Ended
