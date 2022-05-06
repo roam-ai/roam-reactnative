@@ -5,7 +5,7 @@
   <br />
 </p>
 
-[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.25&x2=0)](https://badge.fury.io/js/roam-reactnative)
+[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=0.0.27&x2=0)](https://badge.fury.io/js/roam-reactnative)
 [![Npm Publish](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml/badge.svg?branch=0.0.1)](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml)
 
 # Official Roam React Native SDK
@@ -74,7 +74,7 @@ Before making any changes to your javascript code, you would need to integrate a
 
     ```
     dependencies {
-        implementation 'com.roam.sdk:roam-android:0.0.19'
+        implementation 'com.roam.sdk:roam-android:0.0.21'
     }
     ```
 4. Before initializing the SDK, the below must be imported in your Main Activity.
@@ -455,7 +455,17 @@ Roam.startListener("location", (location) => {
 You can also configure batch setting for the location receiver. To set the batch configuration, you need to pass batch count and batch window.
 
 ```javascript
-Roam.setBatchReceiverConfig(NETWORK_STATE, BATCH_COUNT, BATCH_WINDOW, successCallback, errorCallback);
+Roam.setBatchReceiverConfig(NETWORK_STATE, BATCH_COUNT, BATCH_WINDOW, success => {
+ // do something on success
+ //success.batchCount,
+ //success.batchWindow,
+ //success.networkState
+},
+error => {
+// do something on error
+//error.code
+//error.message
+}););
 ```
 | **Type**                        | **Description** |
 | --------------------------------| -------- |
@@ -466,12 +476,32 @@ Roam.setBatchReceiverConfig(NETWORK_STATE, BATCH_COUNT, BATCH_WINDOW, successCal
 You can get the current configured settings with the below code.
 
 ```javascript
-Roam.getBatchReceiverConfig(successCallback, errorCallback);
+Roam.getBatchReceiverConfig(success => {
+ // do something on success
+ //success.batchCount,
+ //success.batchWindow,
+ //success.networkState
+},
+error => {
+// do something on error
+//error.code
+//error.message
+});
 ```
 You can reset the batch configuration to default values with the below code.
 
 ```javascript
-Roam.resetBatchReceiverConfig(successCallback, errorCallback);
+Roam.resetBatchReceiverConfig(success => {
+ // do something on success
+ //success.batchCount,
+ //success.batchWindow,
+ //success.networkState
+},
+error => {
+// do something on error
+//error.code
+//error.message
+});
 ```
 
 ## Documentation

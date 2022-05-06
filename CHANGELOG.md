@@ -129,3 +129,10 @@ Fixed:
 - Trip error changed for few error scenarios to success callbacks.
      - Trip Already Started
      - Trip Already Ended
+
+## 0.0.26
+
+Modified:
+- Added callbacks to `Roam.resetBatchReceiverConfig()` method to return default config values.
+Fixed:
+- Fixed callback response for `Roam.getBatchReceiverConfig()` and `Roam.setBatchReceiverConfig()` methods.
