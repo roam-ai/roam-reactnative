@@ -300,8 +300,8 @@ class RNRoamUtils {
 
     static WritableMap mapForError(RoamError roamError) {
         WritableMap map = Arguments.createMap();
-        map.putString("errorCode", roamError.getCode());
-        map.putString("errorMessage", roamError.getMessage());
+        map.putString("code", roamError.getCode());
+        map.putString("message", roamError.getMessage());
         return map;
     }
 }

@@ -486,9 +486,17 @@ RCT_EXPORT_METHOD(getBatchReceiverConfig
   }];
 }
 
-RCT_EXPORT_METHOD(resetBatchReceiverConfig){
-  [Roam clearBatchReceiverConfig];
-}
+RCT_EXPORT_METHOD(resetBatchReceiverConfig : (RCTResponseSenderBlock)successCallback
+                  error:(RCTResponseErrorBlock)errorCallback){
+  [Roam resetBatchReceiverConfig:^(RoamBatchConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self BatchConfigResonse:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+   }];
+  }
 
 
 + (BOOL)requiresMainQueueSetup
@@ -883,8 +891,8 @@ RCT_EXPORT_METHOD(resetBatchReceiverConfig){
 - (NSMutableDictionary *)BatchConfigResonse:(RoamBatchConfig *)config{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:[NSNumber numberWithInt:config.batchCount] forKey:@"batchCount"];
-  [dict setValue:[NSNumber numberWithInt:config.batchWindow] forKey:@"batchCount"];
-  [dict setValue:config.networkState forKey:@"batchCount"];
+  [dict setValue:[NSNumber numberWithInt:config.batchWindow] forKey:@"batchWindow"];
+  [dict setValue:config.networkState forKey:@"networkState"];
   return  dict;
 }
 
