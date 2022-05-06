@@ -442,13 +442,36 @@ error => {
 ```
 Once the listener toggles are set to true, to listen to location updates and events.
 
+Note: The location data received will be an array with either single or multiple location data.
+
 ```javascript
 Roam.startListener("location", (location) => {
   // do something on location received
   console.log('Location', location);
   // Console Output:
-  // {"activity": "S", "location": {"accuracy": 22.686637856849305, "altitude": 288.10509490966797, "latitude": 10.356502722371895, "longitude": 78.00075886670541, "speed": -1}, "recordedAt": "2022-03-22T11:18:04.928Z", "timezone": "+0530", "userId": "6239b06506df1f5c1c375353"}
+  // [{"activity": "S", "location": {"accuracy": 22.686637856849305, "altitude": 288.10509490966797, "latitude": 10.356502722371895, "longitude": 78.00075886670541, "speed": -1}, "recordedAt": "2022-03-22T11:18:04.928Z", "timezone": "+0530", "userId": "6239b06506df1f5c1c375353"},{..}...]
 });
+```
+You can also configure batch setting for the location receiver. To set the batch configuration, you need to pass batch count and batch window.
+
+```javascript
+Roam.setBatchReceiverConfig(NETWORK_STATE, BATCH_COUNT, BATCH_WINDOW, successCallback, errorCallback);
+```
+| **Type**                        | **Description** |
+| --------------------------------| -------- |
+| NETWORK_STATE | online (or) offline (or) both   |
+| BATCH_COUNT   | Integer value from 1-1000. Default as 1  |
+| BATCH_WINDOW  | Integer value. Default as 0  |
+
+You can get the current configured settings with the below code.
+
+```javascript
+Roam.getBatchReceiverConfig(successCallback, errorCallback);
+```
+You can reset the batch configuration to default values with the below code.
+
+```javascript
+Roam.resetBatchReceiverConfig(successCallback, errorCallback);
 ```
 
 ## Documentation
