@@ -883,8 +883,8 @@ RCT_EXPORT_METHOD(resetBatchReceiverConfig){
 - (NSMutableDictionary *)BatchConfigResonse:(RoamBatchConfig *)config{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:[NSNumber numberWithInt:config.batchCount] forKey:@"batchCount"];
-  [dict setValue:[NSNumber numberWithInt:config.batchWindow] forKey:@"batchCount"];
-  [dict setValue:config.networkState forKey:@"batchCount"];
+  [dict setValue:[NSNumber numberWithInt:config.batchWindow] forKey:@"batchWindow"];
+  [dict setValue:config.networkState forKey:@"networkState"];
   return  dict;
 }
 
