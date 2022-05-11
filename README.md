@@ -9,7 +9,7 @@
 [![Npm Publish](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml/badge.svg?branch=0.0.1)](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml)
 
 # Official Roam React Native SDK
-This is the official [Roam](https://roam.ai) iOS SDK developed and maintained by Roam B.V
+This is the official [Roam](https://roam.ai) React Native SDK developed and maintained by Roam B.V
 
 Note: Before you get started [signup to our dashboard](https://roam.ai/dashboard/signup) to get your API Keys. 
 
