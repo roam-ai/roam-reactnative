@@ -488,7 +488,7 @@ RCT_EXPORT_METHOD(getBatchReceiverConfig
 
 RCT_EXPORT_METHOD(resetBatchReceiverConfig : (RCTResponseSenderBlock)successCallback
                   error:(RCTResponseErrorBlock)errorCallback){
-  [Roam resetBatchReceiverConfig:^(RoamBatchConfig * config, RoamError * error) {
+  [Roam resetBatchReceiverConfigWithHandler:^(RoamBatchConfig * config, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self BatchConfigResonse:config], nil];
       successCallback(success);

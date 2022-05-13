@@ -130,9 +130,15 @@ Fixed:
      - Trip Already Started
      - Trip Already Ended
 
-## 0.0.26
+## 0.0.27
 
 Modified:
 - Added callbacks to `Roam.resetBatchReceiverConfig()` method to return default config values.
 Fixed:
 - Fixed callback response for `Roam.getBatchReceiverConfig()` and `Roam.setBatchReceiverConfig()` methods.
+
+## 0.0.28
+
+Fixed:
+- Fixed the method `Roam.resetBatchReceiverConfig()`.
+- Autolinking for iOS.
