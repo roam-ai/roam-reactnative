@@ -142,3 +142,9 @@ Fixed:
 Fixed:
 - Fixed the method `Roam.resetBatchReceiverConfig()`.
 - Autolinking for iOS.
+
+## 0.0.29
+
+Added:
+- New listener for connectity change event with `Roam.startListener('connectivityChangeEvent', connectivityChangeEvent)`
+- Updated to latest native Roam SDK versions - Android v0.0.22. 

@@ -11,6 +11,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.roam.sdk.models.NetworkListener;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamLocation;
 import com.roam.sdk.models.RoamLocationReceived;
@@ -132,6 +133,17 @@ public class RNRoamReceiver extends RoamReceiver {
             sendEvent("locationAuthorizationChange", map);
         }
         sendEvent("error", map);
+    }
+
+    @Override
+    public void onConnectivityChange(Context context, NetworkListener networkListener) {
+        super.onConnectivityChange(context, networkListener);
+        ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
+        mReactNativeHost = reactApplication.getReactNativeHost();
+        WritableMap map = Arguments.createMap();
+        map.putString("type", networkListener.getType());
+        map.putBoolean("isConnected", networkListener.getIsConnected());
+        sendEvent("connectivityChangeEvent", map);
     }
 }
 
