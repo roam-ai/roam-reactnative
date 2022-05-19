@@ -148,3 +148,10 @@ Fixed:
 Added:
 - New listener for connectity change event with `Roam.startListener('connectivityChangeEvent', connectivityChangeEvent)`
 - Updated to latest native Roam SDK versions - Android v0.0.22. 
+
+## 0.0.30
+
+Added:
+- Fixed location receiver when device restarted (Android).
+- Added option to restart Roam Service with `Roam.setForegroundNotification()` method.
+- Updated to latest native Roam SDK version - Android v0.0.23. 

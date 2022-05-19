@@ -95,23 +95,12 @@ public class RNRoamReceiver extends RoamReceiver {
     }
 
     @Override
-    public void onReceiveTripStatus(Context context, TripStatusListener tripStatusListener) {
+    public void onReceiveTripStatus(Context context, List<TripStatusListener>  tripStatusListener) {
         super.onReceiveTripStatus(context, tripStatusListener);
         ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
         mReactNativeHost = reactApplication.getReactNativeHost();
-        WritableMap map = Arguments.createMap();
-        map.putString("tripId", tripStatusListener.getTripId());
-        map.putDouble("latitude", tripStatusListener.getLatitude());
-        map.putDouble("longitude", tripStatusListener.getLongitue());
-        map.putString("startedTime", tripStatusListener.getStartedTime());
-        map.putDouble("distance", tripStatusListener.getDistance());
-        map.putDouble("duration", tripStatusListener.getDuration());
-        map.putDouble("pace", tripStatusListener.getPace());
-        map.putDouble("speed", tripStatusListener.getSpeed());
-        map.putDouble("altitude", tripStatusListener.getAltitude());
-        map.putDouble("elevationGain", tripStatusListener.getElevationGain());
-        map.putDouble("totalElevationGain", tripStatusListener.getTotalElevation());
-        sendEvent("trip_status", map);
+        WritableArray array = RNRoamUtils.mapForTripStatusListnerList(tripStatusListener);
+        sendEvent("trip_status", array);
     }
 
     @Override

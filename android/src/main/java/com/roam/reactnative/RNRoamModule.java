@@ -302,7 +302,7 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void setForegroundNotification(boolean enabled, String title, String description, String image, String activity) {
+  public void setForegroundNotification(boolean enabled, String title, String description, String image, String activity, String roamService) {
     try{
       String[] split = image.split("/");
       String firstSubString = split[0];
@@ -312,7 +312,7 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
               firstSubString,
               reactContext.getPackageName()
       );
-      Roam.setForegroundNotification(enabled, title, description, resId, activity);
+      Roam.setForegroundNotification(enabled, title, description, resId, activity, roamService);
     }catch (Exception e){
     }
   }

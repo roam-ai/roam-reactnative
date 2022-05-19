@@ -246,8 +246,8 @@ const isLocationTracking = (callback: any) => {
   NativeModules.RNRoam.isLocationTracking(callback);
 };
 
-const setForegroundNotification = (enabled: any, title: any, description: any, image: any, activity: any) => {
-  NativeModules.RNRoam.setForegroundNotification(enabled, title, description, image, activity);
+const setForegroundNotification = (enabled: any, title: any, description: any, image: any, activity: any, roamService:any) => {
+  NativeModules.RNRoam.setForegroundNotification(enabled, title, description, image, activity, roamService);
 };
 
 const allowMockLocation = (enabled: any) => {

@@ -11,6 +11,7 @@ import com.roam.sdk.models.BatchReceiverConfig;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamLocation;
 import com.roam.sdk.models.RoamUser;
+import com.roam.sdk.models.TripStatusListener;
 import com.roam.sdk.models.createtrip.Coordinates;
 import com.roam.sdk.models.createtrip.Destination;
 import com.roam.sdk.models.createtrip.Origin;
@@ -283,7 +284,25 @@ class RNRoamUtils {
         }
         return array;
     }
-
+    static WritableArray mapForTripStatusListnerList(List<TripStatusListener> tripStatusListener){
+        WritableArray array = Arguments.createArray();
+        for (TripStatusListener tripStatus: tripStatusListener){
+            WritableMap map = Arguments.createMap();
+            map.putString("tripId", tripStatus.getTripId());
+            map.putDouble("latitude", tripStatus.getLatitude());
+            map.putDouble("longitude", tripStatus.getLongitue());
+            map.putString("startedTime", tripStatus.getStartedTime());
+            map.putDouble("distance", tripStatus.getDistance());
+            map.putDouble("duration", tripStatus.getDuration());
+            map.putDouble("pace", tripStatus.getPace());
+            map.putDouble("speed", tripStatus.getSpeed());
+            map.putDouble("altitude", tripStatus.getAltitude());
+            map.putDouble("elevationGain", tripStatus.getElevationGain());
+            map.putDouble("totalElevationGain", tripStatus.getTotalElevation());
+            array.pushMap(map);
+        }
+        return array;
+    }
 
     static WritableMap mapForLocation(Location location) {
         if (location == null) {
