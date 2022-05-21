@@ -155,3 +155,7 @@ Added:
 - Fixed location receiver when device restarted (Android).
 - Added option to restart Roam Service with `Roam.setForegroundNotification()` method.
 - Updated to latest native Roam SDK version - Android v0.0.23. 
+
+## 0.0.31
+
+- Configured the SDK to support location receiver after device reboot.

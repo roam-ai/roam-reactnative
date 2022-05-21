@@ -1,8 +1,12 @@
 package com.roam.reactnative;
 
-import android.content.Context;
-import android.text.TextUtils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.facebook.react.HeadlessJsTaskService;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -133,6 +137,20 @@ public class RNRoamReceiver extends RoamReceiver {
         map.putString("type", networkListener.getType());
         map.putBoolean("isConnected", networkListener.getIsConnected());
         sendEvent("connectivityChangeEvent", map);
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
+            try{
+                Intent headlessServiceIntent = new Intent(context, RNRoamHeadlessService.class);
+                context.startService(headlessServiceIntent);
+                HeadlessJsTaskService.acquireWakeLockNow(context);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }
 

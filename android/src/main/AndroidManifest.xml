@@ -2,15 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.roam.reactnative">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application>
         <receiver
             android:name="com.roam.reactnative.RNRoamReceiver"
             android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.roam.android.RECEIVED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </receiver>
+        <service android:name=".RNRoamHeadlessService"/>
     </application>
 
 </manifest>
