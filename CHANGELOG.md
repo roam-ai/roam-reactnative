@@ -162,6 +162,7 @@ Added:
 
 ## 0.0.32
 
-- Fixed enableAccuracyEngine() method
-- Fixed ios linking
+Fixed:
+- `Roam.enableAccuracyEngine(int)` method to accept integer value.
+- Autolinking for iOS.
 
