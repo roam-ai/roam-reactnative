@@ -379,8 +379,8 @@ RCT_EXPORT_METHOD(stopTracking){
   });
 }
 
-RCT_EXPORT_METHOD(enableAccuracyEngine){
-  [Roam enableAccuracyEngine];
+RCT_EXPORT_METHOD(enableAccuracyEngine:(NSInteger)accuracy){
+  [Roam enableAccuracyEngine:accuracy];
 }
 
 RCT_EXPORT_METHOD(disableAccuracyEngine){

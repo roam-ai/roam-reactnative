@@ -159,3 +159,10 @@ Added:
 ## 0.0.31
 
 - Configured the SDK to support location receiver after device reboot.
+
+## 0.0.32
+
+Fixed:
+- `Roam.enableAccuracyEngine(int)` method to accept integer value.
+- Autolinking for iOS.
+

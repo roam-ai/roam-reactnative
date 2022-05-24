@@ -306,8 +306,8 @@ const stopSelfTracking = () => {
   NativeModules.RNRoam.stopSelfTracking();
 };
 
-const enableAccuracyEngine = () => {
-  NativeModules.RNRoam.enableAccuracyEngine();
+const enableAccuracyEngine = (accuracy) => {
+  NativeModules.RNRoam.enableAccuracyEngine(accuracy);
 };
 
 const disableAccuracyEngine = () => {

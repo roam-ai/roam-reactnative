@@ -809,8 +809,8 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void enableAccuracyEngine() {
-    Roam.enableAccuracyEngine();
+  public void enableAccuracyEngine(int accuracy) {
+    Roam.enableAccuracyEngine(accuracy);
   }
 
   @ReactMethod
