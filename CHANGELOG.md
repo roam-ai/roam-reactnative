@@ -166,3 +166,7 @@ Fixed:
 - `Roam.enableAccuracyEngine(int)` method to accept integer value.
 - Autolinking for iOS.
 
+## 0.0.33
+
+Added:
+- Added batch config for "trip_status" listener
