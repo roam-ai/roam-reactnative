@@ -35,7 +35,7 @@ RCT_EXPORT_MODULE();
   }
 }
 
-- (void)didReceiveTripStatus:(RoamTripStatusListener *)tripStatus{
+- (void)didReceiveTripStatus:(NSArray<RoamTripStatusListener *> *)tripStatus{
   if (hasListeners) {
     [self sendEventWithName:@"trip_status" body:[self didTripStatus:tripStatus]];
   }
@@ -742,18 +742,24 @@ RCT_EXPORT_METHOD(resetBatchReceiverConfig : (RCTResponseSenderBlock)successCall
   return dict;
 }
 
-- (NSMutableDictionary *) didTripStatus:(RoamTripStatusListener *)trip{
-  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-  [dict setValue:[NSNumber numberWithDouble:trip.latitude] forKey:@"latitude"];
-  [dict setValue:[NSNumber numberWithDouble:trip.longitude] forKey:@"longitude"];
-  [dict setValue:[NSNumber numberWithDouble:trip.distance] forKey:@"distance"];
-  [dict setValue:[NSNumber numberWithDouble:trip.duration] forKey:@"duration"];
-  [dict setValue:[NSNumber numberWithDouble:trip.speed] forKey:@"speed"];
-  [dict setValue:[NSNumber numberWithDouble:trip.pace] forKey:@"pace"];
-  [dict setValue:trip.startedTime forKey:@"startedTime"];
-  return dict;
-  
+
+
+- (NSMutableArray *) didTripStatus:(NSArray<RoamTripStatusListener *> *)trips{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+       for (RoamTripStatusListener* trip in trips) {
+           NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+           [dict setValue:[NSNumber numberWithDouble:trip.latitude] forKey:@"latitude"];
+           [dict setValue:[NSNumber numberWithDouble:trip.longitude] forKey:@"longitude"];
+           [dict setValue:[NSNumber numberWithDouble:trip.distance] forKey:@"distance"];
+           [dict setValue:[NSNumber numberWithDouble:trip.duration] forKey:@"duration"];
+           [dict setValue:[NSNumber numberWithDouble:trip.speed] forKey:@"speed"];
+           [dict setValue:[NSNumber numberWithDouble:trip.pace] forKey:@"pace"];
+           [dict setValue:trip.startedTime forKey:@"startedTime"];
+           [array addObject:dict];
+       }
+    return array;
 }
+
 
 - (RoamPublish *)publish:(NSArray *)array metaData:(NSDictionary *)metaData{
   RoamPublish *publish = [[RoamPublish alloc] init];
