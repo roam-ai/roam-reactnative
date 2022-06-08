@@ -126,8 +126,12 @@ const subscribeTripStatus = (tripId: any) => {
   NativeModules.RNRoam.subscribeTripStatus(tripId);
 };
 
-const unSubscribeTripStatus = (tripId: any) => {
-  NativeModules.RNRoam.unSubscribeTripStatus(tripId);
+const unSubscribeTripStatus = (tripId?: any) => {
+  if(tripId === undefined || tripId === null){
+    NativeModules.RNRoam.unSubscribeTripStatus(null);
+  } else {
+    NativeModules.RNRoam.unSubscribeTripStatus(tripId);
+  }
 };
 
 const disableBatteryOptimization = () => {
