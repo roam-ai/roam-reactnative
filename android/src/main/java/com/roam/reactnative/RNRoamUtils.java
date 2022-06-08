@@ -299,6 +299,7 @@ class RNRoamUtils {
             map.putDouble("altitude", tripStatus.getAltitude());
             map.putDouble("elevationGain", tripStatus.getElevationGain());
             map.putDouble("totalElevationGain", tripStatus.getTotalElevation());
+            map.putString("recordedAt", tripStatus.getRecordedAt());
             array.pushMap(map);
         }
         return array;
