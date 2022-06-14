@@ -52,6 +52,12 @@ react-native link roam-reactnative
 expo install roam-reactnative
 ```
 
+Minimum supported versions
+```
+react-native: 0.41.2
+react: 15.4.2
+```
+
 Before making any changes to your javascript code, you would need to integrate and initialize Roam SDK in your Android and iOS applications. 
 
 ### Android

@@ -170,3 +170,10 @@ Fixed:
 
 Added:
 - Added batch config for "trip_status" listener
+
+## 0.0.34
+
+Added:
+- Added recorderAt parameter for trip status listener
+- Added unsubscribeAll method for android
+- android upgrade to v0.0.25
