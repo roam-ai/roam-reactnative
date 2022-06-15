@@ -159,8 +159,12 @@ RCT_EXPORT_METHOD(subscribeTripStatus:(NSString *)tripId){
 }
 
 // unSubscribeTripStatus
-RCT_EXPORT_METHOD(unSubscribeTripStatus:(NSString *)tripId){
-  [Roam unsubscribeTripStatus:tripId];
+RCT_EXPORT_METHOD(unSubscribeTripStatus:(nullable NSString *)tripId){
+  if ([tripId length] == 0) {
+    [Roam unsubscribeTripStatus:nil];
+  }else{
+    [Roam unsubscribeTripStatus:tripId];
+  }
 }
 
 // Start trip
@@ -755,6 +759,7 @@ RCT_EXPORT_METHOD(resetBatchReceiverConfig : (RCTResponseSenderBlock)successCall
            [dict setValue:[NSNumber numberWithDouble:trip.speed] forKey:@"speed"];
            [dict setValue:[NSNumber numberWithDouble:trip.pace] forKey:@"pace"];
            [dict setValue:trip.startedTime forKey:@"startedTime"];
+           [dict setValue:trip.recordedAt forKey:@"recordedAt"];
            [array addObject:dict];
        }
     return array;

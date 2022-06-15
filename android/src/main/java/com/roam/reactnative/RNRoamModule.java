@@ -185,7 +185,11 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void unSubscribeTripStatus(String tripId) {
-    Roam.unSubscribeTripStatus(tripId);
+    if (tripId == null){
+      Roam.unSubscribeTripStatus();
+    } else {
+      Roam.unSubscribeTripStatus(tripId);
+    }
   }
 
   @ReactMethod
