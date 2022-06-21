@@ -129,6 +129,12 @@ Before making any changes to your javascript code, you would need to integrate a
       [Roam initialize:@"YOUR-PUBLISHABLE-KEY" :NULL :NULL];
     }
     ```
+    
+### Manual Linking
+
+1. Open the iOS module files, located inside `node_modules/roam-reactnative/ios/`.
+2. Open the app workspace file `(AppName.xcworkspace)` in Xcode.
+3. Move the `RNRoam.h` and `RNRoam.m` files to your project. When shown a popup window, select `Create groups`.
 
 # Finally, lets do some javascript
 
