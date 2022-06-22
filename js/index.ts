@@ -310,8 +310,12 @@ const stopSelfTracking = () => {
   NativeModules.RNRoam.stopSelfTracking();
 };
 
-const enableAccuracyEngine = (accuracy: any) => {
-  NativeModules.RNRoam.enableAccuracyEngine(accuracy);
+const enableAccuracyEngine = (accuracy?: any) => {
+  if(accuracy === null || accuracy === undefined){
+    NativeModules.RNRoam.enableAccuracyEngine(50);
+  } else {
+    NativeModules.RNRoam.enableAccuracyEngine(accuracy);
+  }
 };
 
 const disableAccuracyEngine = () => {
