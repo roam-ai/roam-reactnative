@@ -177,3 +177,7 @@ Added:
 - Added `recorderAt` parameter for trip status listener.
 - Added option to unsubscribe from all the trips in the method `Roam.unsubscribeTripStatus()`
 - Fixed trip listener that works independently of the location listener in iOS.
+
+## 0.0.35
+
+- Fixed enableAccuracyEngine() for null accuracy value.

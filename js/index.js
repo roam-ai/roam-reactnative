@@ -311,7 +311,12 @@ const stopSelfTracking = () => {
 };
 
 const enableAccuracyEngine = (accuracy) => {
-  NativeModules.RNRoam.enableAccuracyEngine(accuracy);
+  if(accuracy === null || accuracy === undefined){
+    NativeModules.RNRoam.enableAccuracyEngine(50);
+  } else {
+    NativeModules.RNRoam.enableAccuracyEngine(accuracy);
+  }
+  
 };
 
 const disableAccuracyEngine = () => {
