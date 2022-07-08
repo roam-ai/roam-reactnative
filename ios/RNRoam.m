@@ -153,6 +153,45 @@ RCT_EXPORT_METHOD(logout:(RCTResponseSenderBlock)successCallback rejecter:(RCTRe
   
 }
 
+RCT_EXPORT_METHOD(setTrackingConfig:(NSInteger )accuracy
+                  timeout:(NSInteger)timeout
+                  discard:(BOOL)discardLocation
+                  success: (RCTResponseSenderBlock)successCallback
+                  error:(RCTResponseErrorBlock)errorCallback){
+  [Roam setTrackingConfigWithAccuracy:accuracy timeout:timeout discardLocation:discardLocation handler:^(RoamLocationConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self TrackingConfigResonse:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(getTrackingConfig:(RCTResponseSenderBlock)successCallback
+                               error:(RCTResponseErrorBlock)errorCallback){
+  [Roam getTrackingConfigWithHandler:^(RoamLocationConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self TrackingConfigResonse:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback
+error:(RCTResponseErrorBlock)errorCallback){
+  [Roam resetTrackingConfigWithHandler:^(RoamLocationConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self TrackingConfigResonse:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+  }];
+}
+
 // subscribeTripStatus
 RCT_EXPORT_METHOD(subscribeTripStatus:(NSString *)tripId){
   [Roam subscribeTripStatus:tripId];
@@ -558,6 +597,14 @@ RCT_EXPORT_METHOD(resetBatchReceiverConfig : (RCTResponseSenderBlock)successCall
     }
   }
   return @([strippedString integerValue]);
+}
+
+- (NSMutableDictionary *)TrackingConfigResonse:(RoamLocationConfig *)config{
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  [dict setValue:[NSNumber numberWithInt:config.accuracy] forKey:@"accuracy"];
+  [dict setValue:[NSNumber numberWithInt:config.timeout] forKey:@"timeout"];
+  [dict setValue:[NSNumber numberWithBool:config.discardLocation] forKey:@"discardLocation"];
+  return  dict;
 }
 
 - (NSString *)checkPermission:(BOOL)isEnabled{

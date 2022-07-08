@@ -1,5 +1,5 @@
 
-import {NativeEventEmitter,NativeModules} from 'react-native';
+import {NativeEventEmitter,NativeModules, Platform} from 'react-native';
 
 if (!NativeModules.RNRoam) {
   throw new Error('NativeModules.RNRoam is undefined');
@@ -30,6 +30,12 @@ const AppState = {
  ALWAYS_ON : 'ALWAYS_ON',
  FOREGROUND : 'FOREGROUND',
  BACKGROUND :'BACKGROUND',
+}
+
+const Source = {
+  ALL: 'ALL',
+  LAST_KNOWN: 'LAST_KNOWN',
+  GPS: 'GPS'
 }
 
 const DesiredAccuracyIOS = {
@@ -343,6 +349,23 @@ const resetBatchReceiverConfig = (successCallback, errorCallback) => {
   NativeModules.RNRoam.resetBatchReceiverConfig(successCallback, errorCallback)
 }
 
+const setTrackingConfig = (accuracy, timeout, source, discardLocation, successCallback, errorCallback) => {
+  if(Platform.OS === 'android'){
+    NativeModules.RNRoam.setTrackingConfig(accuracy, timeout, source, discardLocation, successCallback, errorCallback)
+  } else {
+    NativeModules.RNRoam.setTrackingConfig(accuracy, timeout, discardLocation, successCallback, errorCallback)
+  }
+  
+}
+
+const getTrackingConfig = (successCallback, errorCallback) => {
+  NativeModules.RNRoam.getTrackingConfig(successCallback, errorCallback)
+}
+
+const resetTrackingConfig = (successCallback, errorCallback) => {
+  NativeModules.RNRoam.resetTrackingConfig(successCallback, errorCallback)
+}
+
 const Roam = {
 TrackingMode,
 DesiredAccuracy,
@@ -352,6 +375,7 @@ DesiredAccuracyIOS,
 ActivityType,
 SubscribeListener,
 Publish,
+Source,
 createUser,
 getUser,
 setDescription,
@@ -413,7 +437,10 @@ stopListener,
 updateLocationWhenStationary,
 setBatchReceiverConfig,
 getBatchReceiverConfig,
-resetBatchReceiverConfig
+resetBatchReceiverConfig,
+setTrackingConfig,
+getTrackingConfig,
+resetTrackingConfig
 };
 
 export default Roam;
