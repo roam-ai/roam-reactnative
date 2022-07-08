@@ -20,5 +20,5 @@ Pod::Spec.new do |s|
   s.source_files   = './*.{h,m}'
 
   s.dependency 'React'
-  s.dependency 'roam-ios', '0.0.25'
+  s.dependency 'roam-ios', '0.0.27'
 end

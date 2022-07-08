@@ -16,6 +16,7 @@ import com.roam.sdk.NetworkState;
 import com.roam.sdk.Roam;
 import com.roam.sdk.RoamPublish;
 import com.roam.sdk.RoamTrackingMode;
+import com.roam.sdk.Source;
 import com.roam.sdk.callback.RoamActiveTripsCallback;
 import com.roam.sdk.callback.RoamBatchReceiverCallback;
 import com.roam.sdk.callback.RoamCallback;
@@ -24,12 +25,14 @@ import com.roam.sdk.callback.RoamDeleteTripCallback;
 import com.roam.sdk.callback.RoamLocationCallback;
 import com.roam.sdk.callback.RoamLogoutCallback;
 import com.roam.sdk.callback.RoamSyncTripCallback;
+import com.roam.sdk.callback.RoamTrackingConfigCallback;
 import com.roam.sdk.callback.RoamTripCallback;
 import com.roam.sdk.callback.RoamTripSummaryCallback;
 import com.roam.sdk.models.BatchReceiverConfig;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamTrip;
 import com.roam.sdk.models.RoamUser;
+import com.roam.sdk.models.TrackingConfig;
 import com.roam.sdk.models.createtrip.RoamCreateTrip;
 import com.roam.sdk.models.tripsummary.RoamTripSummary;
 
@@ -376,6 +379,63 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void updateLocationWhenStationary(int interval) {
     Roam.updateLocationWhenStationary(interval);
+  }
+
+  @ReactMethod
+  public void setTrackingConfig(int accuracy, int timeout, String source, boolean discardLocation, final Callback successCallback, final Callback errorCallback){
+    Source sourceObject = Source.ALL;
+    switch (source){
+      case "ALL":
+        sourceObject = Source.ALL;
+        break;
+      case "LAST_KNOWN":
+        sourceObject = Source.LAST_KNOWN;
+        break;
+      case "GPS":
+        sourceObject = Source.GPS;
+        break;
+    }
+    Roam.setTrackingConfig(accuracy, timeout, sourceObject, discardLocation, new RoamTrackingConfigCallback() {
+      @Override
+      public void onSuccess(TrackingConfig trackingConfig) {
+        successCallback.invoke(RNRoamUtils.mapForTrackingConfig(trackingConfig));
+      }
+
+      @Override
+      public void onFailure(RoamError roamError) {
+        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+      }
+    });
+  }
+
+  @ReactMethod
+  public void getTrackingConfig(final Callback successCallback, final Callback errorCallback){
+    Roam.getTrackingConfig(new RoamTrackingConfigCallback() {
+      @Override
+      public void onSuccess(TrackingConfig trackingConfig) {
+        successCallback.invoke(RNRoamUtils.mapForTrackingConfig(trackingConfig));
+      }
+
+      @Override
+      public void onFailure(RoamError roamError) {
+        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+      }
+    });
+  }
+
+  @ReactMethod
+  public void resetTrackingConfig(final Callback successCallback, final Callback errorCallback){
+    Roam.resetTrackingConfig(new RoamTrackingConfigCallback() {
+      @Override
+      public void onSuccess(TrackingConfig trackingConfig) {
+        successCallback.invoke(RNRoamUtils.mapForTrackingConfig(trackingConfig));
+      }
+
+      @Override
+      public void onFailure(RoamError roamError) {
+        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+      }
+    });
   }
 
   @ReactMethod

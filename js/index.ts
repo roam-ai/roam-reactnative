@@ -20,6 +20,12 @@ const NetworkState = {
   LOW : 'LOW'
 }
 
+const Source = {
+  ALL: 'ALL',
+  LAST_KNOWN: 'LAST_KNOWN',
+  GPS: 'GPS'
+}
+
 const DesiredAccuracy = {
   HIGH: "HIGH",
   MEDIUM: "MEDIUM",
@@ -342,6 +348,18 @@ const resetBatchReceiverConfig = (successCallback: any, errorCallback: any) => {
   NativeModules.RNRoam.resetBatchReceiverConfig(successCallback, errorCallback)
 }
 
+const setTrackingConfig = (accuracy: any, timeout: any, source: any, discardLocation: any, successCallback: any, errorCallback: any) => {
+  NativeModules.RNRoam.setTrackingConfig(accuracy, timeout, source, discardLocation, successCallback, errorCallback)
+}
+
+const getTrackingConfig = (successCallback: any, errorCallback: any) => {
+  NativeModules.RNRoam.getTrackingConfig(successCallback, errorCallback)
+}
+
+const resetTrackingConfig = (successCallback: any, errorCallback: any) => {
+  NativeModules.RNRoam.resetTrackingConfig(successCallback, errorCallback)
+}
+
 
 const Roam = {
 TrackingMode,
@@ -352,6 +370,7 @@ DesiredAccuracyIOS,
 ActivityType,
 SubscribeListener,
 Publish,
+Source,
 createUser,
 getUser,
 setDescription,
@@ -413,7 +432,10 @@ getTripSummary,
 updateLocationWhenStationary,
 setBatchReceiverConfig,
 getBatchReceiverConfig,
-resetBatchReceiverConfig
+resetBatchReceiverConfig,
+setTrackingConfig,
+getTrackingConfig,
+resetTrackingConfig
 };
 
 export default Roam;

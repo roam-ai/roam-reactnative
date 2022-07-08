@@ -11,6 +11,7 @@ import com.roam.sdk.models.BatchReceiverConfig;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamLocation;
 import com.roam.sdk.models.RoamUser;
+import com.roam.sdk.models.TrackingConfig;
 import com.roam.sdk.models.TripStatusListener;
 import com.roam.sdk.models.createtrip.Coordinates;
 import com.roam.sdk.models.createtrip.Destination;
@@ -303,6 +304,14 @@ class RNRoamUtils {
             array.pushMap(map);
         }
         return array;
+    }
+
+    static WritableMap mapForTrackingConfig(TrackingConfig config){
+        WritableMap writableMap = Arguments.createMap();
+        writableMap.putInt("accuracy", config.getAccuracy());
+        writableMap.putInt("timeout", config.getTimeout());
+        writableMap.putString("source", config.getSource());
+        return writableMap;
     }
 
     static WritableMap mapForLocation(Location location) {
