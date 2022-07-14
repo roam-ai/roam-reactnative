@@ -1,5 +1,5 @@
 {
-    "compilerOptions": {
+  "compilerOptions": {
     "target": "es6",
     "allowJs": true,
     "jsx": "react",
@@ -8,13 +8,7 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "moduleResolution": "node"
-   },
-   "filesGlob": [
-   "js/**/*.d.ts",
-   "js/**/*.ts",
-   "js/**/*.tsx"
-   ],
-   "exclude": [
-   "node_modules"
-   ]
+  },
+  "filesGlob": ["js/**/*.d.ts", "js/**/*.ts", "js/**/*.tsx"],
+  "exclude": ["node_modules"]
 }
