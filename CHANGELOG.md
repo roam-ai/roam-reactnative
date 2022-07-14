@@ -60,10 +60,9 @@
 
 - Updated to latest native Roam SDK versions. Android v0.0.11 and iOS v0.0.13
 
-
 ## 0.0.15
 
-- Updated to latest iOS native SDK version v0.0.14 which improves `the Roam.getCurrentLocation()`  to return location faster.
+- Updated to latest iOS native SDK version v0.0.14 which improves `the Roam.getCurrentLocation()` to return location faster.
 
 ## 0.0.16
 
@@ -71,7 +70,7 @@
 
 ## 0.0.17
 
-- Fixed `Roam.setForegroundNotification()` to accept the custom icons. 
+- Fixed `Roam.setForegroundNotification()` to accept the custom icons.
 
 ## 0.0.18
 
@@ -91,21 +90,21 @@
 
 ## 0.0.21
 
-- Added new method for `Roam.updateLocationWhenStationary(interval)` which updates location on given interval value in seconds. 
+- Added new method for `Roam.updateLocationWhenStationary(interval)` which updates location on given interval value in seconds.
 
 ## 0.0.22
 
-- Updated to latest native Roam SDK versions. Android v0.0.17 and iOS v0.0.17. 
+- Updated to latest native Roam SDK versions. Android v0.0.17 and iOS v0.0.17.
 - Fixed crashes for `endTrip`, `pauseTrip`, `resumeTrip` and `forceEndTrip` in iOS bridge.
 
 ## 0.0.23
 
-- Updated to latest native Roam SDK version. iOS v0.0.18. 
+- Updated to latest native Roam SDK version. iOS v0.0.18.
 - Fixed the coordinates arrangement for `Roam.getTripSummary()` on local trips.
 
 ## 0.0.24
 
-- Updated to latest native Roam SDK versions. Android v0.0.19 and iOS v0.0.19. 
+- Updated to latest native Roam SDK versions. Android v0.0.19 and iOS v0.0.19.
 - Modified updateCurrentLocation method to support metadata as null.
 - Updated location noise filter to remove inaccurate locations.
 - Added individual distance, duration, and elevation gain for location data inside trip routes for local trips.
@@ -114,47 +113,54 @@
 
 ## 0.0.25
 
-- Updated to latest native Roam SDK versions - iOS v0.0.20. 
+- Updated to latest native Roam SDK versions - iOS v0.0.20.
 - Fixed calculation for distance and duration for individual location data in trip summary route.
 
 ## 0.0.26
 
 Added:
+
 - Added new methods for batch configurations in location receiver.
 
 Modified:
+
 - Location data in location receiver is changed from single location object to list of location updates.
 
 Fixed:
+
 - Trip error changed for few error scenarios to success callbacks.
-     - Trip Already Started
-     - Trip Already Ended
+  - Trip Already Started
+  - Trip Already Ended
 
 ## 0.0.27
 
 Modified:
+
 - Added callbacks to `Roam.resetBatchReceiverConfig()` method to return default config values.
-Fixed:
+  Fixed:
 - Fixed callback response for `Roam.getBatchReceiverConfig()` and `Roam.setBatchReceiverConfig()` methods.
 
 ## 0.0.28
 
 Fixed:
+
 - Fixed the method `Roam.resetBatchReceiverConfig()`.
 - Autolinking for iOS.
 
 ## 0.0.29
 
 Added:
+
 - New listener for connectity change event with `Roam.startListener('connectivityChangeEvent', connectivityChangeEvent)`
-- Updated to latest native Roam SDK versions - Android v0.0.22. 
+- Updated to latest native Roam SDK versions - Android v0.0.22.
 
 ## 0.0.30
 
 Added:
+
 - Fixed location receiver when device restarted (Android).
 - Added option to restart Roam Service with `Roam.setForegroundNotification()` method.
-- Updated to latest native Roam SDK version - Android v0.0.23. 
+- Updated to latest native Roam SDK version - Android v0.0.23.
 
 ## 0.0.31
 
@@ -163,12 +169,14 @@ Added:
 ## 0.0.32
 
 Fixed:
+
 - `Roam.enableAccuracyEngine(int)` method to accept integer value.
 - Autolinking for iOS.
 
 ## 0.0.33
 
 Added:
+
 - Added batch config for "trip_status" listener
 
 ## 0.0.34
