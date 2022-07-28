@@ -311,6 +311,7 @@ class RNRoamUtils {
         writableMap.putInt("accuracy", config.getAccuracy());
         writableMap.putInt("timeout", config.getTimeout());
         writableMap.putString("source", config.getSource());
+        writableMap.putBoolean("discardLocation", config.getDiscardLocation());
         return writableMap;
     }
 
