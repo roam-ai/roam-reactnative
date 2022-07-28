@@ -199,4 +199,4 @@ Added:
 ## 0.0.37
 
 - Updated native Roam SDK versions. Android v0.0.28 and iOS v0.0.28
-- Added `discardLocation` in accuracy config method response.
+- Added `discardLocation` parameter for `Roam.setTrackingConfig()`, `Roam.getTrackingConfig()` and `Roam.resetTrackingConfig()` methods.
