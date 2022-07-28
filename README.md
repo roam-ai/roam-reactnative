@@ -9,21 +9,22 @@
 [![Npm Publish](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml/badge.svg?branch=0.0.1)](https://github.com/geosparks/roam-reactnative/actions/workflows/main.yml)
 
 # Official Roam React Native SDK
+
 This is the official [Roam](https://roam.ai) iOS SDK developed and maintained by Roam B.V
 
-Note: Before you get started [signup to our dashboard](https://roam.ai/dashboard/signup) to get your API Keys. 
-
+Note: Before you get started [signup to our dashboard](https://roam.ai/dashboard/signup) to get your API Keys.
 
 ## Featured Apps
 
 <a href="https://sprintcrowd.com"><img src="https://sprintcrowd.com/wp-content/uploads/2020/08/sc-logo_400.png" width="100"></a>
 <a href="https://letstransport.in"><img src="https://i.imgur.com/pDIb2BK.png" width="100"></a>
 
-
 # Quick Start
+
 The Roam React Native SDK makes it quick and easy to build a location tracker for your React Native app. We provide powerful and customizable tracking modes and features that can be used to collect your users location updates.
 
 ### Requirements
+
 To use the Roam SDK, the following things are required:
 Get yourself a free Roam Account. No credit card required.
 
@@ -42,6 +43,7 @@ npm install --save roam-reactnative
 //yarn
 yarn add roam-reactnative
 ```
+
 If using React Native version of 0.60 or greater, autolinking is now done automatically so you can skip this step.
 
 ```
@@ -53,47 +55,51 @@ expo install roam-reactnative
 ```
 
 Minimum supported versions
+
 ```
 react-native: 0.41.2
 react: 15.4.2
 ```
 
-Before making any changes to your javascript code, you would need to integrate and initialize Roam SDK in your Android and iOS applications. 
+Before making any changes to your javascript code, you would need to integrate and initialize Roam SDK in your Android and iOS applications.
 
 ### Android
+
 1. Add the following to the build script `{repositories {}}` section of the `build.gradle` (Project)file
 
-    ```java
-    mavenCentral()
-    ```
+   ```java
+   mavenCentral()
+   ```
+
 2. Install the SDK to your project via `Gradle` in Android Studio, add the maven below in your project `build.gradle` file.
 
-    ```java
-    repositories {
-        maven {
-            url 'https://com-roam-android.s3.amazonaws.com/'
-        }
-    }
-    ```
+   ```java
+   repositories {
+       maven {
+           url 'https://com-roam-android.s3.amazonaws.com/'
+       }
+   }
+   ```
 
 3. Add the dependencies below in your `app build.gradle` file. Then sync Gradle.
 
-    ```
-    dependencies {
-        implementation 'com.roam.sdk:roam-android:0.0.28'
-    }
-    ```
+   ```
+   dependencies {
+       implementation 'com.roam.sdk:roam-android:0.0.28'
+   }
+   ```
+
 4. Before initializing the SDK, the below must be imported in your Main Activity.
 
-    ```java
-    import com.roam.sdk.Roam;
-    ```
+   ```java
+   import com.roam.sdk.Roam;
+   ```
 
 5. After import, add the below code under the Application class `onCreate()` method. The SDK must be initialised before calling any of the other SDK methods.
 
-    ```java
-    Roam.initialize(this, "YOUR-SDK-KEY-GOES-HERE");
-    ```
+   ```java
+   Roam.initialize(this, "YOUR-SDK-KEY-GOES-HERE");
+   ```
 
 ### iOS
 
@@ -108,28 +114,28 @@ Before making any changes to your javascript code, you would need to integrate a
    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
    <string>Add description for background location usage. iOS 11 and above</string>
    ```
-   
+
    ![Screenshot 2021-06-25 at 8 40 46 PM](https://user-images.githubusercontent.com/19217956/123445597-aa8cf380-d5f5-11eb-9188-15ad742f11a8.png)
 
 3. Next you need to enable`Background fetch` and` Location updates` under `Project Setting` > `Capabilities` > `Background Modes`.
-    
+
    ![Screenshot 2021-06-25 at 8 38 24 PM](https://user-images.githubusercontent.com/19217956/123445386-74e80a80-d5f5-11eb-85d6-e06ef4300734.png)
 
 4. Import Roam into your `AppDelegate` file.
 
-    ```objective-c
-    #import <Roam/Roam.h>
-    ```
+   ```objective-c
+   #import <Roam/Roam.h>
+   ```
 
 5. Initialize the SDK in your `AppDelegate` class before calling any other Roam methods under this `application:didFinishLaunchingWithOptions:`
 
-    ```objective-c
-    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-    {
-      [Roam initialize:@"YOUR-PUBLISHABLE-KEY" :NULL :NULL];
-    }
-    ```
-    
+   ```objective-c
+   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+   {
+     [Roam initialize:@"YOUR-PUBLISHABLE-KEY" :NULL :NULL];
+   }
+   ```
+
 ### Manual Linking
 
 1. Open the iOS module files, located inside `node_modules/roam-reactnative/ios/`.
@@ -143,22 +149,26 @@ Before making any changes to your javascript code, you would need to integrate a
 First, import the module.
 
 ```javascript
-import Roam from 'roam-reactnative';
+import Roam from "roam-reactnative";
 ```
 
 ## Creating Users
-Once the SDK is initialized, we need to *create* or *get a user* to start the tracking and use other methods. Every user created will have a unique Roam identifier which will be used later to login and access developer APIs. We can call it as Roam userId.
+
+Once the SDK is initialized, we need to _create_ or _get a user_ to start the tracking and use other methods. Every user created will have a unique Roam identifier which will be used later to login and access developer APIs. We can call it as Roam userId.
 
 ```javascript
-Roam.createUser("SET-USER-DESCRIPTION-HERE", success => {
- // do something on success
-},
-error => {
-// do something on error
-});
+Roam.createUser(
+  "SET-USER-DESCRIPTION-HERE",
+  (success) => {
+    // do something on success
+  },
+  (error) => {
+    // do something on error
+  }
+);
 ```
 
-The option *user description* can be used to update your user information such as name, address or add an existing user ID. Make sure the information is encrypted if you are planning to save personal user information like email or phone number.
+The option _user description_ can be used to update your user information such as name, address or add an existing user ID. Make sure the information is encrypted if you are planning to save personal user information like email or phone number.
 
 You can always set or update user descriptions later using the below code.
 
@@ -169,17 +179,20 @@ Roam.setDescription("SET-USER-DESCRIPTION-HERE");
 If you already have a Roam userID which you would like to reuse instead of creating a new user, use the below to get user session.
 
 ```javascript
-Roam.getUser("ROAM-USER-ID", success => {
-// do something on success
-},
-error => {
-// do something on error
-});
+Roam.getUser(
+  "ROAM-USER-ID",
+  (success) => {
+    // do something on success
+  },
+  (error) => {
+    // do something on error
+  }
+);
 ```
 
 ## Request Permissions
 
-Get location permission from the App user on the device. Also check if the user has turned on location services for the device. 
+Get location permission from the App user on the device. Also check if the user has turned on location services for the device.
 
 ```javascript
 // Call this method to check Location Permission for Android & iOS
@@ -206,12 +219,13 @@ In case of devices running above Anroid 10, you would need to get background loc
 
 ```javascript
 // Call this method to check background location permission for Android
-Roam.checkBackgroundLocationPermission( status => {
-// do something with status
+Roam.checkBackgroundLocationPermission((status) => {
+  // do something with status
 });
 // Call this method to request background location Permission for Android
 Roam.requestBackgroundLocationPermission();
 ```
+
 ### SDK Configurations
 
 #### Accuracy Engine
@@ -227,6 +241,7 @@ For Custom tracking mores, you can pass the desired accuracy values in integers 
 ```javascript
 Roam.enableAccuracyEngine(50);
 ```
+
 To disable accuracy engine
 
 ```javascript
@@ -235,7 +250,7 @@ Roam.disableAccuracyEngine();
 
 #### Offline Location Tracking
 
-To modify the offline location tracking configuration, which will enabled by default. 
+To modify the offline location tracking configuration, which will enabled by default.
 
 ```javascript
 Roam.offlineLocationTracking(true);
@@ -243,7 +258,7 @@ Roam.offlineLocationTracking(true);
 
 #### Allow Mock Location Tracking
 
-To allow mock location tracking during development, use the below code. This will be disabled by default. 
+To allow mock location tracking during development, use the below code. This will be disabled by default.
 
 ```javascript
 Roam.allowMockLocation(true);
@@ -271,11 +286,11 @@ Roam has three default tracking modes along with a custom version. They differ b
 
 ```javascript
 // active tracking
-Roam.startTracking('ACTIVE');
+Roam.startTracking("ACTIVE");
 // balanced tracking
-Roam.startTracking('BALANCED');
+Roam.startTracking("BALANCED");
 // passive tracking
-Roam.startTracking('PASSIVE');
+Roam.startTracking("PASSIVE");
 ```
 
 ### Custom Tracking Modes
@@ -290,13 +305,17 @@ customize and build your own tracking modes.
 | Distance Interval | Meters   | 1m ~ 2500m     |
 | Time Interval     | Seconds  | 10s ~ 10800s   |
 
-
 **Android: Distance between location updates:**
 
 ```javascript
 //Update location based on distance between locations.
-Roam.startTrackingDistanceInterval("DISTANCE IN METERS", "STATIONARY DURATION IN SECONDS", Roam.DesiredAccuracy.HIGH);
+Roam.startTrackingDistanceInterval(
+  "DISTANCE IN METERS",
+  "STATIONARY DURATION IN SECONDS",
+  Roam.DesiredAccuracy.HIGH
+);
 ```
+
 Here, the `DISTANCE IN METERS` refers to distance interval for location tracking and `STATIONARY DURATION IN SECONDS` refers to duration for which location update is determined as stationary.
 
 Below is the example for distance based tracking with distance interval as 10m and stationary duration as 2 minutes.
@@ -310,8 +329,12 @@ Roam.startTrackingDistanceInterval(10, 120, Roam.DesiredAccuracy.HIGH);
 
 ```javascript
 //Update location based on time interval.
-Roam.startTrackingTimeInterval("INTERVAL IN SECONDS", Roam.DesiredAccuracy.HIGH);
+Roam.startTrackingTimeInterval(
+  "INTERVAL IN SECONDS",
+  Roam.DesiredAccuracy.HIGH
+);
 ```
+
 Here, the `INTERVAL IN SECONDS` refers to time interval for location tracking.
 
 Below is the example for time based tracking with time interval as 10s.
@@ -322,12 +345,21 @@ Roam.startTrackingTimeInterval(10, Roam.DesiredAccuracy.HIGH);
 ```
 
 #### iOS
+
 We have a single method for iOS which can perfrom both time and distance based tracking based on the input parameters.
 
 ```javascript
 // Update location on distance interval
-Roam.startTrackingCustom(allowBackground,pauseAutomatic,activityType,
-                              desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter, updateInterval);
+Roam.startTrackingCustom(
+  allowBackground,
+  pauseAutomatic,
+  activityType,
+  desiredAccuracy,
+  showBackIndicator,
+  distanceFilter,
+  accuracyFilter,
+  updateInterval
+);
 ```
 
 **iOS: Distance between location updates:**
@@ -338,53 +370,66 @@ Below is the example for distance based tracking with distance interval as 20 me
 
 ```javascript
 Roam.startTrackingCustom(
-              true, // allowBackground
-              false, // pauseAutomatic
-              Roam.ActivityType.FITNESS, // activityType
-              Roam.DesiredAccuracyIOS.BEST, // desiredAccuracy
-              true, // showBackIndicator
-              20, // distanceFilter
-              10, // accuracyFilter
-              0, // updateInterval
-            );
+  true, // allowBackground
+  false, // pauseAutomatic
+  Roam.ActivityType.FITNESS, // activityType
+  Roam.DesiredAccuracyIOS.BEST, // desiredAccuracy
+  true, // showBackIndicator
+  20, // distanceFilter
+  10, // accuracyFilter
+  0 // updateInterval
+);
 ```
 
 **iOS: Time between location updates:**
 
 ```javascript
 // Update location on time interval
-Roam.startTrackingCustom(allowBackground,pauseAutomatic,activityType,
-                              desiredAccuracy,showBackIndicator,distanceFilter,accuracyFilter, updateInterval);
+Roam.startTrackingCustom(
+  allowBackground,
+  pauseAutomatic,
+  activityType,
+  desiredAccuracy,
+  showBackIndicator,
+  distanceFilter,
+  accuracyFilter,
+  updateInterval
+);
 ```
+
 Here, the `updateInterval` refers to time interval for location tracking which should be in seconds. To achieve time based tracking, the `distanceFilter` value should be 0.
 
 Below is the example for time based tracking with time interval as 120s.
 
 ```javascript
 Roam.startTrackingCustom(
-              true, // allowBackground
-              false, // pauseAutomatic
-              Roam.ActivityType.FITNESS, // activityType
-              Roam.DesiredAccuracyIOS.BEST, // desiredAccuracy
-              true, // showBackIndicator
-              0, // distanceFilter
-              10, // accuracyFilter
-              120, // updateInterval
-            );
+  true, // allowBackground
+  false, // pauseAutomatic
+  Roam.ActivityType.FITNESS, // activityType
+  Roam.DesiredAccuracyIOS.BEST, // desiredAccuracy
+  true, // showBackIndicator
+  0, // distanceFilter
+  10, // accuracyFilter
+  120 // updateInterval
+);
 ```
+
 ### Update Location When Stationary
+
 By using this method updateLocationWhenStationary , location will update every x seconds when device goes to stationary state.
 
 Note: It will work on all tracking modes ie. active, passive, balance and distance based custom tracking except time based custom tracking.
 
 ```javascript
-Roam.updateLocationWhenStationary(interval)
+Roam.updateLocationWhenStationary(interval);
 ```
+
 For example, to update location every 60s when the user becomes stationary, use the below code.
 
 ```javascript
-Roam.updateLocationWhenStationary(60)
+Roam.updateLocationWhenStationary(60);
 ```
+
 ## Stop Tracking
 
 To stop the tracking use the below method.
@@ -401,19 +446,23 @@ We will now have an option to send meta-data as a parameter along with location 
 ```javascript
 Roam.publishAndSave(metadataJSON);
 ```
+
 Example
+
 ```javascript
 //Metadata is not mandatory
-let metadataJSON = {"METADATA": {"1": true, "2": true, "3":true}};
+let metadataJSON = { METADATA: { 1: true, 2: true, 3: true } };
 
 Roam.publishAndSave(metadataJSON);
-(optional)
+optional;
 Roam.publishAndSave(null);
 ```
+
 ## Stop Publishing
 
 It will stop publishing the location data to other clients.
-``` javascript
+
+```javascript
 Roam.stopPublishing();
 ```
 
@@ -422,22 +471,25 @@ Roam.stopPublishing();
 Now that you have enabled the location listener, use the below method to subscribe to your own or other user's location updates and events.
 
 ### Subscribe
-``` javascript
+
+```javascript
 Roam.subscribe(TYPE, "USER-ID");
 ```
 
-| **Type**                        | **Description** |
-| --------------------------------| -------- |
-| LOCATION | Subscribe to your own location (or) other user's location updates.   |
-| EVENTS   | Subscribe to your own events.  |
-| BOTH     | Subscribe to your own events and location (or) other user's location updates.  |
-
+| **Type** | **Description**                                                               |
+| -------- | ----------------------------------------------------------------------------- |
+| LOCATION | Subscribe to your own location (or) other user's location updates.            |
+| EVENTS   | Subscribe to your own events.                                                 |
+| BOTH     | Subscribe to your own events and location (or) other user's location updates. |
 
 ### UnSubscribe
-``` javascript
+
+```javascript
 Roam.unSubscribe(TYPE, "USER-ID");
 ```
+
 You can pass `user_id` as empty string to unsubscribe from all the users.
+
 ## Listeners
 
 Now that the location tracking is set up, you can subscribe to locations and events and use the data locally on your device or send it directly to your own backend server.
@@ -445,13 +497,18 @@ Now that the location tracking is set up, you can subscribe to locations and eve
 To do that, you need to set the location and event listener to `true` using the below method. By default the status will set to `false` and needs to be set to `true` in order to stream the location and events updates to the same device or other devices.
 
 ```javascript
-Roam.toggleListener(true, true, success => {
- // do something on success
-},
-error => {
-// do something on error
-});
+Roam.toggleListener(
+  true,
+  true,
+  (success) => {
+    // do something on success
+  },
+  (error) => {
+    // do something on error
+  }
+);
 ```
+
 Once the listener toggles are set to true, to listen to location updates and events.
 
 Note: The location data received will be an array with either single or multiple location data.
@@ -459,11 +516,12 @@ Note: The location data received will be an array with either single or multiple
 ```javascript
 Roam.startListener("location", (location) => {
   // do something on location received
-  console.log('Location', location);
+  console.log("Location", location);
   // Console Output:
   // [{"activity": "S", "location": {"accuracy": 22.686637856849305, "altitude": 288.10509490966797, "latitude": 10.356502722371895, "longitude": 78.00075886670541, "speed": -1}, "recordedAt": "2022-03-22T11:18:04.928Z", "timezone": "+0530", "userId": "6239b06506df1f5c1c375353"},{..}...]
 });
 ```
+
 You can also configure batch setting for the location receiver. To set the batch configuration, you need to pass batch count and batch window.
 
 ```javascript
@@ -479,41 +537,47 @@ error => {
 //error.message
 }););
 ```
-| **Type**                        | **Description** |
-| --------------------------------| -------- |
-| NETWORK_STATE | online (or) offline (or) both   |
-| BATCH_COUNT   | Integer value from 1-1000. Default as 1  |
-| BATCH_WINDOW  | Integer value. Default as 0  |
+
+| **Type**      | **Description**                         |
+| ------------- | --------------------------------------- |
+| NETWORK_STATE | online (or) offline (or) both           |
+| BATCH_COUNT   | Integer value from 1-1000. Default as 1 |
+| BATCH_WINDOW  | Integer value. Default as 0             |
 
 You can get the current configured settings with the below code.
 
 ```javascript
-Roam.getBatchReceiverConfig(success => {
- // do something on success
- //success.batchCount,
- //success.batchWindow,
- //success.networkState
-},
-error => {
-// do something on error
-//error.code
-//error.message
-});
+Roam.getBatchReceiverConfig(
+  (success) => {
+    // do something on success
+    //success.batchCount,
+    //success.batchWindow,
+    //success.networkState
+  },
+  (error) => {
+    // do something on error
+    //error.code
+    //error.message
+  }
+);
 ```
+
 You can reset the batch configuration to default values with the below code.
 
 ```javascript
-Roam.resetBatchReceiverConfig(success => {
- // do something on success
- //success.batchCount,
- //success.batchWindow,
- //success.networkState
-},
-error => {
-// do something on error
-//error.code
-//error.message
-});
+Roam.resetBatchReceiverConfig(
+  (success) => {
+    // do something on success
+    //success.batchCount,
+    //success.batchWindow,
+    //success.networkState
+  },
+  (error) => {
+    // do something on error
+    //error.code
+    //error.message
+  }
+);
 ```
 
 ## Documentation
@@ -521,7 +585,9 @@ error => {
 Please visit our [Developer Center](https://github.com/geosparks/roam-reactnative/wiki) for instructions on other SDK methods.
 
 ## Contributing
+
 - For developing the SDK, please visit our [CONTRIBUTING.md](https://github.com/geosparks/roam-reactnative/blob/master/CONTRIBUTING.md) to get started.
 
 ## Need Help?
+
 If you have any problems or issues over our SDK, feel free to create a github issue or submit a request on [Roam Help](https://geosparkai.atlassian.net/servicedesk/customer/portal/2).
