@@ -187,3 +187,8 @@ Added:
 - Updated native Roam SDK versions. Android v0.0.26 and iOS v0.0.27
 - Added tracking config methods `Roam.setTrackingConfig()`, `Roam.getTrackingConfig()` and `Roam.resetTrackingConfig()`
 - Fixed blue bar for custom tracking in iOS.
+
+## 0.0.37
+
+- Updated native Roam SDK versions. Android v0.0.28 and iOS v0.0.28
+- Added `discardLocation` in accuracy config method response.
