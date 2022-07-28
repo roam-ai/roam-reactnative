@@ -83,12 +83,11 @@ Before making any changes to your javascript code, you would need to integrate a
 
 3. Add the dependencies below in your `app build.gradle` file. Then sync Gradle.
 
-   ```
+  ```
    dependencies {
        implementation 'com.roam.sdk:roam-android:0.0.28'
    }
    ```
-
 4. Before initializing the SDK, the below must be imported in your Main Activity.
 
    ```java
