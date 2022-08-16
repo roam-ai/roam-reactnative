@@ -200,3 +200,7 @@ Added:
 
 - Updated native Roam SDK versions. Android v0.0.28 and iOS v0.0.28
 - Added `discardLocation` parameter for `Roam.setTrackingConfig()`, `Roam.getTrackingConfig()` and `Roam.resetTrackingConfig()` methods.
+
+## 0.0.38
+
+- Added extra `distanceCovered` property in android for trip summary.
