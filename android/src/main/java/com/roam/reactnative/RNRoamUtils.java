@@ -93,6 +93,7 @@ class RNRoamUtils {
         }
         WritableMap map = Arguments.createMap();
         map.putDouble("distanceCovered", roamTripSummary.getDistance_covered());
+        map.putDouble("distance", roamTripSummary.getDistance_covered());
         map.putDouble("duration", roamTripSummary.getDuration());
         map.putDouble("elevationGain", roamTripSummary.getTotal_elevation_gain());
         if (roamTripSummary.getRoute() != null && roamTripSummary.getRoute().size() > 0) {
