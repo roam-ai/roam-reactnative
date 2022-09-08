@@ -23,7 +23,7 @@ const DesiredAccuracy = {
 const NetworkState = {
   BOTH : 'BOTH',
   ONLINE : 'ONLINE',
-  LOW : 'LOW'
+  OFFLINE : 'OFFLINE'
 }
 
 const AppState = {

@@ -17,7 +17,7 @@ const TrackingMode = {
 const NetworkState = {
   BOTH : 'BOTH',
   ONLINE : 'ONLINE',
-  LOW : 'LOW'
+  OFFLINE : 'OFFLINE'
 }
 
 const Source = {
