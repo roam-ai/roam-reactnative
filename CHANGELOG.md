@@ -207,5 +207,5 @@ Added:
 
 ## 0.0.39
 
-- Upgraded native Roam iOS SDK to v0.0.29
+- Updated native Roam SDK versions. Android v0.0.30 and iOS v0.0.31
 - Fixed `OFFLINE` input for Tracking config NetworkState
