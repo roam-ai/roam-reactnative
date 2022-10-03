@@ -204,3 +204,8 @@ Added:
 ## 0.0.38
 
 - Added extra `distanceCovered` property in android for trip summary.
+
+## 0.0.39
+
+- Updated native Roam SDK versions. Android v0.0.30 and iOS v0.0.31
+- Fixed `OFFLINE` input for Tracking config NetworkState
