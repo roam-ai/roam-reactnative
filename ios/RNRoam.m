@@ -737,7 +737,7 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
   response.updatedAt = [dict objectForKey:@"updatedAt"];
   response.createdAt = [dict objectForKey:@"createdAt"];
   response.startedAt = [dict objectForKey:@"startedAt"];
-  response.endedAt = [dict objectForKey:@"tripId"];
+  response.endedAt = [dict objectForKey:@"endedAt"];
   response.metadata = [dict objectForKey:@"metadata"];
   response.isLocal = [dict objectForKey:@"isLocal"];
   response.syncStatus = [dict objectForKey:@"syncStatus"];
