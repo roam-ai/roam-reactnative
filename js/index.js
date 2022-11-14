@@ -193,50 +193,82 @@ const requestBackgroundLocationPermission = () => {
   NativeModules.RNRoam.requestBackgroundLocationPermission();
 };
 
-const createTrip = (offline, successCallback, errorCallback) => {
-  NativeModules.RNRoam.createTrip(offline, successCallback, errorCallback);
-};
 
-const startTrip = (tripId, description, successCallback, errorCallback) => {
-  NativeModules.RNRoam.startTrip(
-    tripId,
-    description,
-    successCallback,
-    errorCallback
-  );
-};
+// -------- Trips V2 ----------
 
-const resumeTrip = (tripId, successCallback, errorCallback) => {
-  NativeModules.RNRoam.resumeTrip(tripId, successCallback, errorCallback);
-};
+class RoamTrip {
+  constructor(metadata, description, name, stops, isLocal, tripId, userId){
+    this.metadata = metadata;
+    this.description = description;
+    this.name = name;
+    this.stops = stops;
+    this.isLocal = isLocal;
+    this.tripId = tripId;
+    this.userId = userId;
+  }
+}
 
-const pauseTrip = (tripId, successCallback, errorCallback) => {
-  NativeModules.RNRoam.pauseTrip(tripId, successCallback, errorCallback);
-};
+class RoamTripStop {
+  constructor(id, metadata, description, name, address, geometryRadius, geometry){
+    this.id = id;
+    this.metadata = metadata;
+    this.description = description;
+    this.name = name;
+    this.address = address;
+    this.geometryRadius = geometryRadius;
+    this.geometry = geometry;
+  }
+}
 
-const getTripSummary = (tripId, successCallback, errorCallback) => {
-  NativeModules.RNRoam.getTripSummary(tripId, successCallback, errorCallback);
-};
+//const createTrip = (roamTrip, successCallback, errorCallback)
 
-const stopTrip = (tripId, successCallback, errorCallback) => {
-  NativeModules.RNRoam.stopTrip(tripId, successCallback, errorCallback);
-};
+// -------- END ------------
 
-const forceStopTrip = (tripId, successCallback, errorCallback) => {
-  NativeModules.RNRoam.forceStopTrip(tripId, successCallback, errorCallback);
-};
 
-const deleteTrip = (tripId, successCallback, errorCallback) => {
-  NativeModules.RNRoam.deleteTrip(tripId, successCallback, errorCallback);
-};
+// const createTrip = (offline, successCallback, errorCallback) => {
+//   NativeModules.RNRoam.createTrip(offline, successCallback, errorCallback);
+// };
 
-const syncTrip = (tripId, successCallback, errorCallback) => {
-  NativeModules.RNRoam.syncTrip(tripId, successCallback, errorCallback);
-};
+// const startTrip = (tripId, description, successCallback, errorCallback) => {
+//   NativeModules.RNRoam.startTrip(
+//     tripId,
+//     description,
+//     successCallback,
+//     errorCallback
+//   );
+// };
 
-const activeTrips = (offline, successCallback, errorCallback) => {
-  NativeModules.RNRoam.activeTrips(offline, successCallback, errorCallback);
-};
+// const resumeTrip = (tripId, successCallback, errorCallback) => {
+//   NativeModules.RNRoam.resumeTrip(tripId, successCallback, errorCallback);
+// };
+
+// const pauseTrip = (tripId, successCallback, errorCallback) => {
+//   NativeModules.RNRoam.pauseTrip(tripId, successCallback, errorCallback);
+// };
+
+// const getTripSummary = (tripId, successCallback, errorCallback) => {
+//   NativeModules.RNRoam.getTripSummary(tripId, successCallback, errorCallback);
+// };
+
+// const stopTrip = (tripId, successCallback, errorCallback) => {
+//   NativeModules.RNRoam.stopTrip(tripId, successCallback, errorCallback);
+// };
+
+// const forceStopTrip = (tripId, successCallback, errorCallback) => {
+//   NativeModules.RNRoam.forceStopTrip(tripId, successCallback, errorCallback);
+// };
+
+// const deleteTrip = (tripId, successCallback, errorCallback) => {
+//   NativeModules.RNRoam.deleteTrip(tripId, successCallback, errorCallback);
+// };
+
+// const syncTrip = (tripId, successCallback, errorCallback) => {
+//   NativeModules.RNRoam.syncTrip(tripId, successCallback, errorCallback);
+// };
+
+// const activeTrips = (offline, successCallback, errorCallback) => {
+//   NativeModules.RNRoam.activeTrips(offline, successCallback, errorCallback);
+// };
 
 const publishOnly = (array, jsonMetadata) => {
   NativeModules.RNRoam.publishOnly(array, jsonMetadata);
@@ -530,16 +562,16 @@ const Roam = {
   requestLocationServices,
   requestBackgroundLocationPermission,
   locationPermissionStatus,
-  createTrip,
-  startTrip,
-  resumeTrip,
-  pauseTrip,
-  stopTrip,
-  forceStopTrip,
-  deleteTrip,
-  syncTrip,
-  activeTrips,
-  getTripSummary,
+  // createTrip,
+  // startTrip,
+  // resumeTrip,
+  // pauseTrip,
+  // stopTrip,
+  // forceStopTrip,
+  // deleteTrip,
+  // syncTrip,
+  // activeTrips,
+  // getTripSummary,
   publishOnly,
   publishAndSave,
   stopPublishing,
