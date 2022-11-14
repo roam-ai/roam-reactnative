@@ -339,7 +339,16 @@ RCT_EXPORT_METHOD(createTrip:(NSDictionary *)dict :(RCTResponseSenderBlock)succe
   }];
 }
 
-RCT_EXPORT_METHOD(startQuickTrip:(NSDictionary *)dict :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+RCT_EXPORT_METHOD(startQuickTrip:(NSDictionary *)dict trackingMode:(NSString *)tracking customTrackingOptions:(NSDictionary *)customDict :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+  
+  [Roam startTrip:[self createTripdict:dict] :[self trackingMode:tracking] :[self customMethod:customDict] handler:^(RoamTripResponse * response, RoamTripError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripResponse:response], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self tripError:error]);
+    }
+  }];
 }
 
 RCT_EXPORT_METHOD(startTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
@@ -895,5 +904,32 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:[NSNumber numberWithBool:isSynced] forKey:@"isSynced"];
   return dict;
+}
+
+-(RoamTrackingMode *)trackingMode:(NSString *)tracking {
+  if ([tracking  isEqual: @"ACTIVE"]) {
+    return  RoamTrackingModeActive;
+  }else if ([tracking isEqual: @"BALANCED"]){
+    return  RoamTrackingModeBalanced;
+  }else if ([tracking isEqual: @"PASSIVE"]){
+    return RoamTrackingModePassive;
+  }else{
+    return  RoamTrackingModeCustom;
+  }
+}
+
+-(RoamTrackingCustomMethods *)customMethod:(NSDictionary *)dict {
+  RoamTrackingCustomMethodsObjcWrapper *wrapper = [[RoamTrackingCustomMethodsObjcWrapper alloc] init];
+  CLActivityType * activityType = [self getActivityType:[dict objectForKey:@"activityType"]];
+  LocationAccuracy * accuracy = [self getDesireAccuracy:[dict objectForKey:@"desiredAccuracyIOS"]];
+  BOOL allowBackground = [dict objectForKey:@"allowBackgroundLocationUpdates"];
+  BOOL pausesLocationUpdatesAutomatically = [dict objectForKey:@"pausesLocationUpdatesAutomatically"];
+  BOOL showsBackgroundLocationIndicator = [dict objectForKey:@"showsBackgroundLocationIndicator"];
+  int accuracyFilter = [dict objectForKey:@"accuracyFilter"];
+  int distanceFilter = [dict objectForKey:@"distanceFilter"];
+  int updateInterval = [dict objectForKey:@"updateInterval"];
+
+[wrapper setUpCustomOptionsWithDesiredAccuracy:accuracy useVisit:true showsBackgroundLocationIndicator:showsBackgroundLocationIndicator distanceFilter:distanceFilter useSignificant:true useRegionMonitoring:true useDynamicGeofencRadius:true geofenceRadius:true allowBackgroundLocationUpdates:allowBackground activityType:activityType pausesLocationUpdatesAutomatically:pausesLocationUpdatesAutomatically useStandardLocationServices:false accuracyFilter:accuracyFilter updateInterval:updateInterval];
+  return  wrapper.customMethods;
 }
 @end
