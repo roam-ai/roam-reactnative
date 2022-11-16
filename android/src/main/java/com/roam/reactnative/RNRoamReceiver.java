@@ -3,8 +3,6 @@ package com.roam.reactnative;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.facebook.react.HeadlessJsTaskService;
 import com.facebook.react.ReactApplication;
@@ -19,8 +17,7 @@ import com.roam.sdk.models.NetworkListener;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamLocation;
 import com.roam.sdk.models.RoamLocationReceived;
-import com.roam.sdk.models.TripStatusListener;
-import com.roam.sdk.models.createtrip.Coordinates;
+import com.roam.sdk.models.RoamTripStatus;
 import com.roam.sdk.service.RoamReceiver;
 
 import java.util.List;
@@ -99,12 +96,11 @@ public class RNRoamReceiver extends RoamReceiver {
     }
 
     @Override
-    public void onReceiveTripStatus(Context context, List<TripStatusListener>  tripStatusListener) {
-        super.onReceiveTripStatus(context, tripStatusListener);
+    public void onReceiveTrip(Context context, List<RoamTripStatus> list) {
+        super.onReceiveTrip(context, list);
         ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
         mReactNativeHost = reactApplication.getReactNativeHost();
-        WritableArray array = RNRoamUtils.mapForTripStatusListnerList(tripStatusListener);
-        sendEvent("trip_status", array);
+        sendEvent("trip_status", RNRoamUtils.mapForTripStatusListener(list));
     }
 
     @Override

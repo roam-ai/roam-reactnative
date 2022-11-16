@@ -10,6 +10,7 @@ const TrackingMode = {
   ACTIVE: "ACTIVE",
   BALANCED: "BALANCED",
   PASSIVE: "PASSIVE",
+  CUSTOM: "CUSTOM"
 };
 
 const DesiredAccuracy = {
