@@ -53,8 +53,8 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void createUser(String description, final Callback successCallback, final Callback errorCallback) {
-    Roam.createUser(description, null, new RoamCallback() {
+  public void createUser(String description, ReadableMap metadata, final Callback successCallback, final Callback errorCallback) {
+    Roam.createUser(description, (metadata != null) ? new JSONObject(metadata.toHashMap()) : null, new RoamCallback() {
       @Override
       public void onSuccess(RoamUser roamUser) {
         successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
@@ -514,7 +514,7 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void updateTrip(final ReadableMap roamTrip, final Callback successCallback, final Callback errorCallback){
-    Roam.updateTrip(RNRoamUtils.decodeRoamTrip(roamTrip), new RoamTripCallback() {
+    Roam.updateTrip(RNRoamUtils.decodeUpdateRoamTrip(roamTrip), new RoamTripCallback() {
       @Override
       public void onSuccess(RoamTripResponse roamTripResponse) {
         successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
@@ -622,7 +622,7 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
     Roam.getTripSummary(tripId, new RoamTripCallback() {
       @Override
       public void onSuccess(RoamTripResponse roamTripResponse) {
-        RNRoamUtils.mapForRoamTripResponse(roamTripResponse);
+        successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
       }
 
       @Override

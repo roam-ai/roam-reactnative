@@ -2,6 +2,7 @@ package com.roam.reactnative;
 
 import android.location.Location;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableArray;
@@ -93,12 +94,24 @@ class RNRoamUtils {
         WritableMap map = Arguments.createMap();
         map.putString("userId", roamUser.getUserId());
         map.putString("description", roamUser.getDescription());
-        map.putBoolean("geofenceEvents", roamUser.getGeofenceEvents());
-        map.putBoolean("locationEvents", roamUser.getLocationEvents());
-        map.putBoolean("tripsEvents", roamUser.getTripsEvents());
-        map.putBoolean("movingGeofenceEvents", roamUser.getMovingGeofenceEvents());
-        map.putBoolean("eventListenerStatus", roamUser.getEventListenerStatus());
-        map.putBoolean("locationListenerStatus", roamUser.getLocationListenerStatus());
+        if (roamUser.getGeofenceEvents() != null){
+            map.putBoolean("geofenceEvents", roamUser.getGeofenceEvents());
+        }
+        if (roamUser.getLocationEvents() != null){
+            map.putBoolean("locationEvents", roamUser.getLocationEvents());
+        }
+        if (roamUser.getTripsEvents() != null){
+            map.putBoolean("tripsEvents", roamUser.getTripsEvents());
+        }
+        if (roamUser.getMovingGeofenceEvents() != null){
+            map.putBoolean("movingGeofenceEvents", roamUser.getMovingGeofenceEvents());
+        }
+        if (roamUser.getEventListenerStatus() != null){
+            map.putBoolean("eventListenerStatus", roamUser.getEventListenerStatus());
+        }
+        if (roamUser.getLocationListenerStatus() != null){
+            map.putBoolean("locationListenerStatus", roamUser.getLocationListenerStatus());
+        }
         return map;
     }
 
@@ -188,6 +201,7 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForRoamTripResponse(RoamTripResponse roamTripResponse){
+        if (roamTripResponse == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("code", roamTripResponse.getCode().toString());
         map.putString("message", roamTripResponse.getMessage());
@@ -197,6 +211,7 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForTripDetails(TripDetails tripDetails){
+        if (tripDetails == null) return null;
         WritableMap trip = Arguments.createMap();
         trip.putString("id", tripDetails.getTripId());
         trip.putString("name", tripDetails.getTripName());
@@ -205,7 +220,7 @@ class RNRoamUtils {
         trip.putDouble("total_distance", tripDetails.getTotalDistance());
         trip.putDouble("total_duration", tripDetails.getTotalDuration());
         trip.putDouble("total_elevation_gain", tripDetails.getTotalElevationGain());
-        trip.putString("metadata", tripDetails.getMetadata().toString());
+        trip.putString("metadata", tripDetails.getMetadata() != null ? tripDetails.getMetadata().toString() : null);
         trip.putMap("start_location", mapForTripLocation(tripDetails.getStartLocation()));
         trip.putMap("end_location", mapForTripLocation(tripDetails.getEndLocation()));
         trip.putMap("user", mapForTripUser(tripDetails.getUser()));
@@ -242,36 +257,41 @@ class RNRoamUtils {
         } else {
             trip.putArray("route", null);
         }
-        trip.putString("routeIndex", tripDetails.getRouteIndex().toString());
-        trip.putInt("location_count", tripDetails.getLocationCount());
+        trip.putString("routeIndex", tripDetails.getRouteIndex() != null ? tripDetails.getRouteIndex().toString() : null);
+        if (tripDetails.getLocationCount() != null) {
+            trip.putInt("location_count", tripDetails.getLocationCount());
+        }
         return trip;
     }
 
     static WritableMap mapForTripLocation(StartLocation startLocation){
+        if (startLocation == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("id", startLocation.getId());
         map.putString("name", startLocation.getName());
         map.putString("description", startLocation.getDescription());
         map.putString("address", startLocation.getAddress());
-        map.putString("metadata", startLocation.getMetadata().toString());
+        map.putString("metadata", startLocation.getMetadata() != null ? startLocation.getMetadata().toString() : null);
         map.putString("recorded_at", startLocation.getRecordedAt());
         map.putMap("geometry", mapForGeometry(startLocation.getGeometry()));
         return map;
     }
 
     static WritableMap mapForTripLocation(EndLocation endLocation){
+        if (endLocation == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("id", endLocation.getId());
         map.putString("name", endLocation.getName());
         map.putString("description", endLocation.getDescription());
         map.putString("address", endLocation.getAddress());
-        map.putString("metadata", endLocation.getMetadata().toString());
+        map.putString("metadata", endLocation.getMetadata() != null ? endLocation.getMetadata().toString() : null);
         map.putString("recorded_at", endLocation.getRecordedAt());
         map.putMap("geometry", mapForGeometry(endLocation.getGeometry()));
         return map;
     }
 
     static WritableMap mapForGeometry(Geometry geometry){
+        if (geometry == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("type", geometry.getType());
         WritableArray coordinates = Arguments.createArray();
@@ -283,6 +303,7 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForCoordinates(Coordinates coordinates){
+        if (coordinates == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("type", coordinates.getType());
         WritableArray coordinatesArray = Arguments.createArray();
@@ -294,21 +315,23 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForTripUser(User user){
+        if (user == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("name", user.getName());
         map.putString("description", user.getDescription());
-        map.putString("metadata", user.getMetadata().toString());
+        map.putString("metadata", user.getMetadata() != null ? user.getMetadata().toString() : null);
         map.putString("id", user.getId());
         return map;
     }
 
     static WritableMap mapForStop(Stop stop){
+        if (stop == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("id", stop.getId());
         map.putString("name", stop.getStopName());
         map.putString("description", stop.getStopDescription());
         map.putString("address", stop.getAddress());
-        map.putString("metadata", stop.getMetadata().toString());
+        map.putString("metadata", stop.getMetadata() != null ? stop.getMetadata().toString() : null);
         map.putDouble("geometry_radius", stop.getGeometryRadius());
         map.putString("created_at", stop.getCreatedAt());
         map.putString("updated_at", stop.getUpdatedAt());
@@ -319,6 +342,7 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForEvent(Events events){
+        if (events == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("id", events.getId());
         map.putString("trip_id", events.getTripId());
@@ -332,8 +356,9 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForRoutes(Routes routes){
+        if (routes == null) return null;
         WritableMap map = Arguments.createMap();
-        map.putString("metadata", routes.getMetadata().toString());
+        map.putString("metadata", routes.getMetadata() != null ? routes.getMetadata().toString() : null);
         map.putString("activity", routes.getActivity());
         map.putDouble("speed", routes.getSpeed());
         map.putDouble("altitude", routes.getAltitude());
@@ -348,6 +373,7 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForTripError(Error error){
+        if (error == null) return null;
         WritableMap map = Arguments.createMap();
         if (error.getErrors() != null){
             WritableArray errorsArray = Arguments.createArray();
@@ -368,18 +394,24 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForRoamSyncTripResponse(RoamSyncTripResponse roamSyncTripResponse){
+        if (roamSyncTripResponse == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("msg", roamSyncTripResponse.getMessage());
         map.putString("description", roamSyncTripResponse.getDescription());
         map.putInt("code", roamSyncTripResponse.getCode());
         WritableMap data = Arguments.createMap();
-        data.putString("trip_id", roamSyncTripResponse.getData().getTrip_id());
-        data.putBoolean("is_synced", roamSyncTripResponse.getData().getIsSynced());
+        if (roamSyncTripResponse.getData() != null) {
+            data.putString("trip_id", roamSyncTripResponse.getData().getTrip_id());
+            if (roamSyncTripResponse.getData().getIsSynced() != null){
+                data.putBoolean("is_synced", roamSyncTripResponse.getData().getIsSynced());
+            }
+        }
         map.putMap("data", data);
         return map;
     }
 
     static WritableMap mapForActiveTripsResponse(RoamActiveTripsResponse roamActiveTripsResponse){
+        if (roamActiveTripsResponse == null) return null;
         WritableMap map = Arguments.createMap();
         map.putInt("code", roamActiveTripsResponse.getCode());
         map.putString("message", roamActiveTripsResponse.getMessage());
@@ -398,13 +430,14 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForTrips(Trips trips){
+        if (trips == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("id", trips.getTripId());
         map.putString("trip_state", trips.getTripState());
         map.putDouble("total_distance", trips.getTotalDistance());
         map.putDouble("total_duration", trips.getTotalDuration());
         map.putDouble("total_elevation_gain", trips.getTotalElevationGain());
-        map.putString("metadata", trips.metadata().toString());
+        map.putString("metadata", trips.metadata() != null ? trips.metadata().toString() : null);
         map.putMap("user", mapForTripUser(trips.getUser()));
         map.putString("started_at", trips.getStartedAt());
         map.putString("ended_at", trips.getEndedAt());
@@ -433,13 +466,18 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForRoamDeleteTripResponse(RoamDeleteTripResponse roamDeleteTripResponse){
+        if (roamDeleteTripResponse == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("message", roamDeleteTripResponse.getMessage());
         map.putString("description", roamDeleteTripResponse.getDescription());
         map.putInt("code", roamDeleteTripResponse.getCode());
         WritableMap trip = Arguments.createMap();
-        trip.putString("id", roamDeleteTripResponse.getTrip().getId());
-        trip.putBoolean("is_deleted", roamDeleteTripResponse.getTrip().getIs_deleted());
+        if (roamDeleteTripResponse.getTrip() != null) {
+            trip.putString("id", roamDeleteTripResponse.getTrip().getId());
+            if (roamDeleteTripResponse.getTrip().getIs_deleted() != null){
+                trip.putBoolean("is_deleted", roamDeleteTripResponse.getTrip().getIs_deleted());
+            }
+        }
         map.putMap("trip", trip);
         return map;
     }
@@ -447,18 +485,18 @@ class RNRoamUtils {
 
 
     static RoamTripStops decodeRoamTripsStop(ReadableMap map){
-        String id = map.getString("RoamTripStop");
-        String stopName = map.getString("stopName");
-        String stopDescription = map.getString("stopDescription");
-        String address = map.getString("address");
-        Double geometryRadius = map.getDouble("geometryRadius");
-        ReadableArray geometryCoordinates = map.getArray("geometryCoordinates");
+        String id = map.hasKey("RoamTripStop") ? map.getString("RoamTripStop") : null;
+        String stopName = map.hasKey("stopName") ? map.getString("stopName") : null;
+        String stopDescription = map.hasKey("stopDescription") ? map.getString("stopDescription") : null;
+        String address = map.hasKey("address") ? map.getString("address") : null;
+        Double geometryRadius = map.hasKey("geometryRadius") ? map.getDouble("geometryRadius") : null;
+        ReadableArray geometryCoordinates = map.hasKey("geometryCoordinates") ? map.getArray("geometryCoordinates") : null;
         List<Double> geometryCoordinatesList = new ArrayList<>();
         if (geometryCoordinates != null && geometryCoordinates.size() == 2){
             geometryCoordinatesList.add(geometryCoordinates.getDouble(0));
             geometryCoordinatesList.add(geometryCoordinates.getDouble(1));
         }
-        ReadableMap metadata = map.getMap("metadata");
+        ReadableMap metadata = map.hasKey("metadata") ? map.getMap("metadata") : null;
         RoamTripStops stop = new RoamTripStops();
         if (id != null){
             stop.setStopId(id);
@@ -484,13 +522,14 @@ class RNRoamUtils {
     }
 
     static RoamTrip decodeRoamTrip(ReadableMap map){
-        String tripId = map.getString("tripId");
-        String tripDescription = map.getString("tripDescription");
-        String tripName = map.getString("tripName");
-        ReadableMap metadata = map.getMap("metadata");
-        Boolean isLocal = map.getBoolean("isLocal");
-        ReadableArray stops = map.getArray("stops");
-        String userId = map.getString("userId");
+        Log.e("TAG", map.toString());
+        String tripId = map.hasKey("tripId") ? map.getString("tripId") : null;
+        String tripDescription = map.hasKey("tripDescription") ? map.getString("tripDescription") : null;
+        String tripName = map.hasKey("tripName") ? map.getString("tripName") : null;
+        ReadableMap metadata = map.hasKey("metadata") ? map.getMap("metadata") : null;
+        Boolean isLocal = map.hasKey("isLocal") ? map.getBoolean("isLocal") : null;
+        ReadableArray stops = map.hasKey("stops") ? map.getArray("stops") : null;
+        String userId = map.hasKey("userId") ? map.getString("userId") : null;
         RoamTrip.Builder roamTripBuilder = new RoamTrip.Builder();
         if (tripId != null){
             roamTripBuilder.setTripId(tripId);
@@ -511,6 +550,42 @@ class RNRoamUtils {
                 ReadableMap stopMap = stops.getMap(i);
                 stopsList.add(decodeRoamTripsStop(stopMap));
             }
+            roamTripBuilder.setStop(stopsList);
+        }
+        if (userId != null){
+            roamTripBuilder.setUserId(userId);
+        }
+        return roamTripBuilder.build();
+    }
+
+    static RoamTrip decodeUpdateRoamTrip(ReadableMap map){
+        Log.e("TAG", map.toString());
+        String tripId = map.hasKey("tripId") ? map.getString("tripId") : null;
+        String tripDescription = map.hasKey("tripDescription") ? map.getString("tripDescription") : null;
+        String tripName = map.hasKey("tripName") ? map.getString("tripName") : null;
+        ReadableMap metadata = map.hasKey("metadata") ? map.getMap("metadata") : null;
+        ReadableArray stops = map.hasKey("stops") ? map.getArray("stops") : null;
+        String userId = map.hasKey("userId") ? map.getString("userId") : null;
+        RoamTrip.Builder roamTripBuilder = new RoamTrip.Builder();
+        if (tripId != null){
+            roamTripBuilder.setTripId(tripId);
+        }
+        if (tripDescription != null){
+            roamTripBuilder.setTripDescription(tripDescription);
+        }
+        if (tripName != null){
+            roamTripBuilder.setTripName(tripName);
+        }
+        if (metadata != null){
+            roamTripBuilder.setMetadata(new JSONObject(metadata.toHashMap()));
+        }
+        if (stops != null){
+            List<RoamTripStops> stopsList = new ArrayList<>();
+            for(int i=0; i<stops.size(); i++){
+                ReadableMap stopMap = stops.getMap(i);
+                stopsList.add(decodeRoamTripsStop(stopMap));
+            }
+            roamTripBuilder.setStop(stopsList);
         }
         if (userId != null){
             roamTripBuilder.setUserId(userId);

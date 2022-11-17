@@ -1,4 +1,4 @@
-import { NativeEventEmitter, NativeModules } from "react-native";
+import { NativeEventEmitter, NativeModules, Platform } from "react-native";
 
 if (!NativeModules.RNRoam) {
   throw new Error("NativeModules.RNRoam is undefined");
@@ -96,7 +96,7 @@ const createUser = (
   successCallback: any,
   errorCallback: any
 ) => {
-  NativeModules.RNRoam.createUser(description, successCallback, errorCallback);
+  NativeModules.RNRoam.createUser(description, null, successCallback, errorCallback);
 };
 
 const getUser = (userid: any, successCallback: any, errorCallback: any) => {
@@ -104,7 +104,11 @@ const getUser = (userid: any, successCallback: any, errorCallback: any) => {
 };
 
 const setDescription = (description: any) => {
-  NativeModules.RNRoam.setDescription(description);
+  if(Platform.OS === 'android'){
+    NativeModules.RNRoam.setDescription(description);
+  } else {
+    NativeModules.RNRoam.setDescription(description, null);
+  }
 };
 
 const toggleEvents = (
@@ -275,37 +279,40 @@ function roamCustomTrackingOptionsToMap(customOptions: any){
   return customMap;
 }
 
-function roamTripStopToMap(stop: any){
+function roamTripStopsToMap(stop: any){
   if(stop === null){
     return null;
   }
-  var stopMap = {
-    'RoamTripStop': stop.id,
-    'stopName': stop.name,
-    'stopDescription': stop.description,
-    'address': stop.address,
-    'geometryRadius': stop.geometryRadius,
-    'geometryCoordinates': stop.geometry,
-    'metadata': stop.metadata
+  var stopsList = []
+  for(let i=0; i<stop.length; i++){
+    var stopMap = {
+      'RoamTripStop': stop[i].id,
+      'stopName': stop[i].name,
+      'stopDescription': stop[i].description,
+      'address': stop[i].address,
+      'geometryRadius': stop[i].geometryRadius,
+      'geometryCoordinates': stop[i].geometry,
+      'metadata': stop[i].metadata
+    }
+    stopsList.push(stopMap)
   }
-  return stopMap;
+  
+  return stopsList;
 }
 
 function roamTripToMap(roamTrip: any){
   if(roamTrip === null){
     return null;
   }
-  var stopsMapList: any = []
-  roamTrip.stops.forEach((stop: any) => {
-    stopsMapList.push(roamTripStopToMap(stop))
-  })
+  
+
   var roamTripMap = {
     'tripId': roamTrip.tripId,
     'tripDescription': roamTrip.description,
     'tripName': roamTrip.name,
     'metadata': roamTrip.metadata,
     'isLocal': roamTrip.isLocal,
-    'stops': stopsMapList,
+    'stops': roamTripStopsToMap(roamTrip.stops),
     'userId': roamTrip.userId
   }
   return roamTripMap;
@@ -564,10 +571,14 @@ const stopSelfTracking = () => {
 };
 
 const enableAccuracyEngine = (accuracy?: any) => {
-  if (accuracy === null || accuracy === undefined) {
-    NativeModules.RNRoam.enableAccuracyEngine(50);
+  if(Platform.OS === 'ios'){
+    NativeModules.RNRoam.enableAccuracyEngine();
   } else {
-    NativeModules.RNRoam.enableAccuracyEngine(accuracy);
+    if (accuracy === null || accuracy === undefined) {
+      NativeModules.RNRoam.enableAccuracyEngine(50);
+    } else {
+      NativeModules.RNRoam.enableAccuracyEngine(accuracy);
+    }
   }
 };
 
