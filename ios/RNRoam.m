@@ -37,21 +37,25 @@ RCT_EXPORT_MODULE();
 // Roam Delegate Methods
 - (void)didUpdateLocation:(NSArray<RoamLocation *> *)locations {
   if (hasListeners) {
+    [self sendEventWithName:@"location" body:[self userLocation:locations]];
   }
 }
-
-- (void)didReceiveTripStatus:(NSArray<RoamTripListener *> *)tripStatus{
+- (void)onReceiveTrip:(NSArray<RoamTripStatus *> *)tripStatus {
   if (hasListeners) {
+    [self sendEventWithName:@"trip_status" body:[self didTripStatus:tripStatus]];
+
   }
 }
 
 - (void)didReceiveUserLocation:(RoamLocationReceived *)location{
   if (hasListeners) {
+    [self sendEventWithName:@"location_received" body:[self didUserLocation:location]];
   }
 }
 
 - (void)onError:(RoamError *)error{
   if (hasListeners) {
+    [self sendEventWithName:@"error" body:[self error:error]];
   }
 }
 
@@ -340,8 +344,8 @@ RCT_EXPORT_METHOD(createTrip:(NSDictionary *)dict :(RCTResponseSenderBlock)succe
 }
 
 RCT_EXPORT_METHOD(startQuickTrip:(NSDictionary *)dict trackingMode:(NSString *)tracking customTrackingOptions:(NSDictionary *)customDict :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  
-  [Roam startTrip:[self createTripdict:dict] :[self trackingMode:tracking] :[self customMethod:customDict] handler:^(RoamTripResponse * response, RoamTripError * error) {
+
+  [Roam startTrip:[self createTripdict:dict] :[self trackingMode:tracking] :[self customMethod:customDict]  handler:^(RoamTripResponse * response, RoamTripError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripResponse:response], nil];
       successCallback(success);
@@ -528,18 +532,23 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
   return dict;
 }
 
-- (NSMutableArray *) didTripStatus:(NSArray<RoamTripListener *> *)trips{
+- (NSMutableArray *) didTripStatus:(NSArray<RoamTripStatus *> *)trips{
   NSMutableArray *array = [[NSMutableArray alloc] init];
-  for (RoamTripListener* trip in trips) {
+  for (RoamTripStatus* trip in trips) {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-//    [dict setValue:[NSNumber numberWithDouble:trip.latitude] forKey:@"latitude"];
-//    [dict setValue:[NSNumber numberWithDouble:trip.longitude] forKey:@"longitude"];
-//    [dict setValue:[NSNumber numberWithDouble:trip.distance] forKey:@"distance"];
-//    [dict setValue:[NSNumber numberWithDouble:trip.duration] forKey:@"duration"];
-//    [dict setValue:[NSNumber numberWithDouble:trip.speed] forKey:@"speed"];
-//    [dict setValue:[NSNumber numberWithDouble:trip.pace] forKey:@"pace"];
+    [dict setValue:trip.tripId forKey:@"tripId"];
+    [dict setValue:trip.tripState forKey:@"tripState"];
+    [dict setValue:[NSNumber numberWithDouble:trip.speed] forKey:@"speed"];
+    [dict setValue:[NSNumber numberWithDouble:trip.distance] forKey:@"distance"];
+    [dict setValue:[NSNumber numberWithDouble:trip.duration] forKey:@"duration"];
+    [dict setValue:[NSNumber numberWithDouble:trip.pace] forKey:@"pace"];
     [dict setValue:trip.startedTime forKey:@"startedTime"];
-//    [dict setValue:trip.recordedAt forKey:@"recordedAt"];
+    [dict setValue:trip.recordedAt forKey:@"recordedAt"];
+    [dict setValue:[NSNumber numberWithDouble:trip.latitude] forKey:@"latitude"];
+    [dict setValue:[NSNumber numberWithDouble:trip.longitude] forKey:@"longitude"];
+    [dict setValue:[NSNumber numberWithDouble:trip.altitude] forKey:@"altitude"];
+    [dict setValue:[NSNumber numberWithDouble:trip.elevationGain] forKey:@"elevationGain"];
+
     [array addObject:dict];
   }
   return array;
@@ -727,21 +736,26 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
 
 - (RoamTrip *) createTripdict:(NSDictionary *)dict{
   RoamTrip *response = [RoamTrip alloc];
-  response.tripId = [dict objectForKey:@"tripId"];
-  response.tripDescription = [dict objectForKey:@"tripDescription"];
-  response.tripState = [dict objectForKey:@"tripState"];
-  response.tripName = [dict objectForKey:@"tripName"];
-  response.totalDistance = [dict objectForKey:@"totalDistance"];
-  response.totalDuration = [dict objectForKey:@"totalDuration"];
-  response.totalElevationGain = [dict objectForKey:@"totalElevationGain"];
-  response.updatedAt = [dict objectForKey:@"updatedAt"];
-  response.createdAt = [dict objectForKey:@"createdAt"];
-  response.startedAt = [dict objectForKey:@"startedAt"];
-  response.endedAt = [dict objectForKey:@"endedAt"];
-  response.metadata = [dict objectForKey:@"metadata"];
+  NSString *tripDescription = [dict objectForKey:@"tripDescription"];
+  NSString *tripId = [dict objectForKey:@"tripId"];
+  NSString *tripName = [dict objectForKey:@"tripName"];
+  NSDictionary *metaData = [dict objectForKey:@"metadata"];
+  NSArray *stops = [dict objectForKey:@"stops"];
   response.isLocal = [dict objectForKey:@"isLocal"];
-  response.syncStatus = [dict objectForKey:@"syncStatus"];
-  response.stops = [self creatTripStops:[dict objectForKey:@"stops"]];
+  
+  if (isEmpty(tripDescription) == false){
+    response.tripDescription = tripDescription;
+  }
+  if (isEmpty(tripName) == false){
+    response.tripName = tripName;
+  }
+  if (metaData != (NSDictionary*) [NSNull null]){
+    response.metadata = metaData;
+  }
+
+  if ([stops isKindOfClass:[NSArray class]] && stops.count > 0) {
+    response.stops = [self creatTripStops:stops];
+  }
   return  response;
 }
 
@@ -758,14 +772,43 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
   NSMutableArray *array = [[NSMutableArray alloc] init];
   for (NSDictionary* stop in stops) {
     RoamTripStop *tripStop = [RoamTripStop alloc];
-    tripStop.stopId = [stop objectForKey:@"RoamTripStop"];
-    tripStop.stopName = [stop objectForKey:@"stopName"];
-    tripStop.stopDescription = [stop objectForKey:@"stopDescription"];
-    tripStop.address = [stop objectForKey:@"address"];
-    tripStop.geometryRadius = [stop objectForKey:@"geometryRadius"];
-    tripStop.geometryCoordinates = [stop objectForKey:@"geometryCoordinates"];
-  }
+    NSString *stopId = [stop objectForKey:@"RoamTripStop"];
+    NSString *stopName = [stop objectForKey:@"stopName"];
+    NSString *stopDescription = [stop objectForKey:@"stopDescription"];
+    NSString *address = [stop objectForKey:@"address"];
+    int geometryRadius = [stop objectForKey:@"geometryRadius"];
+    NSArray *coord = [stop objectForKey:@"geometryCoordinates"];
+    
+    if (isEmpty(stopId) == false){
+      tripStop.stopId = stopId;
+    }
+    if (isEmpty(stopName) == false){
+      tripStop.stopName = stopName;
+    }
+    if (isEmpty(stopDescription) == false){
+      tripStop.stopDescription = stopDescription;
+    }
+    if (isEmpty(address) == false){
+      tripStop.address = address;
+    }
+    if (geometryRadius != 0){
+      tripStop.geometryRadius = [NSNumber numberWithInt:geometryRadius];
+    }
+    if ([coord count] != 0){
+      tripStop.geometryCoordinates = coord;
+    }
+    }
   return array;
+}
+
+BOOL isEmpty(id thing) {
+    return thing == nil
+    || [thing isKindOfClass:[NSNull class]]
+    || ([thing respondsToSelector:@selector(length)]
+        && ![thing respondsToSelector:@selector(count)]
+        && [(NSData *)thing length] == 0)
+    || ([thing respondsToSelector:@selector(count)]
+        && [thing count] == 0);
 }
 
 -(NSMutableDictionary *) tripResponse:(RoamTripResponse *)response {
@@ -880,12 +923,13 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
 }
 
 -(NSMutableDictionary *) activeTripsResponse:(RoamActiveTripResponse *)response {
+
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:response.message forKey:@"message"];
   [dict setValue:response.code forKey:@"code"];
   [dict setValue:response.errorDescription forKey:@"errorDescription"];
   [dict setValue:[NSNumber numberWithBool:response.has_more] forKey:@"has_more"];
-  [dict setValue:response.trips forKey:@"trips"];
+  [dict setValue:[self activeTrips:response.trips] forKey:@"trips"];
   return  dict;
 }
 
@@ -920,14 +964,15 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
 
 -(RoamTrackingCustomMethods *)customMethod:(NSDictionary *)dict {
   RoamTrackingCustomMethodsObjcWrapper *wrapper = [[RoamTrackingCustomMethodsObjcWrapper alloc] init];
+  
   CLActivityType * activityType = [self getActivityType:[dict objectForKey:@"activityType"]];
   LocationAccuracy * accuracy = [self getDesireAccuracy:[dict objectForKey:@"desiredAccuracyIOS"]];
-  BOOL allowBackground = [dict objectForKey:@"allowBackgroundLocationUpdates"];
-  BOOL pausesLocationUpdatesAutomatically = [dict objectForKey:@"pausesLocationUpdatesAutomatically"];
-  BOOL showsBackgroundLocationIndicator = [dict objectForKey:@"showsBackgroundLocationIndicator"];
-  int accuracyFilter = [dict objectForKey:@"accuracyFilter"];
-  int distanceFilter = [dict objectForKey:@"distanceFilter"];
-  int updateInterval = [dict objectForKey:@"updateInterval"];
+  BOOL allowBackground = [[dict objectForKey:@"allowBackgroundLocationUpdates"] boolValue];
+  BOOL pausesLocationUpdatesAutomatically = [[dict objectForKey:@"pausesLocationUpdatesAutomatically"] boolValue];
+  BOOL showsBackgroundLocationIndicator = [[dict objectForKey:@"showsBackgroundLocationIndicator"] boolValue];
+  int accuracyFilter = [[dict objectForKey:@"accuracyFilter"] integerValue];
+  int distanceFilter = [[dict objectForKey:@"distanceFilter"] integerValue];
+  int updateInterval = [[dict objectForKey:@"updateInterval"] integerValue];
 
 [wrapper setUpCustomOptionsWithDesiredAccuracy:accuracy useVisit:true showsBackgroundLocationIndicator:showsBackgroundLocationIndicator distanceFilter:distanceFilter useSignificant:true useRegionMonitoring:true useDynamicGeofencRadius:true geofenceRadius:true allowBackgroundLocationUpdates:allowBackground activityType:activityType pausesLocationUpdatesAutomatically:pausesLocationUpdatesAutomatically useStandardLocationServices:false accuracyFilter:accuracyFilter updateInterval:updateInterval];
   return  wrapper.customMethods;
