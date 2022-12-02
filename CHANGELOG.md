@@ -212,5 +212,5 @@ Added:
 
 ## 0.0.40
 
-- Updated native Roam SDK iOS version iOS v0.0.36
+- Updated native Roam SDK iOS version v0.0.36
 - Added `altitude`, `elevationGain`, and `totalElevationGain` in `trip_status` listener
