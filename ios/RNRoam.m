@@ -805,6 +805,9 @@ RCT_EXPORT_METHOD(resetBatchReceiverConfig : (RCTResponseSenderBlock)successCall
            [dict setValue:[NSNumber numberWithDouble:trip.duration] forKey:@"duration"];
            [dict setValue:[NSNumber numberWithDouble:trip.speed] forKey:@"speed"];
            [dict setValue:[NSNumber numberWithDouble:trip.pace] forKey:@"pace"];
+           [dict setValue:[NSNumber numberWithDouble:trip.altitude] forKey:@"altitude"];
+           [dict setValue:[NSNumber numberWithDouble:trip.elevationGain] forKey:@"elevationGain"];
+           [dict setValue:[NSNumber numberWithDouble:trip.totalElevationGain] forKey:@"totalElevationGain"];
            [dict setValue:trip.startedTime forKey:@"startedTime"];
            [dict setValue:trip.recordedAt forKey:@"recordedAt"];
            [array addObject:dict];

@@ -209,3 +209,8 @@ Added:
 
 - Updated native Roam SDK versions. Android v0.0.30 and iOS v0.0.31
 - Fixed `OFFLINE` input for Tracking config NetworkState
+
+## 0.0.40
+
+- Updated native Roam SDK iOS version iOS v0.0.36
+- Added `altitude`, `elevationGain`, and `totalElevationGain` in `trip_status` listener
