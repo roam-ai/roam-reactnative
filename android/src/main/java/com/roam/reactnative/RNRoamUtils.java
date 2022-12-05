@@ -14,6 +14,7 @@ import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamLocation;
 import com.roam.sdk.models.RoamTripStatus;
 import com.roam.sdk.models.RoamUser;
+import com.roam.sdk.models.TrackingConfig;
 import com.roam.sdk.models.createtrip.Coordinates;
 import com.roam.sdk.trips_v2.RoamTrip;
 import com.roam.sdk.trips_v2.models.EndLocation;
@@ -171,14 +172,14 @@ class RNRoamUtils {
         return array;
     }
 
-//    static WritableMap mapForTrackingConfig(TrackingConfig config){
-//        WritableMap writableMap = Arguments.createMap();
-//        writableMap.putInt("accuracy", config.getAccuracy());
-//        writableMap.putInt("timeout", config.getTimeout());
-//        writableMap.putString("source", config.getSource());
-//        writableMap.putBoolean("discardLocation", config.getDiscardLocation());
-//        return writableMap;
-//    }
+    static WritableMap mapForTrackingConfig(TrackingConfig config){
+        WritableMap writableMap = Arguments.createMap();
+        writableMap.putInt("accuracy", config.getAccuracy());
+        writableMap.putInt("timeout", config.getTimeout());
+        writableMap.putString("source", config.getSource());
+        writableMap.putBoolean("discardLocation", config.getDiscardLocation());
+        return writableMap;
+    }
 
     static WritableMap mapForLocation(Location location) {
         if (location == null) {
@@ -213,7 +214,7 @@ class RNRoamUtils {
     static WritableMap mapForTripDetails(TripDetails tripDetails){
         if (tripDetails == null) return null;
         WritableMap trip = Arguments.createMap();
-        trip.putString("id", tripDetails.getTripId());
+        trip.putString("tripId", tripDetails.getTripId());
         trip.putString("name", tripDetails.getTripName());
         trip.putString("description", tripDetails.getTripDescription());
         trip.putString("trip_state", tripDetails.getTripState());
@@ -523,7 +524,13 @@ class RNRoamUtils {
 
     static RoamTrip decodeRoamTrip(ReadableMap map){
         Log.e("TAG", map.toString());
+        try{
+            Log.e("TAG", map.getString("tripId"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         String tripId = map.hasKey("tripId") ? map.getString("tripId") : null;
+        Log.e("TAG", "tripId: " + tripId);
         String tripDescription = map.hasKey("tripDescription") ? map.getString("tripDescription") : null;
         String tripName = map.hasKey("tripName") ? map.getString("tripName") : null;
         ReadableMap metadata = map.hasKey("metadata") ? map.getMap("metadata") : null;
@@ -532,6 +539,7 @@ class RNRoamUtils {
         String userId = map.hasKey("userId") ? map.getString("userId") : null;
         RoamTrip.Builder roamTripBuilder = new RoamTrip.Builder();
         if (tripId != null){
+            Log.e("TAG", "tripId: " + tripId);
             roamTripBuilder.setTripId(tripId);
         }
         if (tripDescription != null){
@@ -543,7 +551,9 @@ class RNRoamUtils {
         if (metadata != null){
             roamTripBuilder.setMetadata(new JSONObject(metadata.toHashMap()));
         }
-        roamTripBuilder.setIsLocal(isLocal);
+        if(isLocal != null){
+            roamTripBuilder.setIsLocal(isLocal);
+        }
         if (stops != null){
             List<RoamTripStops> stopsList = new ArrayList<>();
             for(int i=0; i<stops.size(); i++){
@@ -560,12 +570,18 @@ class RNRoamUtils {
 
     static RoamTrip decodeUpdateRoamTrip(ReadableMap map){
         Log.e("TAG", map.toString());
+        try{
+            Log.e("TAG", map.getString("tripId"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         String tripId = map.hasKey("tripId") ? map.getString("tripId") : null;
         String tripDescription = map.hasKey("tripDescription") ? map.getString("tripDescription") : null;
         String tripName = map.hasKey("tripName") ? map.getString("tripName") : null;
         ReadableMap metadata = map.hasKey("metadata") ? map.getMap("metadata") : null;
         ReadableArray stops = map.hasKey("stops") ? map.getArray("stops") : null;
         String userId = map.hasKey("userId") ? map.getString("userId") : null;
+        Boolean isLocal = map.hasKey("isLocal") ? map.getBoolean("isLocal") : null;
         RoamTrip.Builder roamTripBuilder = new RoamTrip.Builder();
         if (tripId != null){
             roamTripBuilder.setTripId(tripId);
@@ -589,6 +605,9 @@ class RNRoamUtils {
         }
         if (userId != null){
             roamTripBuilder.setUserId(userId);
+        }
+        if (isLocal != null){
+            roamTripBuilder.setIsLocal(isLocal);
         }
         return roamTripBuilder.build();
     }

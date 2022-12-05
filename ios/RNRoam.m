@@ -43,7 +43,7 @@ RCT_EXPORT_MODULE();
 - (void)onReceiveTrip:(NSArray<RoamTripStatus *> *)tripStatus {
   if (hasListeners) {
     [self sendEventWithName:@"trip_status" body:[self didTripStatus:tripStatus]];
-
+    
   }
 }
 
@@ -344,7 +344,7 @@ RCT_EXPORT_METHOD(createTrip:(NSDictionary *)dict :(RCTResponseSenderBlock)succe
 }
 
 RCT_EXPORT_METHOD(startQuickTrip:(NSDictionary *)dict trackingMode:(NSString *)tracking customTrackingOptions:(NSDictionary *)customDict :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-
+  
   [Roam startTrip:[self createTripdict:dict] :[self trackingMode:tracking] :[self customMethod:customDict]  handler:^(RoamTripResponse * response, RoamTripError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripResponse:response], nil];
@@ -367,8 +367,8 @@ RCT_EXPORT_METHOD(startTrip:(NSString *)tripId :(RCTResponseSenderBlock)successC
 }
 
 RCT_EXPORT_METHOD(updateTrip:(NSDictionary *)dict :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  
-  [Roam updateTrip:[self createTripdict:dict] handler:^(RoamTripResponse * response, RoamTripError * error) {
+  RoamTrip *trip = [self createTripdict:dict];
+  [Roam updateTrip:trip handler:^(RoamTripResponse * response, RoamTripError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripResponse:response], nil];
       successCallback(success);
@@ -548,7 +548,7 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
     [dict setValue:[NSNumber numberWithDouble:trip.longitude] forKey:@"longitude"];
     [dict setValue:[NSNumber numberWithDouble:trip.altitude] forKey:@"altitude"];
     [dict setValue:[NSNumber numberWithDouble:trip.elevationGain] forKey:@"elevationGain"];
-
+    
     [array addObject:dict];
   }
   return array;
@@ -741,7 +741,13 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
   NSString *tripName = [dict objectForKey:@"tripName"];
   NSDictionary *metaData = [dict objectForKey:@"metadata"];
   NSArray *stops = [dict objectForKey:@"stops"];
-  response.isLocal = [dict objectForKey:@"isLocal"];
+  BOOL isLocal = [dict[@"isLocal"] boolValue];
+  //NSNumber *isLocalNum = [NSNumber numberWithInt:[dict objectForKey:@"isLocal"]];
+  response.isLocal = isLocal;
+  
+  if (isEmpty(tripId) == false){
+    response.tripId = tripId;
+   }
   
   if (isEmpty(tripDescription) == false){
     response.tripDescription = tripDescription;
@@ -752,10 +758,11 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
   if (metaData != (NSDictionary*) [NSNull null]){
     response.metadata = metaData;
   }
-
+  
   if ([stops isKindOfClass:[NSArray class]] && stops.count > 0) {
     response.stops = [self creatTripStops:stops];
   }
+
   return  response;
 }
 
@@ -797,27 +804,28 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
     if ([coord count] != 0){
       tripStop.geometryCoordinates = coord;
     }
-    }
+    [array addObject:tripStop];
+  }
   return array;
 }
 
 BOOL isEmpty(id thing) {
-    return thing == nil
-    || [thing isKindOfClass:[NSNull class]]
-    || ([thing respondsToSelector:@selector(length)]
-        && ![thing respondsToSelector:@selector(count)]
-        && [(NSData *)thing length] == 0)
-    || ([thing respondsToSelector:@selector(count)]
-        && [thing count] == 0);
+  return thing == nil
+  || [thing isKindOfClass:[NSNull class]]
+  || ([thing respondsToSelector:@selector(length)]
+      && ![thing respondsToSelector:@selector(count)]
+      && [(NSData *)thing length] == 0)
+  || ([thing respondsToSelector:@selector(count)]
+      && [thing count] == 0);
 }
 
 -(NSMutableDictionary *) tripResponse:(RoamTripResponse *)response {
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:response.message forKey:@"message"];
   [dict setValue:response.code forKey:@"code"];
-  [dict setValue:response.errorDescription forKey:@"errorDescription"];
+  [dict setValue:response.errorDescription forKey:@"description"];
   [dict setValue:[self trip:response.trip] forKey:@"trip"];
-
+  
   return  dict;
 }
 
@@ -837,7 +845,7 @@ BOOL isEmpty(id thing) {
   [dict setValue:response.metadata forKey:@"metadata"];
   [dict setValue:[NSNumber numberWithBool:response.isLocal] forKey:@"isLocal"];
   [dict setValue:response.syncStatus forKey:@"syncStatus"];
-
+  
   [dict setValue:[self tripEvents:response.events] forKey:@"events"];
   [dict setValue:[self tripStops:response.stops] forKey:@"stops"];
   [dict setValue:[self tripRoutess:response.routes] forKey:@"routes"];
@@ -878,7 +886,7 @@ BOOL isEmpty(id thing) {
     [dict setValue:stop.metadata forKey:@"metadata"];
     [dict setValue:stop.geometryRadius forKey:@"geometryRadius"];
     [dict setValue:stop.geometryCoordinates forKey:@"geometryCoordinates"];
-
+    
     [array addObject:dict];
   }
   return array;
@@ -897,7 +905,7 @@ BOOL isEmpty(id thing) {
     [dict setValue:route.distance forKey:@"distance"];
     [dict setValue:route.coordinates forKey:@"coordinates"];
     [array addObject:dict];
-
+    
   }
   return  array;
 }
@@ -923,7 +931,7 @@ BOOL isEmpty(id thing) {
 }
 
 -(NSMutableDictionary *) activeTripsResponse:(RoamActiveTripResponse *)response {
-
+  
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:response.message forKey:@"message"];
   [dict setValue:response.code forKey:@"code"];
@@ -973,8 +981,8 @@ BOOL isEmpty(id thing) {
   int accuracyFilter = [[dict objectForKey:@"accuracyFilter"] integerValue];
   int distanceFilter = [[dict objectForKey:@"distanceFilter"] integerValue];
   int updateInterval = [[dict objectForKey:@"updateInterval"] integerValue];
-
-[wrapper setUpCustomOptionsWithDesiredAccuracy:accuracy useVisit:true showsBackgroundLocationIndicator:showsBackgroundLocationIndicator distanceFilter:distanceFilter useSignificant:true useRegionMonitoring:true useDynamicGeofencRadius:true geofenceRadius:true allowBackgroundLocationUpdates:allowBackground activityType:activityType pausesLocationUpdatesAutomatically:pausesLocationUpdatesAutomatically useStandardLocationServices:false accuracyFilter:accuracyFilter updateInterval:updateInterval];
+  
+  [wrapper setUpCustomOptionsWithDesiredAccuracy:accuracy useVisit:true showsBackgroundLocationIndicator:showsBackgroundLocationIndicator distanceFilter:distanceFilter useSignificant:true useRegionMonitoring:true useDynamicGeofencRadius:true geofenceRadius:true allowBackgroundLocationUpdates:allowBackground activityType:activityType pausesLocationUpdatesAutomatically:pausesLocationUpdatesAutomatically useStandardLocationServices:false accuracyFilter:accuracyFilter updateInterval:updateInterval];
   return  wrapper.customMethods;
 }
 @end
