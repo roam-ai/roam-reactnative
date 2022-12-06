@@ -332,7 +332,6 @@ RCT_EXPORT_METHOD(stopPublishing){
 
 // Trips
 RCT_EXPORT_METHOD(createTrip:(NSDictionary *)dict :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  
   [Roam createTrip:[self createTripdict:dict] handler:^(RoamTripResponse * response, RoamTripError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self tripResponse:response], nil];
@@ -367,6 +366,7 @@ RCT_EXPORT_METHOD(startTrip:(NSString *)tripId :(RCTResponseSenderBlock)successC
 }
 
 RCT_EXPORT_METHOD(updateTrip:(NSDictionary *)dict :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+  NSLog(@"updateTrip %@",dict);
   RoamTrip *trip = [self createTripdict:dict];
   [Roam updateTrip:trip handler:^(RoamTripResponse * response, RoamTripError * error) {
     if (error == nil) {
@@ -412,6 +412,7 @@ RCT_EXPORT_METHOD(resumeTrip:(NSString *)tripId :(RCTResponseSenderBlock)success
 }
 
 RCT_EXPORT_METHOD(syncTrip:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+  NSLog(@"synctrip %@",tripId);
   [Roam syncTrip:tripId handler:^(RoamTripSync * response, RoamTripError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self syncTripResponse:response], nil];
@@ -565,7 +566,10 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
 }
 
 - (NSError *)tripError:(RoamTripError *)error {
-  return [NSError errorWithDomain:error.message code:error.code userInfo:nil];
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  dict[@"errorDescription"] = error.errorDescription;
+  dict[@"errors"] = error.errors;
+  return [NSError errorWithDomain:error.message code:error.code userInfo:dict];
 }
 
 - (NSInteger)removeString:(NSString *)stringValue{
@@ -742,7 +746,6 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
   NSDictionary *metaData = [dict objectForKey:@"metadata"];
   NSArray *stops = [dict objectForKey:@"stops"];
   BOOL isLocal = [dict[@"isLocal"] boolValue];
-  //NSNumber *isLocalNum = [NSNumber numberWithInt:[dict objectForKey:@"isLocal"]];
   response.isLocal = isLocal;
   
   if (isEmpty(tripId) == false){
@@ -762,7 +765,6 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
   if ([stops isKindOfClass:[NSArray class]] && stops.count > 0) {
     response.stops = [self creatTripStops:stops];
   }
-
   return  response;
 }
 
@@ -783,7 +785,7 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
     NSString *stopName = [stop objectForKey:@"stopName"];
     NSString *stopDescription = [stop objectForKey:@"stopDescription"];
     NSString *address = [stop objectForKey:@"address"];
-    int geometryRadius = [stop objectForKey:@"geometryRadius"];
+    int geometryRadius = [[stop objectForKey:@"geometryRadius"] intValue];
     NSArray *coord = [stop objectForKey:@"geometryCoordinates"];
     
     if (isEmpty(stopId) == false){
@@ -799,10 +801,12 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
       tripStop.address = address;
     }
     if (geometryRadius != 0){
-      tripStop.geometryRadius = [NSNumber numberWithInt:geometryRadius];
+      tripStop.geometryRadius = [NSNumber numberWithInteger:geometryRadius];
     }
     if ([coord count] != 0){
-      tripStop.geometryCoordinates = coord;
+      NSMutableArray *stopCoord = [[NSMutableArray alloc] init];
+      [stopCoord addObjectsFromArray:coord];
+      tripStop.geometryCoordinates = stopCoord;
     }
     [array addObject:tripStop];
   }
