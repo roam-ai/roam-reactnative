@@ -7,6 +7,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.roam.sdk.models.ActiveTrips;
+import com.roam.sdk.models.BatchLocation;
 import com.roam.sdk.models.BatchReceiverConfig;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamLocation;
@@ -274,7 +275,11 @@ class RNRoamUtils {
             } else {
                 map.putString("userId", roamLocation.getUserId());
             }
-            map.putMap("location", RNRoamUtils.mapForLocation(roamLocation.getLocation()));
+            if (locationList.size() > 1){
+                map.putMap("location", RNRoamUtils.mapForBatchLocation(roamLocation.getBatchLocations()));
+            } else {
+                map.putMap("location", RNRoamUtils.mapForLocation(roamLocation.getLocation()));
+            }
             if (TextUtils.isEmpty(roamLocation.getActivity())) {
                 map.putString("activity", " ");
             } else {
@@ -317,6 +322,19 @@ class RNRoamUtils {
     }
 
     static WritableMap mapForLocation(Location location) {
+        if (location == null) {
+            return null;
+        }
+        WritableMap map = Arguments.createMap();
+        map.putDouble("latitude", location.getLatitude());
+        map.putDouble("longitude", location.getLongitude());
+        map.putDouble("accuracy", location.getAccuracy());
+        map.putDouble("altitude", location.getAltitude());
+        map.putDouble("speed", location.getSpeed());
+        return map;
+    }
+
+    static WritableMap mapForBatchLocation(BatchLocation location) {
         if (location == null) {
             return null;
         }
