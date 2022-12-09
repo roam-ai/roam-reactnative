@@ -214,3 +214,7 @@ Added:
 
 - Updated native Roam SDK iOS version v0.0.36
 - Added `altitude`, `elevationGain`, and `totalElevationGain` in `trip_status` listener
+
+## 0.0.41
+
+- Fixed `location` parameter of location listener for Batch Locations (Android).
