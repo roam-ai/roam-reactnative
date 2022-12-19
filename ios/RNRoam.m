@@ -468,16 +468,7 @@ RCT_EXPORT_METHOD(getTripSummary:(NSString *)tripId :(RCTResponseSenderBlock)suc
   }];
 }
 
-RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
-  [Roam isTripSynced:tripId handler:^(BOOL isSynced, RoamError * error) {
-    if (error == nil) {
-      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self isTripSyncedResponse:isSynced], nil];
-      successCallback(success);
-    }else{
-      errorCallback([self error:error]);
-    }
-  }];
-}
+
 
 
 
@@ -763,8 +754,10 @@ RCT_EXPORT_METHOD(isTripSynced:(NSString *)tripId :(RCTResponseSenderBlock)succe
   }
   
   if ([stops isKindOfClass:[NSArray class]] && stops.count > 0) {
-    response.stops = [self creatTripStops:stops];
-  }
+     response.stops = [self creatTripStops:stops];
+   }else{
+     response.stops = [[NSArray alloc] init];
+   }
   return  response;
 }
 
@@ -853,6 +846,7 @@ BOOL isEmpty(id thing) {
   [dict setValue:[self tripEvents:response.events] forKey:@"events"];
   [dict setValue:[self tripStops:response.stops] forKey:@"stops"];
   [dict setValue:[self tripRoutess:response.routes] forKey:@"routes"];
+  
   
   return dict;
 }

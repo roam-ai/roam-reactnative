@@ -21,7 +21,6 @@ import com.roam.sdk.RoamTrackingMode;
 import com.roam.sdk.Source;
 import com.roam.sdk.callback.RoamBatchReceiverCallback;
 import com.roam.sdk.callback.RoamCallback;
-import com.roam.sdk.callback.RoamIsSyncTripCallback;
 import com.roam.sdk.callback.RoamLocationCallback;
 import com.roam.sdk.callback.RoamLogoutCallback;
 import com.roam.sdk.callback.RoamTrackingConfigCallback;
@@ -665,23 +664,6 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
       @Override
       public void onError(Error error) {
         errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
-
-  @ReactMethod
-  public void isTripSynced(final String tripId, final Callback successCallback, final Callback errorCallback){
-    Roam.isTripSynced(tripId, new RoamIsSyncTripCallback() {
-      @Override
-      public void onSuccess(boolean b) {
-        WritableMap map = Arguments.createMap();
-        map.putBoolean("isSynced", b);
-        successCallback.invoke(map);
-      }
-
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
       }
     });
   }

@@ -374,9 +374,6 @@ const deleteTrip = (tripId: any, successCallback: any, errorCallback: any) => {
   NativeModules.RNRoam.deleteTrip(tripId, successCallback, errorCallback)
 }
 
-const isTripSynced = (tripId: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.isTripSynced(tripId, successCallback, errorCallback)
-}
 
 // -------- END ------------
 
@@ -720,7 +717,6 @@ const Roam = {
   subscribeTrip,
   unSubscribeTrip,
   deleteTrip,
-  isTripSynced,
   RoamTrip,
   RoamTripStop,
   RoamCustomTrackingOptions
