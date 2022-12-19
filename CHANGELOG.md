@@ -209,3 +209,9 @@ Added:
 
 - Updated native Roam SDK versions. Android v0.0.30 and iOS v0.0.31
 - Fixed `OFFLINE` input for Tracking config NetworkState
+
+
+## 0.1.0
+
+- Migration to trips v2 methods.
+- Updated native Roam SDK versions. Android v0.1.6 and iOS v0.1.3
