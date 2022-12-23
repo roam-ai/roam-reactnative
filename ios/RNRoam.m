@@ -470,9 +470,9 @@ RCT_EXPORT_METHOD(getTripSummary:(NSString *)tripId :(RCTResponseSenderBlock)suc
 
 
 
-/ Tracking config
+// Tracking config
 
-RCT_EXPORT_METHOD(settrackingconfig:(NSInteger)accuracy timeout:(NSInteger)timeout discard:(BOOL)discard :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+RCT_EXPORT_METHOD(setTrackingConfig:(NSInteger)accuracy timeout:(NSInteger)timeout discard:(BOOL)discard :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   
   [Roam setTrackingConfigWithAccuracy:accuracy timeout:timeout discardLocation:discard handler:^(RoamLocationConfig * config, RoamError * error) {
     if (error == nil) {
@@ -485,7 +485,7 @@ RCT_EXPORT_METHOD(settrackingconfig:(NSInteger)accuracy timeout:(NSInteger)timeo
   
 }
 
-RCT_EXPORT_METHOD(gettrackingconfig:(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+RCT_EXPORT_METHOD(getTrackingConfig:(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam getTrackingConfigWithHandler:^(RoamLocationConfig * config, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self trackingConfig:config], nil];
@@ -497,7 +497,7 @@ RCT_EXPORT_METHOD(gettrackingconfig:(RCTResponseSenderBlock)successCallback reje
   }];
 }
 
-RCT_EXPORT_METHOD(resettrackingconfig:(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
   [Roam resetTrackingConfigWithHandler:^(RoamLocationConfig * config, RoamError * error) {
     if (error == nil) {
       NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self trackingConfig:config], nil];
@@ -514,7 +514,7 @@ RCT_EXPORT_METHOD(resettrackingconfig:(RCTResponseSenderBlock)successCallback re
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:[NSNumber numberWithInt:config.accuracy] forKey:@"accuracy"];
   [dict setValue:[NSNumber numberWithInt:config.timeout] forKey:@"timeout"];
-  [dict setValue:[NSNumber numberWithBool:config.discardLocation] forKey:@"accuracy"];
+  [dict setValue:[NSNumber numberWithBool:config.discardLocation] forKey:@"discardLocation"];
 
   return dict;
 }
