@@ -470,22 +470,70 @@ RCT_EXPORT_METHOD(getTripSummary:(NSString *)tripId :(RCTResponseSenderBlock)suc
 
 
 
+/ Tracking config
+
+RCT_EXPORT_METHOD(settrackingconfig:(NSInteger)accuracy timeout:(NSInteger)timeout discard:(BOOL)discard :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+  
+  [Roam setTrackingConfigWithAccuracy:accuracy timeout:timeout discardLocation:discard handler:^(RoamLocationConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self trackingConfig:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+  }];
+  
+}
+
+RCT_EXPORT_METHOD(gettrackingconfig:(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+  [Roam getTrackingConfigWithHandler:^(RoamLocationConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self trackingConfig:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+
+  }];
+}
+
+RCT_EXPORT_METHOD(resettrackingconfig:(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
+  [Roam resetTrackingConfigWithHandler:^(RoamLocationConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self trackingConfig:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+
+  }];
+}
 
 
+- (NSMutableDictionary *) trackingConfig:(RoamLocationConfig *)config{
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  [dict setValue:[NSNumber numberWithInt:config.accuracy] forKey:@"accuracy"];
+  [dict setValue:[NSNumber numberWithInt:config.timeout] forKey:@"timeout"];
+  [dict setValue:[NSNumber numberWithBool:config.discardLocation] forKey:@"accuracy"];
+
+  return dict;
+}
 
 
 - (NSMutableDictionary *) userData:(RoamUser *)user{
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
   [dict setValue:user.userId forKey:@"userId"];
-  [dict setValue:user.userId forKey:@"description"];
-  [dict setValue:user.userId forKey:@"geofenceEvents"];
-  [dict setValue:user.userId forKey:@"locationEvents"];
-  [dict setValue:user.userId forKey:@"tripsEvents"];
-  [dict setValue:user.userId forKey:@"movingGeofenceEvents"];
-  [dict setValue:user.userId forKey:@"eventListenerStatus"];
-  [dict setValue:user.userId forKey:@"locationListenerStatus"];
+  [dict setValue:user.userDescription forKey:@"description"];
+  [dict setValue:[NSNumber numberWithBool:user.geofenceEvents] forKey:@"geofenceEvents"];
+  [dict setValue:[NSNumber numberWithBool:user.locationEvents] forKey:@"locationEvents"];
+  [dict setValue:[NSNumber numberWithBool:user.tripsEvents] forKey:@"tripsEvents"];
+  [dict setValue:[NSNumber numberWithBool:user.nearbyEvents] forKey:@"nearbyEvents"];
+  [dict setValue:[NSNumber numberWithBool:user.eventsListener] forKey:@"eventListenerStatus"];
+  [dict setValue:[NSNumber numberWithBool:user.locationListener] forKey:@"locationListenerStatus"];
+  
   return dict;
 }
+
 
 - (NSMutableArray *) userLocation:(NSArray<RoamLocation *> *)locations{
   
