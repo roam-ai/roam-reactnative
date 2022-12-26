@@ -740,6 +740,7 @@ RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback re
   }
 }
 
+
 - (RoamPublish *)publish:(NSArray *)array metaData:(NSDictionary *)metaData{
   RoamPublish *publish = [[RoamPublish alloc] init];
   for (NSString *string in array)
