@@ -329,6 +329,12 @@ RCT_EXPORT_METHOD(stopPublishing){
   [Roam stopPublishing];
 }
 
+RCT_EXPORT_METHOD(updateLocationWhenStationary:(NSInteger)interval){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [Roam updateLocationWhenStationary:interval];
+  });
+}
+
 
 // Trips
 RCT_EXPORT_METHOD(createTrip:(NSDictionary *)dict :(RCTResponseSenderBlock)successCallback rejecter:(RCTResponseErrorBlock)errorCallback){
@@ -467,6 +473,50 @@ RCT_EXPORT_METHOD(getTripSummary:(NSString *)tripId :(RCTResponseSenderBlock)suc
     }
   }];
 }
+
+
+// Batch Config
+
+RCT_EXPORT_METHOD(setBatchReceiverConfig:(NSString *)state
+                  batchCount:(NSInteger)batchCount
+                  batchwindow:(NSInteger)batchWindow
+                  success: (RCTResponseSenderBlock)successCallback
+                  error:(RCTResponseErrorBlock)errorCallback){
+  [Roam setBatchReceiverConfigWithNetworkState: [self networkState:state] batchCount:batchCount batchWindow:batchWindow handler:^(RoamBatchConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self BatchConfigResonse:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+      
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(getBatchReceiverConfig
+                  : (RCTResponseSenderBlock)successCallback
+                  error:(RCTResponseErrorBlock)errorCallback){
+  [Roam getBatchReceiverConfigWithHandler:^(RoamBatchConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self BatchConfigResonse:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(resetBatchReceiverConfig : (RCTResponseSenderBlock)successCallback
+                  error:(RCTResponseErrorBlock)errorCallback){
+  [Roam resetBatchReceiverConfigWithHandler:^(RoamBatchConfig * config, RoamError * error) {
+    if (error == nil) {
+      NSMutableArray *success = [[NSMutableArray alloc] initWithObjects:[self BatchConfigResonse:config], nil];
+      successCallback(success);
+    }else{
+      errorCallback([self error:error]);
+    }
+   }];
+  }
 
 
 
@@ -1013,6 +1063,24 @@ BOOL isEmpty(id thing) {
     return RoamTrackingModePassive;
   }else{
     return  RoamTrackingModeCustom;
+  }
+}
+
+- (NSMutableDictionary *)BatchConfigResonse:(RoamBatchConfig *)config{
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  [dict setValue:[NSNumber numberWithInt:config.batchCount] forKey:@"batchCount"];
+  [dict setValue:[NSNumber numberWithInt:config.batchWindow] forKey:@"batchWindow"];
+  [dict setValue:config.networkState forKey:@"networkState"];
+  return  dict;
+}
+
+- (RoamNetworkState)networkState:(NSString *)stringValue{
+  if ([stringValue isEqualToString:@"BOTH"]) {
+    return  RoamNetworkStateBoth;
+  }else if ([stringValue isEqualToString:@"ONLINE"]) {
+    return  RoamNetworkStateOnline;
+  }else{
+    return  RoamNetworkStateOffline;
   }
 }
 
