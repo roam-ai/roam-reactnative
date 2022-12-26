@@ -10,7 +10,7 @@ const TrackingMode = {
   ACTIVE: "ACTIVE",
   BALANCED: "BALANCED",
   PASSIVE: "PASSIVE",
-  CUSTOM: "CUSTOM"
+  CUSTOM: "CUSTOM",
 };
 
 const NetworkState = {
@@ -96,7 +96,12 @@ const createUser = (
   successCallback: any,
   errorCallback: any
 ) => {
-  NativeModules.RNRoam.createUser(description, null, successCallback, errorCallback);
+  NativeModules.RNRoam.createUser(
+    description,
+    null,
+    successCallback,
+    errorCallback
+  );
 };
 
 const getUser = (userid: any, successCallback: any, errorCallback: any) => {
@@ -104,7 +109,7 @@ const getUser = (userid: any, successCallback: any, errorCallback: any) => {
 };
 
 const setDescription = (description: any) => {
-  if(Platform.OS === 'android'){
+  if (Platform.OS === "android") {
     NativeModules.RNRoam.setDescription(description);
   } else {
     NativeModules.RNRoam.setDescription(description, null);
@@ -205,7 +210,15 @@ class RoamTrip {
   isLocal: any;
   tripId: any;
   userId: any;
-  constructor(metadata: any, description: any, name: any, stops: any, isLocal: any, tripId: any, userId: any){
+  constructor(
+    metadata: any,
+    description: any,
+    name: any,
+    stops: any,
+    isLocal: any,
+    tripId: any,
+    userId: any
+  ) {
     this.metadata = metadata;
     this.description = description;
     this.name = name;
@@ -224,7 +237,15 @@ class RoamTripStop {
   address: any;
   geometryRadius: any;
   geometry: any;
-  constructor(id: any, metadata: any, description: any, name: any, address: any, geometryRadius: any, geometry: any){
+  constructor(
+    id: any,
+    metadata: any,
+    description: any,
+    name: any,
+    address: any,
+    geometryRadius: any,
+    geometry: any
+  ) {
     this.id = id;
     this.metadata = metadata;
     this.description = description;
@@ -246,7 +267,18 @@ class RoamCustomTrackingOptions {
   pausesLocationUpdatesAutomatically: any;
   showsBackgroundLocationIndicator: any;
   accuracyFilter: any;
-  constructor(desiredAccuracy: any, updateInterval: any, distanceFilter: any, stopDuration: any, activityType: any, desiredAccuracyIOS: any, allowBackgroundLocationUpdates: any, pausesLocationUpdatesAutomatically: any, showsBackgroundLocationIndicator: any, accuracyFilter: any){
+  constructor(
+    desiredAccuracy: any,
+    updateInterval: any,
+    distanceFilter: any,
+    stopDuration: any,
+    activityType: any,
+    desiredAccuracyIOS: any,
+    allowBackgroundLocationUpdates: any,
+    pausesLocationUpdatesAutomatically: any,
+    showsBackgroundLocationIndicator: any,
+    accuracyFilter: any
+  ) {
     this.desiredAccuracy = desiredAccuracy;
     this.updateInterval = updateInterval;
     this.distanceFilter = distanceFilter;
@@ -254,126 +286,174 @@ class RoamCustomTrackingOptions {
     this.activityType = activityType;
     this.desiredAccuracyIOS = desiredAccuracyIOS;
     this.allowBackgroundLocationUpdates = allowBackgroundLocationUpdates;
-    this.pausesLocationUpdatesAutomatically = pausesLocationUpdatesAutomatically;
+    this.pausesLocationUpdatesAutomatically =
+      pausesLocationUpdatesAutomatically;
     this.showsBackgroundLocationIndicator = showsBackgroundLocationIndicator;
     this.accuracyFilter = accuracyFilter;
   }
 }
 
-function roamCustomTrackingOptionsToMap(customOptions: any){
-  if(customOptions === null){
+function roamCustomTrackingOptionsToMap(customOptions: any) {
+  if (customOptions === null) {
     return null;
   }
   var customMap = {
-    'desiredAccuracy': customOptions.desiredAccuracy,
-    'updateInterval': customOptions.updateInterval,
-    'distanceFilter': customOptions.distanceFilter,
-    'stopDuration': customOptions.stopDuration,
-    'activityType': customOptions.activityType,
-    'desiredAccuracyIOS': customOptions.desiredAccuracyIOS,
-    'allowBackgroundLocationUpdates': customOptions.allowBackgroundLocationUpdates,
-    'pausesLocationUpdatesAutomatically': customOptions.pausesLocationUpdatesAutomatically,
-    'showsBackgroundLocationIndicator': customOptions.showsBackgroundLocationIndicator,
-    'accuracyFilter': customOptions.accuracyFilter
-  }
+    desiredAccuracy: customOptions.desiredAccuracy,
+    updateInterval: customOptions.updateInterval,
+    distanceFilter: customOptions.distanceFilter,
+    stopDuration: customOptions.stopDuration,
+    activityType: customOptions.activityType,
+    desiredAccuracyIOS: customOptions.desiredAccuracyIOS,
+    allowBackgroundLocationUpdates:
+      customOptions.allowBackgroundLocationUpdates,
+    pausesLocationUpdatesAutomatically:
+      customOptions.pausesLocationUpdatesAutomatically,
+    showsBackgroundLocationIndicator:
+      customOptions.showsBackgroundLocationIndicator,
+    accuracyFilter: customOptions.accuracyFilter,
+  };
   return customMap;
 }
 
-function roamTripStopsToMap(stop: any){
-  if(stop === null){
+function roamTripStopsToMap(stop: any) {
+  if (stop === null) {
     return null;
   }
-  var stopsList = []
-  for(let i=0; i<stop.length; i++){
+  var stopsList = [];
+  for (let i = 0; i < stop.length; i++) {
     var stopMap = {
-      'RoamTripStop': stop[i].id,
-      'stopName': stop[i].name,
-      'stopDescription': stop[i].description,
-      'address': stop[i].address,
-      'geometryRadius': stop[i].geometryRadius,
-      'geometryCoordinates': stop[i].geometry,
-      'metadata': stop[i].metadata
-    }
-    stopsList.push(stopMap)
+      RoamTripStop: stop[i].id,
+      stopName: stop[i].name,
+      stopDescription: stop[i].description,
+      address: stop[i].address,
+      geometryRadius: stop[i].geometryRadius,
+      geometryCoordinates: stop[i].geometry,
+      metadata: stop[i].metadata,
+    };
+    stopsList.push(stopMap);
   }
-  
+
   return stopsList;
 }
 
-function roamTripToMap(roamTrip: any){
-  if(roamTrip === null){
+function roamTripToMap(roamTrip: any) {
+  if (roamTrip === null) {
     return null;
   }
-  
 
   var roamTripMap = {
-    'tripId': roamTrip.tripId,
-    'tripDescription': roamTrip.description,
-    'tripName': roamTrip.name,
-    'metadata': roamTrip.metadata,
-    'isLocal': roamTrip.isLocal,
-    'stops': roamTripStopsToMap(roamTrip.stops),
-    'userId': roamTrip.userId
-  }
+    tripId: roamTrip.tripId,
+    tripDescription: roamTrip.description,
+    tripName: roamTrip.name,
+    metadata: roamTrip.metadata,
+    isLocal: roamTrip.isLocal,
+    stops: roamTripStopsToMap(roamTrip.stops),
+    userId: roamTrip.userId,
+  };
   return roamTripMap;
 }
 
-const createTrip = (roamTrip: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.createTrip(roamTripToMap(roamTrip), successCallback, errorCallback);
-}
+const createTrip = (
+  roamTrip: any,
+  successCallback: any,
+  errorCallback: any
+) => {
+  NativeModules.RNRoam.createTrip(
+    roamTripToMap(roamTrip),
+    successCallback,
+    errorCallback
+  );
+};
 
-const startQuickTrip = (roamTrip: any, trackingMode: any, customTrackingOption: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.startQuickTrip(roamTripToMap(roamTrip), trackingMode, roamCustomTrackingOptionsToMap(customTrackingOption), successCallback, errorCallback)
-}
+const startQuickTrip = (
+  roamTrip: any,
+  trackingMode: any,
+  customTrackingOption: any,
+  successCallback: any,
+  errorCallback: any
+) => {
+  NativeModules.RNRoam.startQuickTrip(
+    roamTripToMap(roamTrip),
+    trackingMode,
+    roamCustomTrackingOptionsToMap(customTrackingOption),
+    successCallback,
+    errorCallback
+  );
+};
 
 const startTrip = (tripId: any, successCallback: any, errorCallback: any) => {
   NativeModules.RNRoam.startTrip(tripId, successCallback, errorCallback);
-}
+};
 
-const updateTrip = (roamTrip: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.updateTrip(roamTripToMap(roamTrip), successCallback, errorCallback);
-}
+const updateTrip = (
+  roamTrip: any,
+  successCallback: any,
+  errorCallback: any
+) => {
+  NativeModules.RNRoam.updateTrip(
+    roamTripToMap(roamTrip),
+    successCallback,
+    errorCallback
+  );
+};
 
-const endTrip = (tripId: any, forceStopTracking: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.endTrip(tripId, forceStopTracking, successCallback, errorCallback)
-}
+const endTrip = (
+  tripId: any,
+  forceStopTracking: any,
+  successCallback: any,
+  errorCallback: any
+) => {
+  NativeModules.RNRoam.endTrip(
+    tripId,
+    forceStopTracking,
+    successCallback,
+    errorCallback
+  );
+};
 
 const pauseTrip = (tripId: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.pauseTrip(tripId, successCallback, errorCallback)
-}
+  NativeModules.RNRoam.pauseTrip(tripId, successCallback, errorCallback);
+};
 
 const resumeTrip = (tripId: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.resumeTrip(tripId, successCallback, errorCallback)
-}
+  NativeModules.RNRoam.resumeTrip(tripId, successCallback, errorCallback);
+};
 
 const syncTrip = (tripId: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.syncTrip(tripId, successCallback, errorCallback)
-}
+  NativeModules.RNRoam.syncTrip(tripId, successCallback, errorCallback);
+};
 
 const getTrip = (tripId: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.getTrip(tripId, successCallback, errorCallback)
-}
+  NativeModules.RNRoam.getTrip(tripId, successCallback, errorCallback);
+};
 
-const getActiveTrips = (isLocal: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.getActiveTrips(isLocal, successCallback, errorCallback)
-}
+const getActiveTrips = (
+  isLocal: any,
+  successCallback: any,
+  errorCallback: any
+) => {
+  NativeModules.RNRoam.getActiveTrips(isLocal, successCallback, errorCallback);
+};
 
-const getTripSummary = (tripId: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.getTripSummary(tripId, successCallback, errorCallback)
-}
+const getTripSummary = (
+  tripId: any,
+  successCallback: any,
+  errorCallback: any
+) => {
+  NativeModules.RNRoam.getTripSummary(tripId, successCallback, errorCallback);
+};
 
 const subscribeTrip = (tripId: any) => {
-  NativeModules.RNRoam.subscribeTripStatus(tripId)
-}
+  NativeModules.RNRoam.subscribeTripStatus(tripId);
+};
 
 const unSubscribeTrip = (tripId: any) => {
-  NativeModules.RNRoam.unSubscribeTripStatus(tripId)
-}
+  NativeModules.RNRoam.unSubscribeTripStatus(tripId);
+};
 
 const deleteTrip = (tripId: any, successCallback: any, errorCallback: any) => {
-  NativeModules.RNRoam.deleteTrip(tripId, successCallback, errorCallback)
-}
-
+  NativeModules.RNRoam.deleteTrip(tripId, successCallback, errorCallback);
+};
 
 // -------- END ------------
 
@@ -568,7 +648,7 @@ const stopSelfTracking = () => {
 };
 
 const enableAccuracyEngine = (accuracy?: any) => {
-  if(Platform.OS === 'ios'){
+  if (Platform.OS === "ios") {
     NativeModules.RNRoam.enableAccuracyEngine();
   } else {
     if (accuracy === null || accuracy === undefined) {
@@ -719,7 +799,7 @@ const Roam = {
   deleteTrip,
   RoamTrip,
   RoamTripStop,
-  RoamCustomTrackingOptions
+  RoamCustomTrackingOptions,
 };
 
 export default Roam;
