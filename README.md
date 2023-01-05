@@ -85,7 +85,7 @@ Before making any changes to your javascript code, you would need to integrate a
 
    ```
    dependencies {
-       implementation 'com.roam.sdk:roam-android:0.0.30'
+       implementation 'com.roam.sdk:roam-android:0.0.35'
    }
    ```
 

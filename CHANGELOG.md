@@ -218,3 +218,6 @@ Added:
 ## 0.0.41
 
 - Fixed `location` parameter of location listener for Batch Locations (Android).
+
+## 0.0.42
+- Updated Android SDK v0.0.35
