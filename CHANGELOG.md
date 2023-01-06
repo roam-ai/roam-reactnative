@@ -220,4 +220,5 @@ Added:
 - Fixed `location` parameter of location listener for Batch Locations (Android).
 
 ## 0.0.42
-- Updated Android SDK v0.0.35
+- Updated Android SDK v0.0.35 and iOS SDK v0.0.37
+- Fixed location drift issue in iOS
