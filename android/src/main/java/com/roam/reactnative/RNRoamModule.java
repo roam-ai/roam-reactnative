@@ -88,7 +88,7 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void setDescription(String description) {
-    Roam.setDescription(description);
+    Roam.setDescription(description, null);
   }
 
   @ReactMethod
@@ -345,12 +345,14 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
     }
     Roam.getCurrentLocation(desiredAccuracy, accuracy, new RoamLocationCallback() {
       @Override
-      public void location(Location location) {
-        WritableMap map = Arguments.createMap();
-        map.putDouble("latitude", location.getLatitude());
-        map.putDouble("longitude", location.getLongitude());
-        map.putDouble("accuracy", location.getAccuracy());
-        successCallback.invoke(map);
+      public void location(Location location, float direction) {
+        try {
+          WritableMap map = Arguments.createMap();
+          map.putDouble("latitude", location.getLatitude());
+          map.putDouble("longitude", location.getLongitude());
+          map.putDouble("accuracy", location.getAccuracy());
+          successCallback.invoke(map);
+        } catch (Exception e){}
       }
 
       @Override
