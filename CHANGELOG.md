@@ -228,3 +228,7 @@ Added:
 
 - Migration to trips v2 methods.
 - Updated native Roam SDK versions. Android v0.1.7 and iOS v0.1.4
+
+## 0.1.1
+
+- Updated native Roam SDK android v0.1.9 and iOS v0.1.5
