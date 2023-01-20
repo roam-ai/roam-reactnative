@@ -232,3 +232,7 @@ Added:
 ## 0.1.1
 
 - Updated native Roam SDK android v0.1.9 and iOS v0.1.5
+
+## 0.1.2
+
+- Updated native Roam SDK for iOS v0.1.6
