@@ -661,6 +661,14 @@ const resetTrackingConfig = (successCallback, errorCallback) => {
   NativeModules.RNRoam.resetTrackingConfig(successCallback, errorCallback);
 };
 
+const checkActivityPermission = (callback) => {
+  NativeModules.RNRoam.checkActivityPermission(callback);
+};
+
+const requestActivityPermission = () => {
+  NativeModules.RNRoam.requestActivityPermission();
+};
+
 const Roam = {
   TrackingMode,
   DesiredAccuracy,
@@ -741,6 +749,8 @@ const Roam = {
   RoamTrip,
   RoamTripStop,
   RoamCustomTrackingOptions,
+  checkActivityPermission,
+  requestActivityPermission
 };
 
 export default Roam;

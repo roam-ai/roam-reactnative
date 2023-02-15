@@ -290,7 +290,7 @@ RCT_EXPORT_METHOD(subscribe:(NSString *)type userId:(NSString *)userId){
   }
 }
 
-RCT_EXPORT_METHOD(unsubscribe:(NSString *)type userId:(NSString *)userId){
+RCT_EXPORT_METHOD(unSubscribe:(NSString *)type userId:(NSString *)userId){
   if ([type  isEqual:@"LOCATION"]){
     [Roam unsubscribe:RoamSubscribeLocation :userId];
   }else if ([type isEqual:@"EVENTS"]){
@@ -474,6 +474,17 @@ RCT_EXPORT_METHOD(getTripSummary:(NSString *)tripId :(RCTResponseSenderBlock)suc
   }];
 }
 
+RCT_EXPORT_METHOD(requestActivityPermission){
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [Roam requestActivityPermission];
+  });
+}
+
+
+RCT_EXPORT_METHOD(checkActivityPermission:(RCTResponseSenderBlock)callback){
+  NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:[self checkPermission:[Roam checkActivityPermission]], nil];
+  callback(array);
+}
 
 // Batch Config
 
