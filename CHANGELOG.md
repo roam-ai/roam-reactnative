@@ -236,3 +236,9 @@ Added:
 ## 0.1.2
 
 - Updated native Roam SDK for iOS v0.1.6
+
+## 0.1.3
+
+- Updated native Roam SDK for iOS v0.1.7 and android v0.1.10
+- Fixed `Roam.unSubscribe()` crash
+- Added `Roam.checkActivityPermission` and `Roam.requestActivityPermission()` methods

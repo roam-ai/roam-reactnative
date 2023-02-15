@@ -1004,4 +1004,18 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   public void stopSelfTracking() {
     Roam.stopTracking();
   }
+
+  @ReactMethod
+  public void checkActivityPermission(Callback callback){
+    callback.invoke(RNRoamUtils.isGranted(Roam.checkActivityPermission()));
+  }
+
+  @ReactMethod
+  public void requestActivityPermission(){
+    Activity activity = getCurrentActivity();
+    if (activity != null){
+      Roam.requestActivityPermission(activity);
+    }
+  }
+
 }
