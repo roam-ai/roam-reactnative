@@ -809,7 +809,7 @@ const Roam = {
   RoamTripStop,
   RoamCustomTrackingOptions,
   checkActivityPermission,
-  requestActivityPermission
+  requestActivityPermission,
 };
 
 export default Roam;
