@@ -242,3 +242,7 @@ Added:
 - Updated native Roam SDK for iOS v0.1.7 and android v0.1.10
 - Fixed `Roam.unSubscribe()` crash
 - Added `Roam.checkActivityPermission` and `Roam.requestActivityPermission()` methods
+
+## 0.1.4
+
+- Update native Roam SDK for android v0.1.11 and iOS v0.1.8
