@@ -18,6 +18,7 @@ import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamLocation;
 import com.roam.sdk.models.RoamLocationReceived;
 import com.roam.sdk.models.RoamTripStatus;
+import com.roam.sdk.models.events.RoamEvent;
 import com.roam.sdk.service.RoamReceiver;
 
 import java.util.List;
@@ -56,6 +57,15 @@ public class RNRoamReceiver extends RoamReceiver {
         mReactNativeHost = reactApplication.getReactNativeHost();
         WritableArray array = RNRoamUtils.mapForLocationList(locationList);
         sendEvent("location", array);
+    }
+
+    @Override
+    public void onEventReceived(Context context, RoamEvent roamEvent) {
+        super.onEventReceived(context, roamEvent);
+        ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
+        mReactNativeHost = reactApplication.getReactNativeHost();
+        WritableMap map = RNRoamUtils.mapForRoamEvent(roamEvent);
+        sendEvent("events", map);
     }
 
     @Override

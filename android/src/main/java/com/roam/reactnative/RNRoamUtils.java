@@ -17,6 +17,7 @@ import com.roam.sdk.models.RoamTripStatus;
 import com.roam.sdk.models.RoamUser;
 import com.roam.sdk.models.TrackingConfig;
 import com.roam.sdk.models.createtrip.Coordinates;
+import com.roam.sdk.models.events.RoamEvent;
 import com.roam.sdk.trips_v2.RoamTrip;
 import com.roam.sdk.trips_v2.models.EndLocation;
 import com.roam.sdk.trips_v2.models.Error;
@@ -184,6 +185,35 @@ class RNRoamUtils {
         writableMap.putString("source", config.getSource());
         writableMap.putBoolean("discardLocation", config.getDiscardLocation());
         return writableMap;
+    }
+
+    static WritableMap mapForRoamEvent(RoamEvent roamEvent){
+        if (roamEvent == null) return null;
+
+        WritableMap map = Arguments.createMap();
+        map.putString("tripId", roamEvent.getTrip_id());
+        map.putString("nearbyUserId", roamEvent.getNearby_user_id());
+        map.putString("userId", roamEvent.getUser_id());
+        map.putString("geofenceId", roamEvent.getGeofence_id());
+        map.putString("locationId", roamEvent.getLocation_id());
+        map.putString("activity", roamEvent.getActivity());
+        map.putDouble("distance", roamEvent.getDistance());
+        if (roamEvent.getLocation().getCoordinates().size() == 2){
+            map.putDouble("longitude", roamEvent.getLocation().getCoordinates().get(0));
+            map.putDouble("latitude", roamEvent.getLocation().getCoordinates().get(1));
+            map.putString("type", roamEvent.getLocation().getType());
+        }
+        map.putDouble("horizontalAccuracy", roamEvent.getHorizontal_accuracy());
+        map.putDouble("veritcalAccuracy", roamEvent.getVertical_accuracy());
+        map.putInt("speed", roamEvent.getSpeed());
+        map.putDouble("course", roamEvent.getCourse());
+        map.putString("createdAt", roamEvent.getCreated_at());
+        map.putString("recordedAt", roamEvent.getRecorded_at());
+        map.putString("eventSource", roamEvent.getEvent_source());
+        map.putString("eventVersion", roamEvent.getEvent_version());
+        map.putString("eventDescription", roamEvent.getDescription());
+
+        return map;
     }
 
 
