@@ -31,7 +31,7 @@ RCT_EXPORT_MODULE();
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-  return @[@"location", @"location_received", @"trip_status", @"error"];
+  return @[@"location", @"location_received", @"trip_status", @"error",@"events"];
 }
 
 // Roam Delegate Methods
@@ -57,6 +57,13 @@ RCT_EXPORT_MODULE();
   if (hasListeners) {
     [self sendEventWithName:@"error" body:[self error:error]];
   }
+}
+
+- (void)didReceiveEvents:(RoamEvents *)events {
+  if (hasListeners) {
+        [self sendEventWithName:@"events" body:[self didUpdateEvent:events]];
+  }
+
 }
 
 
@@ -610,6 +617,35 @@ RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback re
   }
   
   return array;
+}
+
+- (NSMutableArray *) didUpdateEvent:(RoamEvents *)events{
+  
+  NSMutableArray *array = [[NSMutableArray alloc] init];
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  [dict setValue:events.activity forKey:@"activity"];
+  [dict setValue:events.eventDescription forKey:@"eventDescription"];
+  [dict setValue:events.course forKey:@"course"];
+  [dict setValue:events.createdAt forKey:@"createdAt"];
+  [dict setValue:events.distance forKey:@"distance"];
+  [dict setValue:events.eventSource forKey:@"eventSource"];
+  [dict setValue:events.eventVersion forKey:@"eventVersion"];
+  [dict setValue:events.geofenceId forKey:@"geofenceId"];
+  [dict setValue:events.horizontalAccuracy forKey:@"horizontalAccuracy"];
+  [dict setValue:events.locationId forKey:@"locationId"];
+  [dict setValue:events.nearbyUserId forKey:@"nearbyUserId"];
+
+  [dict setValue:events.recordedAt forKey:@"recordedAt"];
+  [dict setValue:events.speed forKey:@"speed"];
+  [dict setValue:events.tripId forKey:@"tripId"];
+  [dict setValue:events.userId forKey:@"userId"];
+  [dict setValue:events.veritcalAccuracy forKey:@"veritcalAccuracy"];
+
+  [dict setValue:[events.coordinates firstObject] forKey:@"longitude"];
+  [dict setValue:[events.coordinates lastObject] forKey:@"latitude"];
+  [dict setValue:events.location_metadata forKey:@"metadata"];
+  [array addObject:dict];
+  return  array;
 }
 
 - (NSMutableDictionary *) didUserLocation:(RoamLocationReceived *)location{
