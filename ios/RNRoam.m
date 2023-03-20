@@ -644,6 +644,7 @@ RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback re
   [dict setValue:[events.coordinates firstObject] forKey:@"longitude"];
   [dict setValue:[events.coordinates lastObject] forKey:@"latitude"];
   [dict setValue:events.location_metadata forKey:@"metadata"];
+  [dict setValue:events.eventType forKey:@"eventType"];
   [array addObject:dict];
   return  array;
 }

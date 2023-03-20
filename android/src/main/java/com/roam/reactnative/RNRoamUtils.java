@@ -212,6 +212,7 @@ class RNRoamUtils {
         map.putString("eventSource", roamEvent.getEvent_source());
         map.putString("eventVersion", roamEvent.getEvent_version());
         map.putString("eventDescription", roamEvent.getDescription());
+        map.putString("eventType", roamEvent.getEvent_type());
 
         return map;
     }

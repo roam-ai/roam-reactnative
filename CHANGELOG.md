@@ -246,3 +246,7 @@ Added:
 ## 0.1.4
 
 - Update native Roam SDK for android v0.1.11 and iOS v0.1.8
+
+## 0.1.5
+
+- Added support for receiving events
