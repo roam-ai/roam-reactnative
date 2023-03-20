@@ -15,7 +15,7 @@ buildscript {
 }
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 28)
+    compileSdkVersion safeExtGet('compileSdkVersion', 31)
     buildToolsVersion safeExtGet('buildToolsVersion', '28.0.3')
 
     defaultConfig {
