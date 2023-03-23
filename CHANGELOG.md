@@ -250,3 +250,7 @@ Added:
 ## 0.1.5
 
 - Added support for receiving events
+
+## 0.1.6
+
+- Update native Roam SDK for android v0.1.13
