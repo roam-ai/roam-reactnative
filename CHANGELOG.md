@@ -254,3 +254,7 @@ Added:
 ## 0.1.6
 
 - Update native Roam SDK for android v0.1.13
+
+## 0.1.7
+
+- Update native Roam SDK for android v0.1.14
