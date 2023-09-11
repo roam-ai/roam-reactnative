@@ -85,7 +85,7 @@ Before making any changes to your javascript code, you would need to integrate a
 
    ```
    dependencies {
-       implementation 'com.roam.sdk:roam-android:0.1.14'
+       implementation 'com.roam.sdk:roam-android:0.1.19'
    }
    ```
 
@@ -164,7 +164,7 @@ Roam.createUser(
   },
   (error) => {
     // do something on error
-  }
+  },
 );
 ```
 
@@ -186,7 +186,7 @@ Roam.getUser(
   },
   (error) => {
     // do something on error
-  }
+  },
 );
 ```
 
@@ -312,7 +312,7 @@ customize and build your own tracking modes.
 Roam.startTrackingDistanceInterval(
   "DISTANCE IN METERS",
   "STATIONARY DURATION IN SECONDS",
-  Roam.DesiredAccuracy.HIGH
+  Roam.DesiredAccuracy.HIGH,
 );
 ```
 
@@ -331,7 +331,7 @@ Roam.startTrackingDistanceInterval(10, 120, Roam.DesiredAccuracy.HIGH);
 //Update location based on time interval.
 Roam.startTrackingTimeInterval(
   "INTERVAL IN SECONDS",
-  Roam.DesiredAccuracy.HIGH
+  Roam.DesiredAccuracy.HIGH,
 );
 ```
 
@@ -358,7 +358,7 @@ Roam.startTrackingCustom(
   showBackIndicator,
   distanceFilter,
   accuracyFilter,
-  updateInterval
+  updateInterval,
 );
 ```
 
@@ -377,7 +377,7 @@ Roam.startTrackingCustom(
   true, // showBackIndicator
   20, // distanceFilter
   10, // accuracyFilter
-  0 // updateInterval
+  0, // updateInterval
 );
 ```
 
@@ -393,7 +393,7 @@ Roam.startTrackingCustom(
   showBackIndicator,
   distanceFilter,
   accuracyFilter,
-  updateInterval
+  updateInterval,
 );
 ```
 
@@ -410,7 +410,7 @@ Roam.startTrackingCustom(
   true, // showBackIndicator
   0, // distanceFilter
   10, // accuracyFilter
-  120 // updateInterval
+  120, // updateInterval
 );
 ```
 
@@ -505,7 +505,7 @@ Roam.toggleListener(
   },
   (error) => {
     // do something on error
-  }
+  },
 );
 ```
 
@@ -558,7 +558,7 @@ Roam.getBatchReceiverConfig(
     // do something on error
     //error.code
     //error.message
-  }
+  },
 );
 ```
 
@@ -576,7 +576,7 @@ Roam.resetBatchReceiverConfig(
     // do something on error
     //error.code
     //error.message
-  }
+  },
 );
 ```
 
