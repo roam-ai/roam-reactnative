@@ -225,11 +225,11 @@ RCT_EXPORT_METHOD(updateCurrentLocationIos:(NSInteger)accuracy){
 RCT_EXPORT_METHOD(startTracking:(NSString *)trackingMode){
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([trackingMode  isEqual:@"PASSIVE"]) {
-      [Roam startTracking:RoamTrackingModePassive options:nil];
+      [Roam startTracking:RoamTrackingModePassive options:nil handler:nil];
     } else if ([trackingMode  isEqual:@"BALANCED"]){
-      [Roam startTracking:RoamTrackingModeBalanced options:nil];
+      [Roam startTracking:RoamTrackingModeBalanced options:nil handler:nil];
     } else{
-      [Roam startTracking:RoamTrackingModeActive options:nil];
+      [Roam startTracking:RoamTrackingModeActive options:nil handler:nil];
     }
   });
 }
@@ -239,7 +239,7 @@ RCT_EXPORT_METHOD(startTrackingCustom:(BOOL)allowBackground pauseAutomatic:(BOOL
   dispatch_async(dispatch_get_main_queue(), ^{
     RoamTrackingCustomMethodsObjcWrapper *wrapper = [[RoamTrackingCustomMethodsObjcWrapper alloc] init];
     [wrapper setUpCustomOptionsWithDesiredAccuracy:[self getDesireAccuracy:desiredAccuracy] useVisit:true showsBackgroundLocationIndicator:showBackIndicator distanceFilter:distanceFilter useSignificant:true useRegionMonitoring:true useDynamicGeofencRadius:true geofenceRadius:true allowBackgroundLocationUpdates:allowBackground activityType:[self getActivityType:activityType] pausesLocationUpdatesAutomatically:pauseAutomatic useStandardLocationServices:false accuracyFilter:accuracyFilter updateInterval:updateInterval];
-    [Roam startTracking:RoamTrackingModeCustom options:wrapper.customMethods];
+    [Roam startTracking:RoamTrackingModeCustom options:wrapper.customMethods handler: nil];
   });
 }
 
@@ -247,18 +247,18 @@ RCT_EXPORT_METHOD(startTrackingCustom:(BOOL)allowBackground pauseAutomatic:(BOOL
 RCT_EXPORT_METHOD(startSelfTracking:(NSString *)trackingMode){
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([trackingMode  isEqual:@"PASSIVE"]) {
-      [Roam startTracking:RoamTrackingModePassive options:nil];
+      [Roam startTracking:RoamTrackingModePassive options:nil handler: nil];
     } else if ([trackingMode  isEqual:@"BALANCED"]){
-      [Roam startTracking:RoamTrackingModeBalanced options:nil];
+      [Roam startTracking:RoamTrackingModeBalanced options:nil handler: nil];
     } else{
-      [Roam startTracking:RoamTrackingModeActive options:nil];
+      [Roam startTracking:RoamTrackingModeActive options:nil handler: nil];
     }
   });
 }
 
 RCT_EXPORT_METHOD(stopTracking){
   dispatch_async(dispatch_get_main_queue(), ^{
-    [Roam stopTracking];
+    [Roam stopTrackingWithHandler:nil];
   });
 }
 
@@ -289,21 +289,21 @@ RCT_EXPORT_METHOD(offlineLocationTracking:(BOOL)offline){
 
 RCT_EXPORT_METHOD(subscribe:(NSString *)type userId:(NSString *)userId){
   if ([type  isEqual:@"LOCATION"]){
-    [Roam subscribe:RoamSubscribeLocation :userId];
+    [Roam subscribe:RoamSubscribeLocation :userId handler:nil];
   }else if ([type isEqual:@"EVENTS"]){
-    [Roam subscribe:RoamSubscribeEvents :userId];
+    [Roam subscribe:RoamSubscribeEvents :userId handler:nil];
   }else{
-    [Roam subscribe:RoamSubscribeBoth :userId];
+    [Roam subscribe:RoamSubscribeBoth :userId handler:nil];
   }
 }
 
 RCT_EXPORT_METHOD(unSubscribe:(NSString *)type userId:(NSString *)userId){
   if ([type  isEqual:@"LOCATION"]){
-    [Roam unsubscribe:RoamSubscribeLocation :userId];
+    [Roam unsubscribe:RoamSubscribeLocation :userId handler:nil];
   }else if ([type isEqual:@"EVENTS"]){
-    [Roam unsubscribe:RoamSubscribeEvents :userId];
+    [Roam unsubscribe:RoamSubscribeEvents :userId handler:nil];
   }else{
-    [Roam unsubscribe:RoamSubscribeBoth :userId];
+    [Roam unsubscribe:RoamSubscribeBoth :userId handler:nil];
   }
 }
 
@@ -313,9 +313,9 @@ RCT_EXPORT_METHOD(publishAndSave:(NSDictionary *)dict){
     if ([[dict allKeys] count] != 0) {
       RoamPublish *publish = [[RoamPublish alloc] init];
       publish.meta_data = dict;
-      [Roam publishSave:publish];
+      [Roam publishSave:publish handler:nil];
     }else{
-      [Roam publishSave:nil];
+      [Roam publishSave:nil handler:nil];
     }
   });
 }
@@ -325,15 +325,15 @@ RCT_EXPORT_METHOD(publishOnly:(NSArray *)array metaData:(NSDictionary *)metaData
   dispatch_async(dispatch_get_main_queue(), ^{
     if ([array count] != 0) {
       RoamPublish *publish = [self publish:array metaData:metaData];
-      [Roam publishOnly:publish];
+      [Roam publishOnly:publish handler:nil];
     }else{
-      [Roam publishOnly:nil];
+      [Roam publishOnly:nil handler:nil];
     }
   });
 }
 
 RCT_EXPORT_METHOD(stopPublishing){
-  [Roam stopPublishing];
+  [Roam stopPublishingWithHandler:nil];
 }
 
 RCT_EXPORT_METHOD(updateLocationWhenStationary:(NSInteger)interval){
