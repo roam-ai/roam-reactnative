@@ -21,6 +21,6 @@ Pod::Spec.new do |s|
 
   s.dependency 'React'
 
-  s.dependency 'roam-ios', '0.1.14'
+  s.dependency 'roam-ios', '0.1.17'
 
 end

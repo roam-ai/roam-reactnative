@@ -19,11 +19,14 @@ import com.roam.sdk.Roam;
 import com.roam.sdk.RoamPublish;
 import com.roam.sdk.RoamTrackingMode;
 import com.roam.sdk.Source;
+import com.roam.sdk.callback.PublishCallback;
 import com.roam.sdk.callback.RoamBatchReceiverCallback;
 import com.roam.sdk.callback.RoamCallback;
 import com.roam.sdk.callback.RoamLocationCallback;
 import com.roam.sdk.callback.RoamLogoutCallback;
 import com.roam.sdk.callback.RoamTrackingConfigCallback;
+import com.roam.sdk.callback.SubscribeCallback;
+import com.roam.sdk.callback.TrackingCallback;
 import com.roam.sdk.models.BatchReceiverConfig;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamUser;
@@ -158,13 +161,43 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   public void subscribe(String type, String userId) {
     switch (type) {
       case "EVENTS":
-        Roam.subscribe(Roam.Subscribe.EVENTS, userId);
+        Roam.subscribe(Roam.Subscribe.EVENTS, userId, new SubscribeCallback() {
+          @Override
+          public void onSuccess(String s, String s1) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
       case "LOCATION":
-        Roam.subscribe(Roam.Subscribe.LOCATION, userId);
+        Roam.subscribe(Roam.Subscribe.LOCATION, userId, new SubscribeCallback() {
+          @Override
+          public void onSuccess(String s, String s1) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
       case "BOTH":
-        Roam.subscribe(Roam.Subscribe.BOTH, userId);
+        Roam.subscribe(Roam.Subscribe.BOTH, userId, new SubscribeCallback() {
+          @Override
+          public void onSuccess(String s, String s1) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
     }
   }
@@ -173,13 +206,43 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   public void unSubscribe(String type, String userId) {
     switch (type) {
       case "EVENTS":
-        Roam.unSubscribe(Roam.Subscribe.EVENTS, userId);
+        Roam.unSubscribe(Roam.Subscribe.EVENTS, userId, new SubscribeCallback() {
+          @Override
+          public void onSuccess(String s, String s1) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
       case "LOCATION":
-        Roam.unSubscribe(Roam.Subscribe.LOCATION, userId);
+        Roam.unSubscribe(Roam.Subscribe.LOCATION, userId, new SubscribeCallback() {
+          @Override
+          public void onSuccess(String s, String s1) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
       case "BOTH":
-        Roam.unSubscribe(Roam.Subscribe.BOTH, userId);
+        Roam.unSubscribe(Roam.Subscribe.BOTH, userId, new SubscribeCallback() {
+          @Override
+          public void onSuccess(String s, String s1) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
     }
   }
@@ -238,13 +301,43 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   public void startTracking(String trackingMode) {
     switch (trackingMode) {
       case "ACTIVE":
-        Roam.startTracking(RoamTrackingMode.ACTIVE);
+        Roam.startTracking(RoamTrackingMode.ACTIVE, new TrackingCallback() {
+          @Override
+          public void onSuccess(String s) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
       case "BALANCED":
-        Roam.startTracking(RoamTrackingMode.BALANCED);
+        Roam.startTracking(RoamTrackingMode.BALANCED, new TrackingCallback() {
+          @Override
+          public void onSuccess(String s) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
       case "PASSIVE":
-        Roam.startTracking(RoamTrackingMode.PASSIVE);
+        Roam.startTracking(RoamTrackingMode.PASSIVE, new TrackingCallback() {
+          @Override
+          public void onSuccess(String s) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
     }
   }
@@ -263,7 +356,17 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
         builder.setDesiredAccuracy(RoamTrackingMode.DesiredAccuracy.HIGH);
         break;
     }
-    Roam.startTracking(builder.build());
+    Roam.startTracking(builder.build(), new TrackingCallback() {
+      @Override
+      public void onSuccess(String s) {
+
+      }
+
+      @Override
+      public void onError(RoamError roamError) {
+
+      }
+    });
   }
 
   @ReactMethod
@@ -280,12 +383,32 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
         builder.setDesiredAccuracy(RoamTrackingMode.DesiredAccuracy.HIGH);
         break;
     }
-    Roam.startTracking(builder.build());
+    Roam.startTracking(builder.build(), new TrackingCallback() {
+      @Override
+      public void onSuccess(String s) {
+
+      }
+
+      @Override
+      public void onError(RoamError roamError) {
+
+      }
+    });
   }
 
   @ReactMethod
   public void stopTracking() {
-    Roam.stopTracking();
+    Roam.stopTracking(new TrackingCallback() {
+      @Override
+      public void onSuccess(String s) {
+
+      }
+
+      @Override
+      public void onError(RoamError roamError) {
+
+      }
+    });
   }
 
   @ReactMethod
@@ -789,7 +912,17 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
       } catch (JSONException e) {
       }
     }
-    Roam.publishAndSave(roamPublish.build());
+    Roam.publishAndSave(roamPublish.build(), new PublishCallback() {
+      @Override
+      public void onSuccess(String s) {
+
+      }
+
+      @Override
+      public void onError(RoamError roamError) {
+
+      }
+    });
   }
 
   @ReactMethod
@@ -933,12 +1066,32 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
       } catch (JSONException e) {
       }
     }
-    Roam.publishOnly(roamPublish.build());
+    Roam.publishOnly(roamPublish.build(), new PublishCallback() {
+      @Override
+      public void onSuccess(String s) {
+
+      }
+
+      @Override
+      public void onError(RoamError roamError) {
+
+      }
+    });
   }
 
   @ReactMethod
   public void stopPublishing() {
-    Roam.stopPublishing();
+    Roam.stopPublishing(new PublishCallback() {
+      @Override
+      public void onSuccess(String s) {
+
+      }
+
+      @Override
+      public void onError(RoamError roamError) {
+
+      }
+    });
   }
 
   @ReactMethod
@@ -955,13 +1108,43 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   public void startSelfTracking(String trackingMode) {
     switch (trackingMode) {
       case "ACTIVE":
-        Roam.startTracking(RoamTrackingMode.ACTIVE);
+        Roam.startTracking(RoamTrackingMode.ACTIVE, new TrackingCallback() {
+          @Override
+          public void onSuccess(String s) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
       case "BALANCED":
-        Roam.startTracking(RoamTrackingMode.BALANCED);
+        Roam.startTracking(RoamTrackingMode.BALANCED, new TrackingCallback() {
+          @Override
+          public void onSuccess(String s) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
       case "PASSIVE":
-        Roam.startTracking(RoamTrackingMode.PASSIVE);
+        Roam.startTracking(RoamTrackingMode.PASSIVE, new TrackingCallback() {
+          @Override
+          public void onSuccess(String s) {
+
+          }
+
+          @Override
+          public void onError(RoamError roamError) {
+
+          }
+        });
         break;
     }
   }
@@ -980,7 +1163,17 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
         builder.setDesiredAccuracy(RoamTrackingMode.DesiredAccuracy.HIGH);
         break;
     }
-    Roam.startTracking(builder.build());
+    Roam.startTracking(builder.build(), new TrackingCallback() {
+      @Override
+      public void onSuccess(String s) {
+
+      }
+
+      @Override
+      public void onError(RoamError roamError) {
+
+      }
+    });
   }
 
   @ReactMethod
@@ -997,12 +1190,32 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
         builder.setDesiredAccuracy(RoamTrackingMode.DesiredAccuracy.HIGH);
         break;
     }
-    Roam.startTracking(builder.build());
+    Roam.startTracking(builder.build(), new TrackingCallback() {
+      @Override
+      public void onSuccess(String s) {
+
+      }
+
+      @Override
+      public void onError(RoamError roamError) {
+
+      }
+    });
   }
 
   @ReactMethod
   public void stopSelfTracking() {
-    Roam.stopTracking();
+    Roam.stopTracking(new TrackingCallback() {
+      @Override
+      public void onSuccess(String s) {
+
+      }
+
+      @Override
+      public void onError(RoamError roamError) {
+
+      }
+    });
   }
 
   @ReactMethod
