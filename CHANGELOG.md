@@ -267,7 +267,6 @@ Added:
 
 - Update native Roam SDK for android v0.1.21 and iOS v0.1.17
 
-
 ## 0.1.10
 
 - Update native Roam SDK for android v0.1.23 and iOS v0.1.19
