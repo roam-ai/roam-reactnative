@@ -1048,11 +1048,18 @@ BOOL isEmpty(id thing) {
     [dict setValue:route.duration forKey:@"duration"];
     [dict setValue:route.elevationGain forKey:@"elevationGain"];
     [dict setValue:route.distance forKey:@"distance"];
-    [dict setValue:route.coordinates forKey:@"coordinates"];
+    [dict setValue:[self tripRoutesCoordinates:route.coordinates] forKey:@"coordinates"];
     [array addObject:dict];
     
   }
   return  array;
+}
+
+-(NSMutableDictionary *) tripRoutesCoordinates:(RoamTripRoutecoordinates *)tripRoutes {
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    [dict setValue:tripRoutes.type forKey:@"type"];
+    [dict setValue:tripRoutes.coordinates forKey:@"coordinates"];
+  return  dict;
 }
 
 -(NSMutableDictionary *) syncTripResponse:(RoamTripSync *)response {
