@@ -266,21 +266,21 @@ class RNRoamUtils {
         WritableMap trip = Arguments.createMap();
         trip.putString("tripId", tripDetails.getTripId());
         trip.putString("name", tripDetails.getTripName());
-        trip.putString("description", tripDetails.getTripDescription());
-        trip.putString("trip_state", tripDetails.getTripState());
-        trip.putDouble("total_distance", tripDetails.getTotalDistance());
-        trip.putDouble("total_duration", tripDetails.getTotalDuration());
-        trip.putDouble("total_elevation_gain", tripDetails.getTotalElevationGain());
+        trip.putString("tripDescription", tripDetails.getTripDescription());
+        trip.putString("tripState", tripDetails.getTripState());
+        trip.putDouble("totalDistance", tripDetails.getTotalDistance());
+        trip.putDouble("totalDuration", tripDetails.getTotalDuration());
+        trip.putDouble("totalElevationGain", tripDetails.getTotalElevationGain());
         trip.putString("metadata", tripDetails.getMetadata() != null ? tripDetails.getMetadata().toString() : null);
-        trip.putMap("start_location", mapForTripLocation(tripDetails.getStartLocation()));
-        trip.putMap("end_location", mapForTripLocation(tripDetails.getEndLocation()));
+        trip.putMap("startLocation", mapForTripLocation(tripDetails.getStartLocation()));
+        trip.putMap("endLocation", mapForTripLocation(tripDetails.getEndLocation()));
         trip.putMap("user", mapForTripUser(tripDetails.getUser()));
-        trip.putString("started_at", tripDetails.getStartedAt());
-        trip.putString("ended_at", tripDetails.getEndedAt());
-        trip.putString("created_at", tripDetails.getCreatedAt());
-        trip.putString("updated_at", tripDetails.getUpdatedAt());
-        trip.putBoolean("is_local", tripDetails.getIsLocal());
-        trip.putBoolean("has_more", tripDetails.getHasMore());
+        trip.putString("startedAt", tripDetails.getStartedAt());
+        trip.putString("endedAt", tripDetails.getEndedAt());
+        trip.putString("createdAt", tripDetails.getCreatedAt());
+        trip.putString("updatedAt", tripDetails.getUpdatedAt());
+        trip.putBoolean("isLocal", tripDetails.getIsLocal());
+        trip.putBoolean("hasMore", tripDetails.getHasMore());
         if (tripDetails.getStops() != null){
             WritableArray stopsArray = Arguments.createArray();
             for (Stop stop: tripDetails.getStops()){
@@ -304,13 +304,13 @@ class RNRoamUtils {
             for (Routes routes: tripDetails.getRoutes()){
                 routesArray.pushMap(mapForRoutes(routes));
             }
-            trip.putArray("route", routesArray);
+            trip.putArray("routes", routesArray);
         } else {
-            trip.putArray("route", null);
+            trip.putArray("routes", null);
         }
         trip.putString("routeIndex", tripDetails.getRouteIndex() != null ? tripDetails.getRouteIndex().toString() : null);
         if (tripDetails.getLocationCount() != null) {
-            trip.putInt("location_count", tripDetails.getLocationCount());
+            trip.putInt("locationCount", tripDetails.getLocationCount());
         }
         return trip;
     }
@@ -323,7 +323,7 @@ class RNRoamUtils {
         map.putString("description", startLocation.getDescription());
         map.putString("address", startLocation.getAddress());
         map.putString("metadata", startLocation.getMetadata() != null ? startLocation.getMetadata().toString() : null);
-        map.putString("recorded_at", startLocation.getRecordedAt());
+        map.putString("recordedAt", startLocation.getRecordedAt());
         map.putMap("geometry", mapForGeometry(startLocation.getGeometry()));
         return map;
     }
@@ -336,7 +336,7 @@ class RNRoamUtils {
         map.putString("description", endLocation.getDescription());
         map.putString("address", endLocation.getAddress());
         map.putString("metadata", endLocation.getMetadata() != null ? endLocation.getMetadata().toString() : null);
-        map.putString("recorded_at", endLocation.getRecordedAt());
+        map.putString("recordedAt", endLocation.getRecordedAt());
         map.putMap("geometry", mapForGeometry(endLocation.getGeometry()));
         return map;
     }
@@ -383,11 +383,11 @@ class RNRoamUtils {
         map.putString("description", stop.getStopDescription());
         map.putString("address", stop.getAddress());
         map.putString("metadata", stop.getMetadata() != null ? stop.getMetadata().toString() : null);
-        map.putDouble("geometry_radius", stop.getGeometryRadius());
-        map.putString("created_at", stop.getCreatedAt());
-        map.putString("updated_at", stop.getUpdatedAt());
-        map.putString("arrived_at", stop.getArrivedAt());
-        map.putString("departed_at", stop.getDepartedAt());
+        map.putDouble("geometryRadius", stop.getGeometryRadius());
+        map.putString("createdAt", stop.getCreatedAt());
+        map.putString("updatedAt", stop.getUpdatedAt());
+        map.putString("arrivedAt", stop.getArrivedAt());
+        map.putString("departedAt", stop.getDepartedAt());
         map.putMap("geometry", mapForGeometry(stop.getGeometry()));
         return map;
     }
@@ -396,13 +396,13 @@ class RNRoamUtils {
         if (events == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("id", events.getId());
-        map.putString("trip_id", events.getTripId());
-        map.putString("user_id", events.getUserId());
-        map.putString("event_type", events.getEventType());
-        map.putString("created_at", events.getCreatedAt());
-        map.putString("event_source", events.getEventSource());
-        map.putString("event_version", events.getEventVersion());
-        map.putString("location_id", events.getLocationId());
+        map.putString("tripId", events.getTripId());
+        map.putString("userId", events.getUserId());
+        map.putString("eventType", events.getEventType());
+        map.putString("createAt", events.getCreatedAt());
+        map.putString("eventSource", events.getEventSource());
+        map.putString("eventVersion", events.getEventVersion());
+        map.putString("locationId", events.getLocationId());
         return map;
     }
 
@@ -415,10 +415,10 @@ class RNRoamUtils {
         map.putDouble("altitude", routes.getAltitude());
         map.putDouble("distance", routes.getDistance());
         map.putDouble("duration", routes.getDuration());
-        map.putDouble("elevation_gain", routes.getElevationGain());
+        map.putDouble("elevationGain", routes.getElevationGain());
         map.putMap("coordinates", mapForCoordinates(routes.getCoordinates()));
-        map.putString("recorded_at", routes.getRecordedAt());
-        map.putString("location_id", routes.getLocationId());
+        map.putString("recordedAt", routes.getRecordedAt());
+        map.putString("locationId", routes.getLocationId());
         map.putDouble("bearing", routes.getBearing());
         return map;
     }
@@ -452,9 +452,9 @@ class RNRoamUtils {
         map.putInt("code", roamSyncTripResponse.getCode());
         WritableMap data = Arguments.createMap();
         if (roamSyncTripResponse.getData() != null) {
-            data.putString("trip_id", roamSyncTripResponse.getData().getTrip_id());
+            data.putString("tripId", roamSyncTripResponse.getData().getTrip_id());
             if (roamSyncTripResponse.getData().getIsSynced() != null){
-                data.putBoolean("is_synced", roamSyncTripResponse.getData().getIsSynced());
+                data.putBoolean("isSynced", roamSyncTripResponse.getData().getIsSynced());
             }
         }
         map.putMap("data", data);
@@ -467,7 +467,7 @@ class RNRoamUtils {
         map.putInt("code", roamActiveTripsResponse.getCode());
         map.putString("message", roamActiveTripsResponse.getMessage());
         map.putString("description", roamActiveTripsResponse.getDescription());
-        map.putBoolean("has_more", roamActiveTripsResponse.isHas_more());
+        map.putBoolean("hasMore", roamActiveTripsResponse.isHas_more());
         if (roamActiveTripsResponse.getTrips() != null){
             WritableArray tripsArray = Arguments.createArray();
             for(Trips trips: roamActiveTripsResponse.getTrips()){
@@ -484,16 +484,16 @@ class RNRoamUtils {
         if (trips == null) return null;
         WritableMap map = Arguments.createMap();
         map.putString("id", trips.getTripId());
-        map.putString("trip_state", trips.getTripState());
-        map.putDouble("total_distance", trips.getTotalDistance());
-        map.putDouble("total_duration", trips.getTotalDuration());
-        map.putDouble("total_elevation_gain", trips.getTotalElevationGain());
+        map.putString("tripState", trips.getTripState());
+        map.putDouble("totalDistance", trips.getTotalDistance());
+        map.putDouble("totalDuration", trips.getTotalDuration());
+        map.putDouble("totalElevationGain", trips.getTotalElevationGain());
         map.putString("metadata", trips.metadata() != null ? trips.metadata().toString() : null);
         map.putMap("user", mapForTripUser(trips.getUser()));
-        map.putString("started_at", trips.getStartedAt());
-        map.putString("ended_at", trips.getEndedAt());
-        map.putString("created_at", trips.getCreatedAt());
-        map.putString("updated_at", trips.getUpdatedAt());
+        map.putString("startedAt", trips.getStartedAt());
+        map.putString("endedAt", trips.getEndedAt());
+        map.putString("createdAt", trips.getCreatedAt());
+        map.putString("updatedAt", trips.getUpdatedAt());
         if (trips.getStop() != null){
             WritableArray stopsArray = Arguments.createArray();
             for (Stop stop: trips.getStop()){
@@ -526,7 +526,7 @@ class RNRoamUtils {
         if (roamDeleteTripResponse.getTrip() != null) {
             trip.putString("id", roamDeleteTripResponse.getTrip().getId());
             if (roamDeleteTripResponse.getTrip().getIs_deleted() != null){
-                trip.putBoolean("is_deleted", roamDeleteTripResponse.getTrip().getIs_deleted());
+                trip.putBoolean("isDeleted", roamDeleteTripResponse.getTrip().getIs_deleted());
             }
         }
         map.putMap("trip", trip);
