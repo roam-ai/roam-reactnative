@@ -275,3 +275,8 @@ Added:
 
 - Update native Roam SDK for iOS v0.1.25
 - Trip summary response fix for iOS
+
+## 0.1.12
+
+- Update native Roam SDK for iOS v0.1.26 and Android v0.1.28
+- Trip summary response fix for Android
