@@ -298,6 +298,6 @@ Added:
 
 - Update native Roam SDK for iOS v0.1.29 to use only Roam core module.
 
-## 0.1.17
+## 0.1.18
 
-- Update native Roam SDK for iOS v0.1.32 to use only Roam core module.
+- Update native Roam SDK for Android v0.1.32
