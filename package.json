@@ -3,7 +3,7 @@
   "description": "This plugin allows to use the Roam.ai SDK in your React Native mobile application on iOS and Android.",
   "homepage": "https://roam.ai",
   "license": "MIT",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "author": "Roam B.V",
   "main": "js/index.js",
   "dependencies": {
