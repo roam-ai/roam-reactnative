@@ -305,3 +305,7 @@ Added:
 ## 0.1.19
 
 - Update native Roam SDK for Android v0.1.34
+
+## 0.1.20
+
+- Updated the Roam SDK to latest versions.

@@ -469,6 +469,27 @@ const stopPublishing = () => {
   NativeModules.RNRoam.stopPublishing();
 };
 
+type RNRoamType = {
+  batchProcess: (enable: boolean, syncHour: number) => void;
+};
+
+const { RNRoam } = NativeModules as { RNRoam?: RNRoamType };
+
+const batchProcess = (enable: boolean, syncHour: number): void => {
+  console.log('batchProcess called with:', { enable, syncHour });
+
+  if (RNRoam?.batchProcess) {
+    try {
+      RNRoam.batchProcess(enable, syncHour);
+      console.log('batchProcess executed successfully.');
+    } catch (error) {
+      console.error('Error executing batchProcess:', error);
+    }
+  } else {
+    console.warn('RNRoam module is not linked properly.');
+  }
+};
+
 const startTracking = (trackingMode: any) => {
   NativeModules.RNRoam.startTracking(trackingMode);
 };
@@ -758,6 +779,7 @@ const Roam = {
   locationPermissionStatus,
   publishOnly,
   publishAndSave,
+  batchProcess,
   stopPublishing,
   startTracking,
   startTrackingCustom,

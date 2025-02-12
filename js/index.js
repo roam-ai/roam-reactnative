@@ -403,6 +403,12 @@ const publishAndSave = (jsonMetadata) => {
   NativeModules.RNRoam.publishAndSave(jsonMetadata)
 }
 
+const batchProcess = (enable, syncHour) => {
+  console.log('batchProcess called with: --> 1', { enable, syncHour });
+
+  NativeModules.RNRoam.batchProcess(enable, syncHour);
+};
+
 const stopPublishing = () => {
   NativeModules.RNRoam.stopPublishing()
 }
@@ -700,6 +706,7 @@ const Roam = {
   publishOnly,
   publishAndSave,
   stopPublishing,
+  batchProcess,
   startTracking,
   startTrackingCustom,
   startSelfTrackingCustom,

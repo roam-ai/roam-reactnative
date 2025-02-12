@@ -14,6 +14,8 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
+import com.roam.roam_batch_connector.RoamBatch;
+import com.roam.roam_batch_connector.builder.RoamBatchPublish;
 import com.roam.sdk.Roam;
 import com.roam.sdk.builder.RoamPublish;
 import com.roam.sdk.builder.RoamTrackingMode;
@@ -1095,6 +1097,70 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void batchProcess(boolean enable, int syncHour) {
+    try {
+
+      RoamBatchPublish roamBatchPublish = new RoamBatchPublish.Builder()
+      .appId()
+           .userId()
+            .geofenceEvents()
+            .locationEvents()
+            .nearbyEvents()
+            .geofenceEvents()
+            .tripsEvents()
+            .locationListener()
+            .eventListener()
+            .altitude()
+            .course()
+            .speed()
+            .horizontalAccuracy()
+            .verticalAccuracy()
+            .appContext()
+            .allowMocked()
+            .batteryRemaining()
+            .batterySaver()
+            .batteryStatus()
+            .activity()
+            .airplaneMode()
+            .deviceManufacturer()
+            .deviceModel()
+            .trackingMode()
+            .locationPermission()
+            .networkStatus()
+            .gpsStatus()
+            .osVersion()
+            .recordedAt()
+            .tzOffset()
+            .androidSdkVersion()
+            .androidReleaseVersion()
+            .networkType()
+            .networkState()
+            .buildId()
+            .buildType()
+            .buildVersionIncremental()
+            .kernelVersion()
+            .installedApplication()
+            .aaid()
+            .ipAddress()
+            .deviceName()
+            .wifiSsid()
+            .localeCountry()
+            .localeLanguage()
+            .carrierName()
+            .appInstallationDate()
+            .appVersion()
+            .publicIpAddress()
+            .build();
+      
+      RoamBatch.setConfig(enable, syncHour, roamBatchPublish);
+      Log.d("RNRoam", "batchProcess called with enable: " + enable + ", syncHour: " + syncHour + ",roamBatchPublish" + roamBatchPublish);
+
+    } catch (Exception e) {
+      Log.e("RNRoam", "Error in batchProcess", e);
+    }
+  }
+
+@ReactMethod
   public void enableAccuracyEngine(int accuracy) {
     Roam.enableAccuracyEngine(accuracy);
   }
