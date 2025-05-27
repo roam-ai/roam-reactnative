@@ -7,7 +7,9 @@
 
 #import "RNRoam.h"
 #import <Roam/Roam.h>
+#import <RoamBatchConnector/RoamBatchConnector.h>
 #import <CoreLocation/CoreLocation.h>
+#import <RoamGeofence/RoamGeofence.h>
 
 @implementation RNRoam{
   BOOL hasListeners;
@@ -26,6 +28,9 @@ RCT_EXPORT_MODULE();
   self = [super init];
   if (self) {
     [Roam setDelegate:self];
+    // [Roam initialize:@"" :NULL :NULL];
+    // [[RoamBatch shared] initialize];
+    // [[RoamLocalGeofenceManager shared] initialize];
   }
   return self;
 }
@@ -313,11 +318,106 @@ RCT_EXPORT_METHOD(publishAndSave:(NSDictionary *)dict){
     if ([[dict allKeys] count] != 0) {
       RoamPublish *publish = [[RoamPublish alloc] init];
       publish.meta_data = dict;
+      [publish enableAll];
       [Roam publishSave:publish handler:nil];
     }else{
       [Roam publishSave:nil handler:nil];
     }
   });
+}
+
+RCT_EXPORT_METHOD(batchProcess:(BOOL)enable syncHour:(NSInteger)syncHour) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+      RoamBatchPublish *batchPublish = [[RoamBatchPublish alloc] init];
+      [batchPublish enableAll];
+      [[RoamBatch shared] setConfigWithEnable:enable syncHour:@(syncHour) publish:batchPublish];
+  });
+}
+
+
+RCT_EXPORT_METHOD(createGeofence:(NSDictionary *)geofence) {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    NSNumber *geofenceId = geofence[@"id"];
+    NSString *name = geofence[@"name"];
+    NSNumber *latitude = geofence[@"latitude"];
+    NSNumber *longitude = geofence[@"longitude"];
+    
+    // Check for the geofence type (circle or polygon)
+    if (geofence[@"radius"]) {
+      // This is a circular geofence
+      NSNumber *radius = geofence[@"radius"];
+      
+      CircularGeofence *circularGeofence = [[CircularGeofence alloc] initWithId:geofenceId.intValue
+                                                                         name:name
+                                                                     latitude:latitude.doubleValue
+                                                                    longitude:longitude.doubleValue
+                                                                       radius:radius.doubleValue];
+      
+      // Pass the circular geofence data to RoamLocalGeofenceManager
+      [[RoamLocalGeofenceManager shared] createGeofence:circularGeofence completion:^(enum RoamGeofenceStatus status, id<Geofence> geofence) {
+        [self handleGeofenceStatus:status geofence:geofence];
+      }];
+      
+    } else if (geofence[@"coordinates"]) {
+      // This is a polygon geofence
+      NSArray *coordinates = geofence[@"coordinates"];
+      NSMutableArray *polygonCoordinates = [NSMutableArray array];
+      
+      for (NSDictionary *coordinate in coordinates) {
+        CLLocationDegrees latitude = [coordinate[@"latitude"] doubleValue];
+        CLLocationDegrees longitude = [coordinate[@"longitude"] doubleValue];
+        CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(latitude, longitude);
+        [polygonCoordinates addObject:[NSValue valueWithBytes:&coord objCType:@encode(CLLocationCoordinate2D)]];
+
+      }
+      
+      PolygonGeofence *polygonGeofence = [[PolygonGeofence alloc] initWithId:geofenceId.intValue
+                                                                       name:name
+                                                                  coordinates:polygonCoordinates];
+      
+      // Pass the polygon geofence data to RoamLocalGeofenceManager
+      [[RoamLocalGeofenceManager shared] createGeofence:polygonGeofence completion:^(enum RoamGeofenceStatus status, id<Geofence> geofence) {
+        [self handleGeofenceStatus:status geofence:geofence];
+      }];
+      
+    } else {
+      NSLog(@"Invalid geofence data. Missing radius or coordinates.");
+    }
+  });
+}
+
+// Helper method to handle geofence statuses
+- (void)handleGeofenceStatus:(enum RoamGeofenceStatus)status geofence:(id<Geofence>)geofence {
+  switch (status) {
+    case RoamGeofenceStatusSuccess:
+      NSLog(@"Geofence status: RoamGeofenceStatusSuccess");
+      break;
+    case RoamGeofenceStatusDuplicateGeofenceId:
+      NSLog(@"Geofence status: RoamGeofenceStatusDuplicateGeofenceId");
+      break;
+    case RoamGeofenceStatusInvalidCoordinates:
+      NSLog(@"Geofence status: RoamGeofenceStatusInvalidCoordinates");
+      break;
+    case RoamGeofenceStatusInvalidRadiusRange:
+      NSLog(@"Geofence status: RoamGeofenceStatusInvalidRadiusRange");
+      break;
+    case RoamGeofenceStatusInvalidPolygonRange:
+      NSLog(@"Geofence status: RoamGeofenceStatusInvalidPolygonRange");
+      break;
+    case RoamGeofenceStatusInvalidGeofenceId:
+      NSLog(@"Geofence status: RoamGeofenceStatusInvalidGeofenceId");
+      break;
+  }
+  
+  // Handle geofence data after creation (check whether it's a Circle or Polygon)
+  if ([(NSObject *)geofence isKindOfClass:[CircularGeofence class]]) {
+        CircularGeofence *circular = (CircularGeofence *)geofence;
+        NSLog(@"Radius: %@", @(circular.radius));
+    } else if ([(NSObject *)geofence isKindOfClass:[PolygonGeofence class]]) {
+        PolygonGeofence *polygon = (PolygonGeofence *)geofence;
+        NSLog(@"Coordinates: %@", polygon.coordinates);
+    }
+
 }
 
 RCT_EXPORT_METHOD(publishOnly:(NSArray *)array metaData:(NSDictionary *)metaData){
@@ -602,6 +702,24 @@ RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback re
   return dict;
 }
 
+- (NSDictionary *)centroidToDictionary:(RoamCentroid *)centroid {
+    NSMutableDictionary *centroidDict = [[NSMutableDictionary alloc] init];
+    // Convert positions array to dictionaries
+    NSMutableArray *positionsArray = [[NSMutableArray alloc] init];
+    for (Position *position in centroid.positions) {
+        [positionsArray addObject:@{
+            @"latitude": @(position.latitude),
+            @"longitude": @(position.longitude)
+        }];
+    }
+    [centroidDict setObject:positionsArray forKey:@"positions"];
+    // Add centroid coordinate
+    [centroidDict setObject:@{
+        @"latitude": @(centroid.centroidCoordinate.latitude),
+        @"longitude": @(centroid.centroidCoordinate.longitude)
+    } forKey:@"centroidCoordinate"];
+    return centroidDict;
+}
 
 - (NSMutableArray *) userLocation:(NSArray<RoamLocation *> *)locations{
   
@@ -612,7 +730,60 @@ RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback re
     [dict setValue:location.activity forKey:@"activity"];
     [dict setValue:location.recordedAt forKey:@"recordedAt"];
     [dict setValue:location.timezoneOffset forKey:@"timezone"];
+    [dict setValue:location.trackingMode forKey:@"trackingMode"];
+    [dict setValue:location.appContext forKey:@"appContext"];
+    [dict setValue:location.batteryStatus forKey:@"batteryStatus"];
+
+    NSMutableArray *eventDictArray = [NSMutableArray array];
+    for (RoamGeofenceEvent *event in location.localGeofenceEvents) {
+        NSDictionary *eventDict = @{
+            @"eventType": event.eventType ?: @"",
+            @"geofenceId": @(event.geofenceId)
+        };
+        [eventDictArray addObject:eventDict];
+    }
+    [dict setValue:eventDictArray forKey:@"localGeofenceEvents"];
+    NSMutableArray *bluetoothSignalStrengths = [NSMutableArray array];
+    for (BluetoothSignal *event in location.bluetoothSignalStrengths) {
+        NSDictionary *eventDict = @{
+          @"name": event.name ?: @"",
+          @"RSSI": event.rssi ?: @"",
+        };
+        [bluetoothSignalStrengths addObject:eventDict];
+    }
+    [dict setValue:bluetoothSignalStrengths forKey:@"bluetoothSignalStrengths"];
+    [dict setValue:[NSNumber numberWithBool:location.batterySaver] forKey:@"batterySaver"];
+    [dict setValue:[NSNumber numberWithBool:location.networkStatus] forKey:@"networkStatus"];
+    [dict setValue:[NSNumber numberWithBool:location.locationPermission] forKey:@"locationPermission"];
     [dict setObject:[self locationReponse:location.location] forKey:@"location"];
+    [dict setValue:location.deviceModel forKey:@"deviceModel"];
+    [dict setValue:location.networkType forKey:@"networkType"];
+    [dict setValue:location.networkState forKey:@"networkState"];
+    [dict setValue:location.bundleId forKey:@"buildID"];
+    [dict setValue:location.kernelVersion forKey:@"kernelVersion"];
+    [dict setValue:location.ipAddress forKey:@"ipAddress"];
+    [dict setValue:location.deviceName forKey:@"deviceName"];
+    [dict setValue:location.systemName forKey:@"systemName"];
+    [dict setValue:location.appName forKey:@"appName"];
+    [dict setValue:location.appId forKey:@"appId"];
+    [dict setValue:location.locationId forKey:@"locationId"];
+    [dict setValue:location.sdkVerison forKey:@"sdkVerison"];
+    [dict setValue:location.osVersion forKey:@"osVersion"];
+    [dict setValue:location.idfv forKey:@"idfv"];
+    [dict setValue:location.idfa forKey:@"idfa"];
+    [dict setValue:location.wifiSSID forKey:@"wifiSSID"];
+    [dict setValue:location.localeCountry forKey:@"localeCountry"];
+    [dict setValue:location.localeLanguage forKey:@"localeLanguage"];
+    [dict setValue:location.carrierName forKey:@"carrierName"];
+    [dict setValue:location.appInstallationDate forKey:@"appInstallationDate"];
+    [dict setValue:location.appVersion forKey:@"appVersion"];
+    [dict setValue:location.source forKey:@"source"]; 
+    [dict setValue:location.manufacturer forKey:@"manufacturer"];
+    [dict setValue:location.publicIpAddress forKey:@"publicIpAddress"];
+    [dict setValue:[NSNumber numberWithDouble:location.speed] forKey:@"speed"];
+    if (location.centroid) {
+             [dict setValue:[self centroidToDictionary:location.centroid] forKey:@"centroid"];
+         }
     [array addObject:dict];
   }
   
@@ -729,8 +900,10 @@ RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback re
   [dict setValue:[NSNumber numberWithDouble:location.coordinate.latitude] forKey:@"latitude"];
   [dict setValue:[NSNumber numberWithDouble:location.coordinate.longitude] forKey:@"longitude"];
   [dict setValue:[NSNumber numberWithDouble:location.horizontalAccuracy] forKey:@"accuracy"];
+  [dict setValue:[NSNumber numberWithDouble:location.verticalAccuracy] forKey:@"verticalAccuracy"];
   [dict setValue:[NSNumber numberWithDouble:location.altitude] forKey:@"altitude"];
   [dict setValue:[NSNumber numberWithDouble:location.speed] forKey:@"speed"];
+  [dict setValue:[NSNumber numberWithDouble:location.course] forKey:@"course"];
   return  dict;
 }
 
@@ -844,9 +1017,6 @@ RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback re
     }
     if ([string isEqual:@"ACTIVITY"]) {
       publish.activity = true;
-    }
-    if ([string isEqual:@"AIRPLANE_MODE"]) {
-      publish.airplane_mode = true;
     }
     if ([string isEqual:@"DEVICE_MANUFACTURE"]) {
       publish.device_manufacturer = true;

@@ -21,6 +21,6 @@ Pod::Spec.new do |s|
 
   s.dependency 'React'
   #  s.dependency 'roam-ios/Roam', '0.1.30-beta.9'
-   s.dependency 'roam-ios/RoamBatchConnector', '0.1.30-beta.9'
-
+   s.dependency 'roam-ios/RoamBatchConnector', '0.1.33'
+   s.dependency 'roam-ios/RoamGeofence', '0.1.33'
 end

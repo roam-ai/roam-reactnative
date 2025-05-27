@@ -490,6 +490,20 @@ const batchProcess = (enable: boolean, syncHour: number): void => {
   }
 };
 
+export const createGeofence = (geofence: { [key: string]: any }) => {
+  if (NativeModules.RNRoam && NativeModules.RNRoam.createGeofence) {
+    NativeModules.RNRoam.createGeofence(geofence)
+      .then((response: any) => {
+        console.log('Geofence created:', response);
+      })
+      .catch((error: any) => {
+        console.error('Error creating geofence:', error);
+      });
+  } else {
+    console.error('createGeofence method is not available');
+  }
+};
+
 const startTracking = (trackingMode: any) => {
   NativeModules.RNRoam.startTracking(trackingMode);
 };
@@ -780,6 +794,8 @@ const Roam = {
   publishOnly,
   publishAndSave,
   batchProcess,
+  createGeofence,
+  // getAllGeofences,
   stopPublishing,
   startTracking,
   startTrackingCustom,

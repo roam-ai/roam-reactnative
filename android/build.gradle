@@ -15,11 +15,11 @@ buildscript {
 }
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 31)
+    compileSdkVersion safeExtGet('compileSdkVersion', 34)
     buildToolsVersion safeExtGet('buildToolsVersion', '28.0.3')
 
     defaultConfig {
-        minSdkVersion safeExtGet('minSdkVersion', 16)
+        minSdkVersion safeExtGet('minSdkVersion', 23)
     }
     buildTypes {
         release {
@@ -48,7 +48,8 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
-    implementation 'com.roam.sdk:roam-android:0.1.35-beta.5'
-    implementation "com.roam.sdk:roam-batch-android:0.1.35-beta.5"
+    implementation 'com.roam.sdk:roam-android:0.1.40'
+    implementation "com.roam.sdk:roam-batch-android:0.1.40"
+
 }
   

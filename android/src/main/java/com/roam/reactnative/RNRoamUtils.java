@@ -134,93 +134,102 @@ class RNRoamUtils {
         return array;
     }
 
-    static WritableArray mapForLocationList(List<RoamLocation> locationList) {
-        WritableArray array = Arguments.createArray();
-        
-        for (RoamLocation roamLocation : locationList) {
-            WritableMap map = Arguments.createMap();
-            map.putString("userId", TextUtils.isEmpty(roamLocation.getUserId()) ? " " : roamLocation.getUserId());
-            
-            if (locationList.size() > 1) {
-                map.putMap("location", RNRoamUtils.mapForBatchLocation(roamLocation.getBatchLocations()));
-            } else {
-                map.putMap("location", RNRoamUtils.mapForLocation(roamLocation.getLocation()));
-            }
-
-            map.putString("activity", TextUtils.isEmpty(roamLocation.getActivity()) ? " " : roamLocation.getActivity());
-
-            WritableArray installedApplicationsArray = Arguments.createArray();
-            for (String app : roamLocation.getInstalledApplications()) {
-                installedApplicationsArray.pushString(app);
-            }
-            
-            map.putArray("installedApplications", installedApplicationsArray);
-            map.putString("recordedAt", roamLocation.getRecordedAt());
-            map.putString("timezone", roamLocation.getTimezoneOffset());
-            map.putString("trackingMode", roamLocation.getTrackingMode());
-            map.putString("appContext", roamLocation.getAppContext());
-            map.putDouble("batteryStatus", roamLocation.getBatteryStatus());
-            map.putInt("batteryRemaining", roamLocation.getBatteryRemaining());
-            map.putBoolean("batterySaver", roamLocation.getBatterySaver());
-            map.putBoolean("networkStatus", roamLocation.getNetworkStatus());
-            map.putString("networkState", roamLocation.getNetworkState());
-            map.putBoolean("locationPermission", roamLocation.getLocationPermission());
-            map.putString("deviceModel", roamLocation.getDeviceModel());
-            map.putString("networkType", roamLocation.getNetworkType());
-            map.putString("buildID", roamLocation.getBuildId());
-            map.putString("kernelVersion", roamLocation.getKernelVersion());
-            map.putString("ipAddress", roamLocation.getIpAddress());
-            map.putString("publicIpAddress", roamLocation.getPublicIpAddress());
-            map.putString("deviceName", roamLocation.getDeviceName());
-            map.putString("manufacturer", roamLocation.getManufacturer());
-            map.putInt("androidSdkVersion", roamLocation.getAndroidSdkVersion());
-            map.putString("androidReleaseVersion", roamLocation.getAndroidReleaseVersion());
-            map.putString("buildType", roamLocation.getBuildType());
-            map.putString("buildVersionIncremental", roamLocation.getBuildVersionIncremental());
-            map.putString("aaid", roamLocation.getAaid());
-            map.putString("wifiSSID", roamLocation.getWifiSsid());
-            map.putString("localeCountry", roamLocation.getLocaleCountry());
-            map.putString("localeLanguage", roamLocation.getLocaleLanguage());
-            map.putString("carrierName", roamLocation.getCarrierName());
-            map.putString("appInstallationDate", roamLocation.getAppInstallationDate());
-            map.putString("appVersion", roamLocation.getAppVersion());
-            map.putString("testCentroid", roamLocation.getTestCentroid());
-            array.pushMap(map);
-        }
-        return array;
-    }
-
-    static WritableMap mapForCentroid(Centroid centroid) {
-        System.out.println("Centroid..."+centroid);
-        if (centroid == null) {
-            return null;
-        }
-
+static WritableArray mapForLocationList(List<RoamLocation> locationList) {
+    WritableArray array = Arguments.createArray();
+    
+    for (RoamLocation roamLocation : locationList) {
         WritableMap map = Arguments.createMap();
-        CentroidCoordinate centroidCoordinate = centroid.getCentroid();
-        if (centroidCoordinate != null) {
-            WritableMap centroidCoordinateMap = Arguments.createMap();
-            centroidCoordinateMap.putDouble("latitude", centroidCoordinate.getLatitude());
-            centroidCoordinateMap.putDouble("longitude", centroidCoordinate.getLongitude());
-            map.putMap("centroidCoordinate", centroidCoordinateMap);
+        map.putString("userId", TextUtils.isEmpty(roamLocation.getUserId()) ? " " : roamLocation.getUserId());
+        
+        if (locationList.size() > 1) {
+            map.putMap("location", RNRoamUtils.mapForBatchLocation(roamLocation.getBatchLocations()));
+        } else {
+            map.putMap("location", RNRoamUtils.mapForLocation(roamLocation.getLocation()));
         }
 
-        List<Positions> positions = centroid.getPositions();
-        if (positions != null) {
-            WritableArray positionsArray = Arguments.createArray();
-            for (int i = 0; i < positions.size(); i++) {
-                Positions position = positions.get(i);
-                if (position != null) {
-                    WritableMap positionMap = Arguments.createMap();
-                    positionMap.putDouble("latitude", position.getLatitude());
-                    positionMap.putDouble("longitude", position.getLongitude());
-                    positionsArray.pushMap(positionMap);
-                }
-            }
-            map.putArray("positions", positionsArray);
+        map.putString("activity", TextUtils.isEmpty(roamLocation.getActivity()) ? " " : roamLocation.getActivity());
+
+        WritableArray installedApplicationsArray = Arguments.createArray();
+        for (String app : roamLocation.getInstalledApplications()) {
+            installedApplicationsArray.pushString(app);
         }
-        return map;
+        
+        map.putArray("installedApplications", installedApplicationsArray);
+        map.putString("recordedAt", roamLocation.getRecordedAt());
+        map.putString("timezone", roamLocation.getTimezoneOffset());
+        map.putString("trackingMode", roamLocation.getTrackingMode());
+        map.putString("appContext", roamLocation.getAppContext());
+        map.putString("batteryStatus", roamLocation.getBatteryStatus());
+        map.putInt("batteryRemaining", roamLocation.getBatteryRemaining());
+        map.putBoolean("batterySaver", roamLocation.getBatterySaver());
+        map.putBoolean("networkStatus", roamLocation.getNetworkStatus());
+        map.putString("networkState", roamLocation.getNetworkState());
+        map.putBoolean("locationPermission", roamLocation.getLocationPermission());
+        map.putString("deviceModel", roamLocation.getDeviceModel());
+        map.putString("networkType", roamLocation.getNetworkType());
+        map.putString("buildID", roamLocation.getBuildId());
+        map.putString("kernelVersion", roamLocation.getKernelVersion());
+        map.putString("ipAddress", roamLocation.getIpAddress());
+        map.putString("publicIpAddress", roamLocation.getPublicIpAddress());
+        map.putString("deviceName", roamLocation.getDeviceName());
+        map.putString("manufacturer", roamLocation.getManufacturer());
+        map.putInt("androidSdkVersion", roamLocation.getAndroidSdkVersion());
+        map.putString("androidReleaseVersion", roamLocation.getAndroidReleaseVersion());
+        map.putString("buildType", roamLocation.getBuildType());
+        map.putString("buildVersionIncremental", roamLocation.getBuildVersionIncremental());
+        map.putString("aaid", roamLocation.getAaid());
+        map.putString("wifiSSID", roamLocation.getWifiSsid());
+        map.putString("localeCountry", roamLocation.getLocaleCountry());
+        map.putString("localeLanguage", roamLocation.getLocaleLanguage());
+        map.putString("carrierName", roamLocation.getCarrierName());
+        map.putString("appInstallationDate", roamLocation.getAppInstallationDate());
+        map.putString("appVersion", roamLocation.getAppVersion());
+        map.putString("testCentroid", roamLocation.getTestCentroid());
+        map.putString("appName", roamLocation.getAppName());
+        map.putString("systemName", roamLocation.getSystemName());
+        map.putString("sdkVersion", roamLocation.getSdkVersion());
+        map.putString("locationId", roamLocation.getLocationId());
+        map.putString("appId", roamLocation.getAppId());
+        map.putInt("androidSdkVersion", roamLocation.getAndroidSdkVersion());
+        map.putString("androidReleaseVersion", roamLocation.getAndroidReleaseVersion());
+        map.putString("buildVersionIncremental", roamLocation.getBuildVersionIncremental());
+        map.putString("packageName", roamLocation.getPackageName());
+        array.pushMap(map);
     }
+    return array;
+}
+
+static WritableMap mapForCentroid(Centroid centroid) {
+       System.out.println("Centroid..."+centroid);
+     if (centroid == null) {
+         return null;
+     }
+
+     WritableMap map = Arguments.createMap();
+    CentroidCoordinate centroidCoordinate = centroid.getCentroid();
+    if (centroidCoordinate != null) {
+        WritableMap centroidCoordinateMap = Arguments.createMap();
+        centroidCoordinateMap.putDouble("latitude", centroidCoordinate.getLatitude());
+        centroidCoordinateMap.putDouble("longitude", centroidCoordinate.getLongitude());
+        map.putMap("centroidCoordinate", centroidCoordinateMap);
+    }
+
+    List<Positions> positions = centroid.getPositions();
+    if (positions != null) {
+        WritableArray positionsArray = Arguments.createArray();
+        for (int i = 0; i < positions.size(); i++) {
+            Positions position = positions.get(i);
+            if (position != null) {
+                WritableMap positionMap = Arguments.createMap();
+                positionMap.putDouble("latitude", position.getLatitude());
+                positionMap.putDouble("longitude", position.getLongitude());
+                positionsArray.pushMap(positionMap);
+            }
+        }
+        map.putArray("positions", positionsArray);
+    }
+    return map;
+}
 
 
 
