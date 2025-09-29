@@ -183,6 +183,10 @@ const requestLocationPermission = () => {
   NativeModules.RNRoam.requestLocationPermission()
 }
 
+const requestPhoneStatePermission = () => {
+  NativeModules.RNRoam.requestPhoneStatePermission()
+}
+
 const requestLocationServices = () => {
   NativeModules.RNRoam.requestLocationServices()
 }
@@ -702,6 +706,7 @@ const Roam = {
   checkLocationServices,
   checkBackgroundLocationPermission,
   requestLocationPermission,
+  requestPhoneStatePermission,
   requestLocationServices,
   requestBackgroundLocationPermission,
   locationPermissionStatus,

@@ -315,3 +315,8 @@ Added:
 - Updated the Roam SDK to latest versions.
 - Added geofencing methods
 - Added additional data points to location listener
+
+## 0.1.22
+
+- Updated the Roam SDK to latest versions.
+- Added additional data points to location listener

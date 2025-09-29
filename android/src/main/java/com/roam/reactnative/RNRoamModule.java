@@ -282,6 +282,14 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
       Roam.requestLocationPermission(activity);
     }
   }
+  
+  @ReactMethod
+public void requestPhoneStatePermission() {
+    Activity currentActivity = getCurrentActivity();
+    if (currentActivity != null && !Roam.checkPhoneStatePermission()) {
+        Roam.requestPhoneStatePermission(currentActivity);
+    }
+}
 
   @ReactMethod
   public void requestLocationServices() {

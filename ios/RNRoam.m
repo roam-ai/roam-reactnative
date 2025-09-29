@@ -27,10 +27,7 @@ RCT_EXPORT_MODULE();
 - (instancetype)init {
   self = [super init];
   if (self) {
-    [Roam setDelegate:self];
-    // [Roam initialize:@"" :NULL :NULL];
-    // [[RoamBatch shared] initialize];
-    // [[RoamLocalGeofenceManager shared] initialize];
+    [Roam setDelegate:self];   
   }
   return self;
 }
@@ -752,6 +749,7 @@ RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback re
         [bluetoothSignalStrengths addObject:eventDict];
     }
     [dict setValue:bluetoothSignalStrengths forKey:@"bluetoothSignalStrengths"];
+    [dict setValue:[NSNumber numberWithInt:location.batteryRemaining] forKey:@"batteryRemaining"];
     [dict setValue:[NSNumber numberWithBool:location.batterySaver] forKey:@"batterySaver"];
     [dict setValue:[NSNumber numberWithBool:location.networkStatus] forKey:@"networkStatus"];
     [dict setValue:[NSNumber numberWithBool:location.locationPermission] forKey:@"locationPermission"];
@@ -780,6 +778,14 @@ RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback re
     [dict setValue:location.source forKey:@"source"]; 
     [dict setValue:location.manufacturer forKey:@"manufacturer"];
     [dict setValue:location.publicIpAddress forKey:@"publicIpAddress"];
+    [dict setValue:location.mcc forKey:@"mcc"];
+    [dict setValue:location.mnc forKey:@"mnc"];
+    [dict setValue:location.carrierIsoCountryCode forKey:@"carrierIsoCountryCode"];
+    [dict setValue:location.rat forKey:@"rat"];
+    [dict setValue:location.wifiBSSID forKey:@"wifiBSSID"];
+    [dict setValue:location.wifiProxySettingHost forKey:@"wifiProxySettingHost"];
+    [dict setValue:location.wifiProxySettingPort forKey:@"wifiProxySettingPort"];
+    [dict setValue:location.wifiSubnetMask forKey:@"wifiSubnetMask"];
     [dict setValue:[NSNumber numberWithDouble:location.speed] forKey:@"speed"];
     if (location.centroid) {
              [dict setValue:[self centroidToDictionary:location.centroid] forKey:@"centroid"];
@@ -1018,6 +1024,9 @@ RCT_EXPORT_METHOD(resetTrackingConfig:(RCTResponseSenderBlock)successCallback re
     if ([string isEqual:@"ACTIVITY"]) {
       publish.activity = true;
     }
+   if ([string isEqual:@"AIRPLANE_MODE"]) {
+     publish.airplane_mode = true;
+   }
     if ([string isEqual:@"DEVICE_MANUFACTURE"]) {
       publish.device_manufacturer = true;
     }

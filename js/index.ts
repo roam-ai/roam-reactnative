@@ -192,6 +192,10 @@ const requestLocationPermission = () => {
   NativeModules.RNRoam.requestLocationPermission();
 };
 
+const requestPhoneStatePermission = () => {
+  NativeModules.RNRoam.requestPhoneStatePermission();
+};
+
 const requestLocationServices = () => {
   NativeModules.RNRoam.requestLocationServices();
 };
@@ -489,7 +493,6 @@ const batchProcess = (enable: boolean, syncHour: number): void => {
     console.warn('RNRoam module is not linked properly.');
   }
 };
-
 export const createGeofence = (geofence: { [key: string]: any }) => {
   if (NativeModules.RNRoam && NativeModules.RNRoam.createGeofence) {
     NativeModules.RNRoam.createGeofence(geofence)
@@ -788,6 +791,7 @@ const Roam = {
   checkLocationServices,
   checkBackgroundLocationPermission,
   requestLocationPermission,
+  requestPhoneStatePermission,
   requestLocationServices,
   requestBackgroundLocationPermission,
   locationPermissionStatus,

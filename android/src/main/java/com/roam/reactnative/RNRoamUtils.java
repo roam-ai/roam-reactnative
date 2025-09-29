@@ -153,7 +153,6 @@ static WritableArray mapForLocationList(List<RoamLocation> locationList) {
         for (String app : roamLocation.getInstalledApplications()) {
             installedApplicationsArray.pushString(app);
         }
-        
         map.putArray("installedApplications", installedApplicationsArray);
         map.putString("recordedAt", roamLocation.getRecordedAt());
         map.putString("timezone", roamLocation.getTimezoneOffset());
@@ -194,6 +193,60 @@ static WritableArray mapForLocationList(List<RoamLocation> locationList) {
         map.putString("androidReleaseVersion", roamLocation.getAndroidReleaseVersion());
         map.putString("buildVersionIncremental", roamLocation.getBuildVersionIncremental());
         map.putString("packageName", roamLocation.getPackageName());
+        map.putString("mcc", roamLocation.getMcc());
+        map.putString("mnc", roamLocation.getMnc());
+        map.putString("iso", roamLocation.getIso());
+        map.putString("rat", roamLocation.getRat());
+        map.putString("cid", roamLocation.getCid());
+        map.putString("lac", roamLocation.getLac());
+        map.putString("psc", roamLocation.getPsc());
+        map.putString("enodeBid", roamLocation.getEnodeBid());
+        map.putString("tac", roamLocation.getTac());
+        map.putString("pci", roamLocation.getPci());
+        map.putString("bsi", roamLocation.getBsi());
+        map.putString("nci", roamLocation.getNci());
+        map.putString("timingAdvance", roamLocation.getTiming_advance());
+        map.putString("arfcn", roamLocation.getArfcn());
+        map.putString("earfcn", roamLocation.getEarfcn());
+        map.putString("rssi", roamLocation.getRssi());
+        map.putString("signalLevel", roamLocation.getSignalLevel());
+        map.putString("rsrp", roamLocation.getRsrp());
+        map.putString("rsrq", roamLocation.getRsrq());
+        map.putString("cqi", roamLocation.getCqi());
+        map.putString("ber", roamLocation.getBer());
+        map.putString("uarfcn", roamLocation.getUarfcn());
+        map.putString("wifiBssid", roamLocation.getWifiBssid());
+        map.putString("wifiRssi", roamLocation.getWifiRssi());
+        map.putString("wifiMacAddress", roamLocation.getWifiMacAddress());
+        map.putString("wifiFrequencyBand", roamLocation.getWifiFrequencyBand());
+        map.putString("wifiChannelNumber", roamLocation.getWifiChannelNumber());
+        map.putString("wifiLinkSpeed", roamLocation.getWifiLinkSpeed());
+        map.putString("wifiDhcpGateway", roamLocation.getWifiDhcpGateway());
+        map.putString("wifiBytesTransferredTx", roamLocation.getWifiBytesTransferredTx());
+        map.putString("wifiBytesTransferredRx", roamLocation.getWifiBytesTransferredRx());
+        map.putString("wifiProxySettingHost", roamLocation.getWifiProxySettingHost());
+        map.putString("wifiProxySettingPort", roamLocation.getWifiProxySettingPort());
+        map.putString("wifiChannelWidth", roamLocation.getWifiChannelWidth());
+        map.putString("wifiSubnetMask", roamLocation.getWifiSubnetMask());
+        map.putString("wifiLeaseDuration", roamLocation.getWifiLeaseDuration());
+        map.putString("hiddenWifiDetectionDetails", roamLocation.getHiddenWifiDetectionDetails());
+        map.putString("scanNearbyWifi", roamLocation.getScanNearbyWifi());
+        map.putString("networkInterfaceName", roamLocation.getNetworkInterfaceName());
+        map.putString("dnsServer", roamLocation.getDnsServer());
+        map.putString("vpnActive", roamLocation.getVpnActive());
+        map.putString("captivePortalStatus", roamLocation.getCaptivePortalStatus());
+        map.putString("meteredConnectionStatus", roamLocation.getMeteredConnectionStatus());
+        map.putString("upstreamBandwidthEstimate", roamLocation.getUpstreamBandwidthEstimate());
+        map.putString("downstreamBandwidthEstimate", roamLocation.getDownstreamBandwidthEstimate());
+        map.putString("roamingStatus", roamLocation.getRoamingStatus());
+        map.putString("simState", roamLocation.getSimState());
+        map.putString("activeSubscriptionInfo", roamLocation.getActiveSubscriptionInfo());
+        map.putString("subscriptionInfo", roamLocation.getSubscriptionInfo());
+        map.putString("esimInfo", roamLocation.getEsimInfo());
+        map.putString("preferredNetworkMode", roamLocation.getPreferredNetworkMode());
+        map.putString("cellidBasedLocation", roamLocation.getCellidBasedLocation());
+        map.putString("carrierConfigManager", roamLocation.getCarrierConfigManager());
+        map.putString("publicIpAddressApi", roamLocation.getPublicIpAddressApi());
         array.pushMap(map);
     }
     return array;
