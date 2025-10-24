@@ -14,35 +14,34 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
-import com.roam.roam_batch_connector.RoamBatch;
-import com.roam.roam_batch_connector.builder.RoamBatchPublish;
 import com.roam.sdk.Roam;
-import com.roam.sdk.builder.RoamPublish;
+import com.roam.sdk.builder.RoamBatchPublish;
+// import com.roam.sdk.builder.RoamPublish;
 import com.roam.sdk.builder.RoamTrackingMode;
-import com.roam.sdk.callback.PublishCallback;
-import com.roam.sdk.callback.RoamBatchReceiverCallback;
-import com.roam.sdk.callback.RoamCallback;
+// import com.roam.sdk.callback.PublishCallback;
+// import com.roam.sdk.callback.RoamBatchReceiverCallback;
+// import com.roam.sdk.callback.RoamCallback;
 import com.roam.sdk.callback.RoamLocationCallback;
-import com.roam.sdk.callback.RoamLogoutCallback;
-import com.roam.sdk.callback.RoamTrackingConfigCallback;
-import com.roam.sdk.callback.SubscribeCallback;
+// import com.roam.sdk.callback.RoamLogoutCallback;
+// import com.roam.sdk.callback.RoamTrackingConfigCallback;
+// import com.roam.sdk.callback.SubscribeCallback;
 import com.roam.sdk.callback.TrackingCallback;
-import com.roam.sdk.enums.NetworkState;
-import com.roam.sdk.enums.Source;
-import com.roam.sdk.models.BatchReceiverConfig;
+// import com.roam.sdk.enums.NetworkState;
+// import com.roam.sdk.enums.Source;
+// import com.roam.sdk.models.BatchReceiverConfig;
 import com.roam.sdk.models.RoamError;
-import com.roam.sdk.models.RoamUser;
-import com.roam.sdk.models.TrackingConfig;
-import com.roam.sdk.trips_v2.RoamTrip;
-import com.roam.sdk.trips_v2.callback.RoamActiveTripsCallback;
-import com.roam.sdk.trips_v2.callback.RoamDeleteTripCallback;
-import com.roam.sdk.trips_v2.callback.RoamSyncTripCallback;
-import com.roam.sdk.trips_v2.callback.RoamTripCallback;
-import com.roam.sdk.trips_v2.models.Error;
-import com.roam.sdk.trips_v2.models.RoamActiveTripsResponse;
-import com.roam.sdk.trips_v2.models.RoamDeleteTripResponse;
-import com.roam.sdk.trips_v2.models.RoamSyncTripResponse;
-import com.roam.sdk.trips_v2.models.RoamTripResponse;
+// import com.roam.sdk.models.RoamUser;
+// import com.roam.sdk.models.TrackingConfig;
+// import com.roam.sdk.trips_v2.RoamTrip;
+// import com.roam.sdk.trips_v2.callback.RoamActiveTripsCallback;
+// import com.roam.sdk.trips_v2.callback.RoamDeleteTripCallback;
+// import com.roam.sdk.trips_v2.callback.RoamSyncTripCallback;
+// import com.roam.sdk.trips_v2.callback.RoamTripCallback;
+// import com.roam.sdk.trips_v2.models.Error;
+// import com.roam.sdk.trips_v2.models.RoamActiveTripsResponse;
+// import com.roam.sdk.trips_v2.models.RoamDeleteTripResponse;
+// import com.roam.sdk.trips_v2.models.RoamSyncTripResponse;
+// import com.roam.sdk.trips_v2.models.RoamTripResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,192 +61,195 @@ public class RNRoamModule extends ReactContextBaseJavaModule {
     return "RNRoam";
   }
 
-  @ReactMethod
-  public void createUser(String description, ReadableMap metadata, final Callback successCallback, final Callback errorCallback) {
-    Roam.createUser(description, (metadata != null) ? new JSONObject(metadata.toHashMap()) : null, new RoamCallback() {
-      @Override
-      public void onSuccess(RoamUser roamUser) {
-        successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
-      }
-
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
 
 
 
-  @ReactMethod
-  public void getUser(String userId, final Callback successCallback, final Callback errorCallback) {
-    Roam.getUser(userId, new RoamCallback() {
-      @Override
-      public void onSuccess(RoamUser roamUser) {
-        successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
-      }
+  // @ReactMethod
+  // public void createUser(String description, ReadableMap metadata, final Callback successCallback, final Callback errorCallback) {
+  //   Roam.createUser(description, (metadata != null) ? new JSONObject(metadata.toHashMap()) : null, new RoamCallback() {
+  //     @Override
+  //     public void onSuccess(RoamUser roamUser) {
+  //       successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
+  //     }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void setDescription(String description) {
-    Roam.setDescription(description, null);
-  }
 
-  @ReactMethod
-  public void toggleEvents(boolean geofence, boolean trip, boolean location, boolean movingGeofence, final Callback successCallback, final Callback errorCallback) {
-    Roam.toggleEvents(geofence, trip, location, movingGeofence, new RoamCallback() {
-      @Override
-      public void onSuccess(RoamUser roamUser) {
-        successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
-      }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  // @ReactMethod
+  // public void getUser(String userId, final Callback successCallback, final Callback errorCallback) {
+  //   Roam.getUser(userId, new RoamCallback() {
+  //     @Override
+  //     public void onSuccess(RoamUser roamUser) {
+  //       successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
+  //     }
 
-  @ReactMethod
-  public void toggleListener(boolean location, boolean event, final Callback successCallback, final Callback errorCallback) {
-    Roam.toggleListener(location, event, new RoamCallback() {
-      @Override
-      public void onSuccess(RoamUser roamUser) {
-        successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
-      }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  // @ReactMethod
+  // public void setDescription(String description) {
+  //   Roam.setDescription(description, null);
+  // }
 
-  @ReactMethod
-  public void getEventsStatus(final Callback successCallback, final Callback errorCallback) {
-    Roam.getEventsStatus(new RoamCallback() {
-      @Override
-      public void onSuccess(RoamUser roamUser) {
-        successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
-      }
+  // @ReactMethod
+  // public void toggleEvents(boolean geofence, boolean trip, boolean location, boolean movingGeofence, final Callback successCallback, final Callback errorCallback) {
+  //   Roam.toggleEvents(geofence, trip, location, movingGeofence, new RoamCallback() {
+  //     @Override
+  //     public void onSuccess(RoamUser roamUser) {
+  //       successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
+  //     }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void getListenerStatus(final Callback successCallback, final Callback errorCallback) {
-    Roam.getListenerStatus(new RoamCallback() {
-      @Override
-      public void onSuccess(RoamUser roamUser) {
-        successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
-      }
+  // @ReactMethod
+  // public void toggleListener(boolean location, boolean event, final Callback successCallback, final Callback errorCallback) {
+  //   Roam.toggleListener(location, event, new RoamCallback() {
+  //     @Override
+  //     public void onSuccess(RoamUser roamUser) {
+  //       successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
+  //     }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void subscribe(String type, String userId) {
-    switch (type) {
-      case "EVENTS":
-        Roam.subscribe(Roam.Subscribe.EVENTS, userId, new SubscribeCallback() {
-          @Override
-          public void onSuccess(String s, String s1) {
+  // @ReactMethod
+  // public void getEventsStatus(final Callback successCallback, final Callback errorCallback) {
+  //   Roam.getEventsStatus(new RoamCallback() {
+  //     @Override
+  //     public void onSuccess(RoamUser roamUser) {
+  //       successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
+  //     }
 
-          }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
-          @Override
-          public void onError(RoamError roamError) {
+  // @ReactMethod
+  // public void getListenerStatus(final Callback successCallback, final Callback errorCallback) {
+  //   Roam.getListenerStatus(new RoamCallback() {
+  //     @Override
+  //     public void onSuccess(RoamUser roamUser) {
+  //       successCallback.invoke(RNRoamUtils.mapForUser(roamUser));
+  //     }
 
-          }
-        });
-        break;
-      case "LOCATION":
-        Roam.subscribe(Roam.Subscribe.LOCATION, userId, new SubscribeCallback() {
-          @Override
-          public void onSuccess(String s, String s1) {
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
-          }
+  // @ReactMethod
+  // public void subscribe(String type, String userId) {
+  //   switch (type) {
+  //     case "EVENTS":
+  //       Roam.subscribe(Roam.Subscribe.EVENTS, userId, new SubscribeCallback() {
+  //         @Override
+  //         public void onSuccess(String s, String s1) {
 
-          @Override
-          public void onError(RoamError roamError) {
+  //         }
 
-          }
-        });
-        break;
-      case "BOTH":
-        Roam.subscribe(Roam.Subscribe.BOTH, userId, new SubscribeCallback() {
-          @Override
-          public void onSuccess(String s, String s1) {
+  //         @Override
+  //         public void onError(RoamError roamError) {
 
-          }
+  //         }
+  //       });
+  //       break;
+  //     case "LOCATION":
+  //       Roam.subscribe(Roam.Subscribe.LOCATION, userId, new SubscribeCallback() {
+  //         @Override
+  //         public void onSuccess(String s, String s1) {
 
-          @Override
-          public void onError(RoamError roamError) {
+  //         }
 
-          }
-        });
-        break;
-    }
-  }
+  //         @Override
+  //         public void onError(RoamError roamError) {
 
-  @ReactMethod
-  public void unSubscribe(String type, String userId) {
-    switch (type) {
-      case "EVENTS":
-        Roam.unSubscribe(Roam.Subscribe.EVENTS, userId, new SubscribeCallback() {
-          @Override
-          public void onSuccess(String s, String s1) {
+  //         }
+  //       });
+  //       break;
+  //     case "BOTH":
+  //       Roam.subscribe(Roam.Subscribe.BOTH, userId, new SubscribeCallback() {
+  //         @Override
+  //         public void onSuccess(String s, String s1) {
 
-          }
+  //         }
 
-          @Override
-          public void onError(RoamError roamError) {
+  //         @Override
+  //         public void onError(RoamError roamError) {
 
-          }
-        });
-        break;
-      case "LOCATION":
-        Roam.unSubscribe(Roam.Subscribe.LOCATION, userId, new SubscribeCallback() {
-          @Override
-          public void onSuccess(String s, String s1) {
+  //         }
+  //       });
+  //       break;
+  //   }
+  // }
 
-          }
+  // @ReactMethod
+  // public void unSubscribe(String type, String userId) {
+  //   switch (type) {
+  //     case "EVENTS":
+  //       Roam.unSubscribe(Roam.Subscribe.EVENTS, userId, new SubscribeCallback() {
+  //         @Override
+  //         public void onSuccess(String s, String s1) {
 
-          @Override
-          public void onError(RoamError roamError) {
+  //         }
 
-          }
-        });
-        break;
-      case "BOTH":
-        Roam.unSubscribe(Roam.Subscribe.BOTH, userId, new SubscribeCallback() {
-          @Override
-          public void onSuccess(String s, String s1) {
+  //         @Override
+  //         public void onError(RoamError roamError) {
 
-          }
+  //         }
+  //       });
+  //       break;
+  //     case "LOCATION":
+  //       Roam.unSubscribe(Roam.Subscribe.LOCATION, userId, new SubscribeCallback() {
+  //         @Override
+  //         public void onSuccess(String s, String s1) {
 
-          @Override
-          public void onError(RoamError roamError) {
+  //         }
 
-          }
-        });
-        break;
-    }
-  }
+  //         @Override
+  //         public void onError(RoamError roamError) {
+
+  //         }
+  //       });
+  //       break;
+  //     case "BOTH":
+  //       Roam.unSubscribe(Roam.Subscribe.BOTH, userId, new SubscribeCallback() {
+  //         @Override
+  //         public void onSuccess(String s, String s1) {
+
+  //         }
+
+  //         @Override
+  //         public void onError(RoamError roamError) {
+
+  //         }
+  //       });
+  //       break;
+  //   }
+  // }
 
 
   @ReactMethod
@@ -291,6 +293,7 @@ public void requestPhoneStatePermission() {
     }
 }
 
+
   @ReactMethod
   public void requestLocationServices() {
     Activity activity = getCurrentActivity();
@@ -309,47 +312,17 @@ public void requestPhoneStatePermission() {
 
   @ReactMethod
   public void startTracking(String trackingMode) {
-    switch (trackingMode) {
-      case "ACTIVE":
-        Roam.startTracking(RoamTrackingMode.ACTIVE, new TrackingCallback() {
+      Roam.startTracking(new TrackingCallback() {
           @Override
-          public void onSuccess(String s) {
+          public void onSuccess(String message) {
 
           }
 
           @Override
-          public void onError(RoamError roamError) {
+          public void onError(RoamError error) {
 
           }
-        });
-        break;
-      case "BALANCED":
-        Roam.startTracking(RoamTrackingMode.BALANCED, new TrackingCallback() {
-          @Override
-          public void onSuccess(String s) {
-
-          }
-
-          @Override
-          public void onError(RoamError roamError) {
-
-          }
-        });
-        break;
-      case "PASSIVE":
-        Roam.startTracking(RoamTrackingMode.PASSIVE, new TrackingCallback() {
-          @Override
-          public void onSuccess(String s) {
-
-          }
-
-          @Override
-          public void onError(RoamError roamError) {
-
-          }
-        });
-        break;
-    }
+      });
   }
 
   @ReactMethod
@@ -442,7 +415,7 @@ public void requestPhoneStatePermission() {
               firstSubString,
               reactContext.getPackageName()
       );
-      Roam.setForegroundNotification(enabled, title, description, resId, activity, roamService);
+      Roam.setForegroundNotification(enabled, title, description, resId, activity);
     }catch (Exception e){
     }
   }
@@ -487,13 +460,13 @@ public void requestPhoneStatePermission() {
   public void updateCurrentLocation(String desiredAccuracy, int accuracy) {
     switch (desiredAccuracy) {
       case "MEDIUM":
-        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.MEDIUM, accuracy, null);
+        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.MEDIUM, accuracy);
         break;
       case "LOW":
-        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.LOW, accuracy, null);
+        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.LOW, accuracy);
         break;
       default:
-        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.HIGH, accuracy, null);
+        Roam.updateCurrentLocation(RoamTrackingMode.DesiredAccuracy.HIGH, accuracy);
         break;
     }
 
@@ -504,324 +477,324 @@ public void requestPhoneStatePermission() {
     Roam.updateLocationWhenStationary(interval);
   }
 
-  @ReactMethod
-  public void setTrackingConfig(int accuracy, int timeout, String source, boolean discardLocation, final Callback successCallback, final Callback errorCallback){
-    Source sourceObject = Source.ALL;
-    switch (source){
-      case "ALL":
-        sourceObject = Source.ALL;
-        break;
-      case "LAST_KNOWN":
-        sourceObject = Source.LAST_KNOWN;
-        break;
-      case "GPS":
-        sourceObject = Source.GPS;
-        break;
-    }
-    Roam.setTrackingConfig(accuracy, timeout, sourceObject, discardLocation, new RoamTrackingConfigCallback() {
-      @Override
-      public void onSuccess(TrackingConfig trackingConfig) {
-        successCallback.invoke(RNRoamUtils.mapForTrackingConfig(trackingConfig));
-      }
+  // @ReactMethod
+  // public void setTrackingConfig(int accuracy, int timeout, String source, boolean discardLocation, final Callback successCallback, final Callback errorCallback){
+  //   Source sourceObject = Source.ALL;
+  //   switch (source){
+  //     case "ALL":
+  //       sourceObject = Source.ALL;
+  //       break;
+  //     case "LAST_KNOWN":
+  //       sourceObject = Source.LAST_KNOWN;
+  //       break;
+  //     case "GPS":
+  //       sourceObject = Source.GPS;
+  //       break;
+  //   }
+  //   Roam.setTrackingConfig(accuracy, timeout, sourceObject, discardLocation, new RoamTrackingConfigCallback() {
+  //     @Override
+  //     public void onSuccess(TrackingConfig trackingConfig) {
+  //       successCallback.invoke(RNRoamUtils.mapForTrackingConfig(trackingConfig));
+  //     }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void getTrackingConfig(final Callback successCallback, final Callback errorCallback){
-    Roam.getTrackingConfig(new RoamTrackingConfigCallback() {
-      @Override
-      public void onSuccess(TrackingConfig trackingConfig) {
-        successCallback.invoke(RNRoamUtils.mapForTrackingConfig(trackingConfig));
-      }
+  // @ReactMethod
+  // public void getTrackingConfig(final Callback successCallback, final Callback errorCallback){
+  //   Roam.getTrackingConfig(new RoamTrackingConfigCallback() {
+  //     @Override
+  //     public void onSuccess(TrackingConfig trackingConfig) {
+  //       successCallback.invoke(RNRoamUtils.mapForTrackingConfig(trackingConfig));
+  //     }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void resetTrackingConfig(final Callback successCallback, final Callback errorCallback){
-    Roam.resetTrackingConfig(new RoamTrackingConfigCallback() {
-      @Override
-      public void onSuccess(TrackingConfig trackingConfig) {
-        successCallback.invoke(RNRoamUtils.mapForTrackingConfig(trackingConfig));
-      }
+  // @ReactMethod
+  // public void resetTrackingConfig(final Callback successCallback, final Callback errorCallback){
+  //   Roam.resetTrackingConfig(new RoamTrackingConfigCallback() {
+  //     @Override
+  //     public void onSuccess(TrackingConfig trackingConfig) {
+  //       successCallback.invoke(RNRoamUtils.mapForTrackingConfig(trackingConfig));
+  //     }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
 
 
   // -------- TRIPS V2 --------------
 
-  @ReactMethod
-  public void createTrip(final ReadableMap roamTrip, final Callback successCallback, final Callback errorCallback){
-    Roam.createTrip(RNRoamUtils.decodeRoamTrip(roamTrip), new RoamTripCallback() {
-      @Override
-      public void onSuccess(RoamTripResponse roamTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
-      }
+  // @ReactMethod
+  // public void createTrip(final ReadableMap roamTrip, final Callback successCallback, final Callback errorCallback){
+  //   Roam.createTrip(RNRoamUtils.decodeRoamTrip(roamTrip), new RoamTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamTripResponse roamTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void startQuickTrip(final ReadableMap roamTrip, final String trackingMode, final ReadableMap customTrackingOption, final Callback successCallback, final Callback errorCallback){
-    RoamTrackingMode roamTrackingMode;
-    if (customTrackingOption == null){
-      switch (trackingMode){
-        case "ACTIVE": roamTrackingMode = RoamTrackingMode.ACTIVE;
-        break;
+  // @ReactMethod
+  // public void startQuickTrip(final ReadableMap roamTrip, final String trackingMode, final ReadableMap customTrackingOption, final Callback successCallback, final Callback errorCallback){
+  //   RoamTrackingMode roamTrackingMode;
+  //   if (customTrackingOption == null){
+  //     switch (trackingMode){
+  //       case "ACTIVE": roamTrackingMode = RoamTrackingMode.ACTIVE;
+  //       break;
 
-        case "BALANCED": roamTrackingMode = RoamTrackingMode.BALANCED;
-        break;
+  //       case "BALANCED": roamTrackingMode = RoamTrackingMode.BALANCED;
+  //       break;
 
-        default: roamTrackingMode = RoamTrackingMode.PASSIVE;
-      }
-    } else {
-      String desiredAccuracyString = customTrackingOption.getString("desiredAccuracy");
-      RoamTrackingMode.DesiredAccuracy desiredAccuracy;
-      if (desiredAccuracyString == null){
-        desiredAccuracy = RoamTrackingMode.DesiredAccuracy.HIGH;
-      } else {
-        switch (desiredAccuracyString){
-          case "MEDIUM": desiredAccuracy = RoamTrackingMode.DesiredAccuracy.MEDIUM;
-          break;
+  //       default: roamTrackingMode = RoamTrackingMode.PASSIVE;
+  //     }
+  //   } else {
+  //     String desiredAccuracyString = customTrackingOption.getString("desiredAccuracy");
+  //     RoamTrackingMode.DesiredAccuracy desiredAccuracy;
+  //     if (desiredAccuracyString == null){
+  //       desiredAccuracy = RoamTrackingMode.DesiredAccuracy.HIGH;
+  //     } else {
+  //       switch (desiredAccuracyString){
+  //         case "MEDIUM": desiredAccuracy = RoamTrackingMode.DesiredAccuracy.MEDIUM;
+  //         break;
 
-          case "LOW": desiredAccuracy = RoamTrackingMode.DesiredAccuracy.LOW;
-          break;
+  //         case "LOW": desiredAccuracy = RoamTrackingMode.DesiredAccuracy.LOW;
+  //         break;
 
-          default: desiredAccuracy = RoamTrackingMode.DesiredAccuracy.HIGH;
-        }
-      }
-      int updateInterval = customTrackingOption.getInt("updateInterval");
-      int distanceFilter = customTrackingOption.getInt("distanceFilter");
-      int stopDuration = customTrackingOption.getInt("stopDuration");
-      if (updateInterval != 0){
-        roamTrackingMode = new RoamTrackingMode.Builder(updateInterval)
-                .setDesiredAccuracy(desiredAccuracy)
-                .build();
-      } else {
-        roamTrackingMode = new RoamTrackingMode.Builder(distanceFilter, stopDuration)
-                .setDesiredAccuracy(desiredAccuracy)
-                .build();
-      }
-    }
-    Roam.startTrip(RNRoamUtils.decodeRoamTrip(roamTrip), roamTrackingMode, new RoamTripCallback() {
-      @Override
-      public void onSuccess(RoamTripResponse roamTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
-      }
+  //         default: desiredAccuracy = RoamTrackingMode.DesiredAccuracy.HIGH;
+  //       }
+  //     }
+  //     int updateInterval = customTrackingOption.getInt("updateInterval");
+  //     int distanceFilter = customTrackingOption.getInt("distanceFilter");
+  //     int stopDuration = customTrackingOption.getInt("stopDuration");
+  //     if (updateInterval != 0){
+  //       roamTrackingMode = new RoamTrackingMode.Builder(updateInterval)
+  //               .setDesiredAccuracy(desiredAccuracy)
+  //               .build();
+  //     } else {
+  //       roamTrackingMode = new RoamTrackingMode.Builder(distanceFilter, stopDuration)
+  //               .setDesiredAccuracy(desiredAccuracy)
+  //               .build();
+  //     }
+  //   }
+  //   Roam.startTrip(RNRoamUtils.decodeRoamTrip(roamTrip), roamTrackingMode, new RoamTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamTripResponse roamTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void startTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
-    Roam.startTrip(tripId, new RoamTripCallback() {
-      @Override
-      public void onSuccess(RoamTripResponse roamTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
-      }
+  // @ReactMethod
+  // public void startTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
+  //   Roam.startTrip(tripId, new RoamTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamTripResponse roamTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void updateTrip(final ReadableMap roamTrip, final Callback successCallback, final Callback errorCallback){
-    RoamTrip roamTrip1 = RNRoamUtils.decodeUpdateRoamTrip(roamTrip);
-    Log.e("TAG", "updateTrip: " + new Gson().toJson(roamTrip1));
-    Roam.updateTrip(roamTrip1, new RoamTripCallback() {
-      @Override
-      public void onSuccess(RoamTripResponse roamTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
-      }
+  // @ReactMethod
+  // public void updateTrip(final ReadableMap roamTrip, final Callback successCallback, final Callback errorCallback){
+  //   RoamTrip roamTrip1 = RNRoamUtils.decodeUpdateRoamTrip(roamTrip);
+  //   Log.e("TAG", "updateTrip: " + new Gson().toJson(roamTrip1));
+  //   Roam.updateTrip(roamTrip1, new RoamTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamTripResponse roamTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void endTrip(final String tripId, final boolean forceStopTracking, final Callback successCallback, final Callback errorCallback){
-    Roam.endTrip(tripId, forceStopTracking, new RoamTripCallback() {
-      @Override
-      public void onSuccess(RoamTripResponse roamTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
-      }
+  // @ReactMethod
+  // public void endTrip(final String tripId, final boolean forceStopTracking, final Callback successCallback, final Callback errorCallback){
+  //   Roam.endTrip(tripId, forceStopTracking, new RoamTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamTripResponse roamTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void pauseTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
-    Roam.pauseTrip(tripId, new RoamTripCallback() {
-      @Override
-      public void onSuccess(RoamTripResponse roamTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
-      }
+  // @ReactMethod
+  // public void pauseTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
+  //   Roam.pauseTrip(tripId, new RoamTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamTripResponse roamTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void resumeTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
-    Roam.resumeTrip(tripId, new RoamTripCallback() {
-      @Override
-      public void onSuccess(RoamTripResponse roamTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
-      }
+  // @ReactMethod
+  // public void resumeTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
+  //   Roam.resumeTrip(tripId, new RoamTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamTripResponse roamTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void syncTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
-    Roam.syncTrip(tripId, new RoamSyncTripCallback() {
-      @Override
-      public void onSuccess(RoamSyncTripResponse roamSyncTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamSyncTripResponse(roamSyncTripResponse));
-      }
+  // @ReactMethod
+  // public void syncTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
+  //   Roam.syncTrip(tripId, new RoamSyncTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamSyncTripResponse roamSyncTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamSyncTripResponse(roamSyncTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void getTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
-    Roam.getTrip(tripId, new RoamTripCallback() {
-      @Override
-      public void onSuccess(RoamTripResponse roamTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
-      }
+  // @ReactMethod
+  // public void getTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
+  //   Roam.getTrip(tripId, new RoamTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamTripResponse roamTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void getActiveTrips(final boolean isLocal, final Callback successCallback, final Callback errorCallback){
-    Roam.getActiveTrips(isLocal, new RoamActiveTripsCallback() {
-      @Override
-      public void onSuccess(RoamActiveTripsResponse roamActiveTripsResponse) {
-        successCallback.invoke(RNRoamUtils.mapForActiveTripsResponse(roamActiveTripsResponse));
-      }
+  // @ReactMethod
+  // public void getActiveTrips(final boolean isLocal, final Callback successCallback, final Callback errorCallback){
+  //   Roam.getActiveTrips(isLocal, new RoamActiveTripsCallback() {
+  //     @Override
+  //     public void onSuccess(RoamActiveTripsResponse roamActiveTripsResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForActiveTripsResponse(roamActiveTripsResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void getTripSummary(final String tripId, final Callback successCallback, final Callback errorCallback){
-    Roam.getTripSummary(tripId, new RoamTripCallback() {
-      @Override
-      public void onSuccess(RoamTripResponse roamTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
-      }
+  // @ReactMethod
+  // public void getTripSummary(final String tripId, final Callback successCallback, final Callback errorCallback){
+  //   Roam.getTripSummary(tripId, new RoamTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamTripResponse roamTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamTripResponse(roamTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void subscribeTripStatus(final String tripId){
-    Roam.subscribeTrip(tripId);
-  }
+  // @ReactMethod
+  // public void subscribeTripStatus(final String tripId){
+  //   Roam.subscribeTrip(tripId);
+  // }
 
-  @ReactMethod
-  public void unSubscribeTripStatus(final String tripId){
-    if (tripId == null){
-      Roam.unSubscribeTrip();
-    } else {
-      Roam.unSubscribeTrip(tripId);
-    }
-  }
+  // @ReactMethod
+  // public void unSubscribeTripStatus(final String tripId){
+  //   if (tripId == null){
+  //     Roam.unSubscribeTrip();
+  //   } else {
+  //     Roam.unSubscribeTrip(tripId);
+  //   }
+  // }
 
-  @ReactMethod
-  public void deleteTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
-    Roam.deleteTrip(tripId, new RoamDeleteTripCallback() {
-      @Override
-      public void onSuccess(RoamDeleteTripResponse roamDeleteTripResponse) {
-        successCallback.invoke(RNRoamUtils.mapForRoamDeleteTripResponse(roamDeleteTripResponse));
-      }
+  // @ReactMethod
+  // public void deleteTrip(final String tripId, final Callback successCallback, final Callback errorCallback){
+  //   Roam.deleteTrip(tripId, new RoamDeleteTripCallback() {
+  //     @Override
+  //     public void onSuccess(RoamDeleteTripResponse roamDeleteTripResponse) {
+  //       successCallback.invoke(RNRoamUtils.mapForRoamDeleteTripResponse(roamDeleteTripResponse));
+  //     }
 
-      @Override
-      public void onError(Error error) {
-        errorCallback.invoke(RNRoamUtils.mapForTripError(error));
-      }
-    });
-  }
+  //     @Override
+  //     public void onError(Error error) {
+  //       errorCallback.invoke(RNRoamUtils.mapForTripError(error));
+  //     }
+  //   });
+  // }
 
 
 
   // -------- END -------------
 
 
-  @ReactMethod
-  public void logout(final Callback successCallback, final Callback errorCallback) {
-    Roam.logout(new RoamLogoutCallback() {
-      @Override
-      public void onSuccess(String message) {
-        WritableMap map = Arguments.createMap();
-        map.putString("message", message);
-        successCallback.invoke(map);
-      }
+  // @ReactMethod
+  // public void logout(final Callback successCallback, final Callback errorCallback) {
+  //   Roam.logout(new RoamLogoutCallback() {
+  //     @Override
+  //     public void onSuccess(String message) {
+  //       WritableMap map = Arguments.createMap();
+  //       map.putString("message", message);
+  //       successCallback.invoke(map);
+  //     }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
   @ReactMethod
   public void setTrackingInAppState(String appState) {
@@ -843,325 +816,277 @@ public void requestPhoneStatePermission() {
     }
   }
 
-  @ReactMethod
-  public void setBatchReceiverConfig(String networkState,
-                                     int batchCount,
-                                     int batchWindow,
-                                     final Callback successCallback,
-                                     final Callback errorCallback){
-    NetworkState state = NetworkState.BOTH;
-    switch (networkState){
-      case "OFFLINE":
-        state = NetworkState.OFFLINE;
-        break;
-      case "ONLINE":
-        state = NetworkState.ONLINE;
-        break;
-    }
-    Roam.setBatchReceiverConfig(state, batchCount, batchWindow, new RoamBatchReceiverCallback() {
-      @Override
-      public void onSuccess(List<BatchReceiverConfig> list) {
-        WritableArray writableArray = RNRoamUtils.mapForBatchReceiverConfig(list);
-        successCallback.invoke(writableArray);
-      }
+  // @ReactMethod
+  // public void setBatchReceiverConfig(String networkState,
+  //                                    int batchCount,
+  //                                    int batchWindow,
+  //                                    final Callback successCallback,
+  //                                    final Callback errorCallback){
+  //   NetworkState state = NetworkState.BOTH;
+  //   switch (networkState){
+  //     case "OFFLINE":
+  //       state = NetworkState.OFFLINE;
+  //       break;
+  //     case "ONLINE":
+  //       state = NetworkState.ONLINE;
+  //       break;
+  //   }
+  //   Roam.setBatchReceiverConfig(state, batchCount, batchWindow, new RoamBatchReceiverCallback() {
+  //     @Override
+  //     public void onSuccess(List<BatchReceiverConfig> list) {
+  //       WritableArray writableArray = RNRoamUtils.mapForBatchReceiverConfig(list);
+  //       successCallback.invoke(writableArray);
+  //     }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void getBatchReceiverConfig(Callback successCallback, Callback errorCallback){
-    Roam.getBatchReceiverConfig(new RoamBatchReceiverCallback() {
-      @Override
-      public void onSuccess(List<BatchReceiverConfig> list) {
-        successCallback.invoke(RNRoamUtils.mapForBatchReceiverConfig(list));
-      }
+  // @ReactMethod
+  // public void getBatchReceiverConfig(Callback successCallback, Callback errorCallback){
+  //   Roam.getBatchReceiverConfig(new RoamBatchReceiverCallback() {
+  //     @Override
+  //     public void onSuccess(List<BatchReceiverConfig> list) {
+  //       successCallback.invoke(RNRoamUtils.mapForBatchReceiverConfig(list));
+  //     }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void resetBatchReceiverConfig(Callback successCallback, Callback errorCallback){
-    Roam.resetBatchReceiverConfig(new RoamBatchReceiverCallback() {
-      @Override
-      public void onSuccess(List<BatchReceiverConfig> list) {
-        successCallback.invoke(RNRoamUtils.mapForBatchReceiverConfig(list));
-      }
+  // @ReactMethod
+  // public void resetBatchReceiverConfig(Callback successCallback, Callback errorCallback){
+  //   Roam.resetBatchReceiverConfig(new RoamBatchReceiverCallback() {
+  //     @Override
+  //     public void onSuccess(List<BatchReceiverConfig> list) {
+  //       successCallback.invoke(RNRoamUtils.mapForBatchReceiverConfig(list));
+  //     }
 
-      @Override
-      public void onFailure(RoamError roamError) {
-        errorCallback.invoke(RNRoamUtils.mapForError(roamError));
-      }
-    });
-  }
+  //     @Override
+  //     public void onFailure(RoamError roamError) {
+  //       errorCallback.invoke(RNRoamUtils.mapForError(roamError));
+  //     }
+  //   });
+  // }
 
 
-  @ReactMethod
-  public void offlineLocationTracking(boolean value) {
-    Roam.offlineLocationTracking(value);
-  }
+  // @ReactMethod
+  // public void offlineLocationTracking(boolean value) {
+  //   Roam.offlineLocationTracking(value);
+  // }
 
-  @ReactMethod
-  public void publishAndSave(ReadableMap readableMap) {
-    RoamPublish.Builder roamPublish = new RoamPublish.Builder();
-    if (readableMap != null && readableMap.getMap(RNRoamUtils.METADATA) != null) {
-      try {
-        ReadableMap rm = readableMap.getMap(RNRoamUtils.METADATA);
-        JSONObject jsonObject = new JSONObject(rm.toString());
-        if (jsonObject.getJSONObject("NativeMap").length() > 0) {
-          roamPublish.metadata(jsonObject.getJSONObject("NativeMap"));
-        }
-        roamPublish.metadata(jsonObject.getJSONObject("NativeMap"));
-      } catch (JSONException e) {
-      }
-    }
-    Roam.publishAndSave(roamPublish.build(), new PublishCallback() {
-      @Override
-      public void onSuccess(String s) {
+  // @ReactMethod
+  // public void publishAndSave(ReadableMap readableMap) {
+  //   RoamPublish.Builder roamPublish = new RoamPublish.Builder();
+  //   if (readableMap != null && readableMap.getMap(RNRoamUtils.METADATA) != null) {
+  //     try {
+  //       ReadableMap rm = readableMap.getMap(RNRoamUtils.METADATA);
+  //       JSONObject jsonObject = new JSONObject(rm.toString());
+  //       if (jsonObject.getJSONObject("NativeMap").length() > 0) {
+  //         roamPublish.metadata(jsonObject.getJSONObject("NativeMap"));
+  //       }
+  //       roamPublish.metadata(jsonObject.getJSONObject("NativeMap"));
+  //     } catch (JSONException e) {
+  //     }
+  //   }
+  //   Roam.publishAndSave(roamPublish.build(), new PublishCallback() {
+  //     @Override
+  //     public void onSuccess(String s) {
 
-      }
+  //     }
 
-      @Override
-      public void onError(RoamError roamError) {
+  //     @Override
+  //     public void onError(RoamError roamError) {
 
-      }
-    });
-  }
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void publishOnly(ReadableArray readableArray, ReadableMap readableMap) {
-    RoamPublish.Builder roamPublish = new RoamPublish.Builder();
-    if (readableArray != null && readableArray.size() > 0) {
-      for (int i = 0; i < readableArray.size(); i++) {
-        if (readableArray.getString(i).equals(RNRoamUtils.APP_ID)) {
-          roamPublish.appId();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.USER_ID)) {
-          roamPublish.userId();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.GEOFENCE_EVENTS)) {
-          roamPublish.geofenceEvents();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.LOCATION_EVENTS)) {
-          roamPublish.locationEvents();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.NEARBY_EVENTS)) {
-          roamPublish.nearbyEvents();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.TRIPS_EVENTS)) {
-          roamPublish.tripsEvents();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.LOCATION_LISTENER)) {
-          roamPublish.locationListener();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.EVENT_LISTENER)) {
-          roamPublish.eventListener();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.ALTITUDE)) {
-          roamPublish.altitude();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.COURSE)) {
-          roamPublish.course();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.SPEED)) {
-          roamPublish.speed();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.HORIZONTAL_ACCURACY)) {
-          roamPublish.horizontalAccuracy();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.VERTICAL_ACCURACY)) {
-          roamPublish.verticalAccuracy();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.APP_CONTEXT)) {
-          roamPublish.appContext();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.ALLOW_MOCKED)) {
-          roamPublish.allowMocked();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.BATTERY_REMAINING)) {
-          roamPublish.batteryRemaining();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.BATTERY_SAVER)) {
-          roamPublish.batterySaver();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.BATTERY_STATUS)) {
-          roamPublish.batteryStatus();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.ACTIVITY)) {
-          roamPublish.activity();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.AIRPLANE_MODE)) {
-          roamPublish.airplaneMode();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.DEVICE_MANUFACTURE)) {
-          roamPublish.deviceManufacturer();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.DEVICE_MODEL)) {
-          roamPublish.deviceModel();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.TRACKING_MODE)) {
-          roamPublish.trackingMode();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.LOCATIONPERMISSION)) {
-          roamPublish.locationPermission();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.NETWORK_STATUS)) {
-          roamPublish.networkStatus();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.GPS_STATUS)) {
-          roamPublish.gpsStatus();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.OS_VERSION)) {
-          roamPublish.osVersion();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.RECORDERD_AT)) {
-          roamPublish.recordedAt();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.TZ_OFFSET)) {
-          roamPublish.tzOffset();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.RECORDERD_AT)) {
-          roamPublish.recordedAt();
-          continue;
-        }
-        if (readableArray.getString(i).equals(RNRoamUtils.ACTIVITY)) {
-          roamPublish.activity();
-        }
-      }
-    }
-    if (readableMap != null && readableMap.getMap(RNRoamUtils.METADATA) != null) {
-      try {
-        ReadableMap rm = readableMap.getMap(RNRoamUtils.METADATA);
-        JSONObject jsonObject = new JSONObject(rm.toString());
-        if (jsonObject.getJSONObject("NativeMap").length() > 0) {
-          roamPublish.metadata(jsonObject.getJSONObject("NativeMap"));
-        }
-        roamPublish.metadata(jsonObject.getJSONObject("NativeMap"));
-      } catch (JSONException e) {
-      }
-    }
-    Roam.publishOnly(roamPublish.build(), new PublishCallback() {
-      @Override
-      public void onSuccess(String s) {
+  // @ReactMethod
+  // public void publishOnly(ReadableArray readableArray, ReadableMap readableMap) {
+  //   RoamPublish.Builder roamPublish = new RoamPublish.Builder();
+  //   if (readableArray != null && readableArray.size() > 0) {
+  //     for (int i = 0; i < readableArray.size(); i++) {
+  //       if (readableArray.getString(i).equals(RNRoamUtils.APP_ID)) {
+  //         roamPublish.appId();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.USER_ID)) {
+  //         roamPublish.userId();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.GEOFENCE_EVENTS)) {
+  //         roamPublish.geofenceEvents();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.LOCATION_EVENTS)) {
+  //         roamPublish.locationEvents();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.NEARBY_EVENTS)) {
+  //         roamPublish.nearbyEvents();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.TRIPS_EVENTS)) {
+  //         roamPublish.tripsEvents();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.LOCATION_LISTENER)) {
+  //         roamPublish.locationListener();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.EVENT_LISTENER)) {
+  //         roamPublish.eventListener();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.ALTITUDE)) {
+  //         roamPublish.altitude();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.COURSE)) {
+  //         roamPublish.course();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.SPEED)) {
+  //         roamPublish.speed();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.HORIZONTAL_ACCURACY)) {
+  //         roamPublish.horizontalAccuracy();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.VERTICAL_ACCURACY)) {
+  //         roamPublish.verticalAccuracy();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.APP_CONTEXT)) {
+  //         roamPublish.appContext();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.ALLOW_MOCKED)) {
+  //         roamPublish.allowMocked();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.BATTERY_REMAINING)) {
+  //         roamPublish.batteryRemaining();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.BATTERY_SAVER)) {
+  //         roamPublish.batterySaver();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.BATTERY_STATUS)) {
+  //         roamPublish.batteryStatus();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.ACTIVITY)) {
+  //         roamPublish.activity();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.AIRPLANE_MODE)) {
+  //         roamPublish.airplaneMode();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.DEVICE_MANUFACTURE)) {
+  //         roamPublish.deviceManufacturer();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.DEVICE_MODEL)) {
+  //         roamPublish.deviceModel();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.TRACKING_MODE)) {
+  //         roamPublish.trackingMode();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.LOCATIONPERMISSION)) {
+  //         roamPublish.locationPermission();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.NETWORK_STATUS)) {
+  //         roamPublish.networkStatus();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.GPS_STATUS)) {
+  //         roamPublish.gpsStatus();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.OS_VERSION)) {
+  //         roamPublish.osVersion();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.RECORDERD_AT)) {
+  //         roamPublish.recordedAt();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.TZ_OFFSET)) {
+  //         roamPublish.tzOffset();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.RECORDERD_AT)) {
+  //         roamPublish.recordedAt();
+  //         continue;
+  //       }
+  //       if (readableArray.getString(i).equals(RNRoamUtils.ACTIVITY)) {
+  //         roamPublish.activity();
+  //       }
+  //     }
+  //   }
+  //   if (readableMap != null && readableMap.getMap(RNRoamUtils.METADATA) != null) {
+  //     try {
+  //       ReadableMap rm = readableMap.getMap(RNRoamUtils.METADATA);
+  //       JSONObject jsonObject = new JSONObject(rm.toString());
+  //       if (jsonObject.getJSONObject("NativeMap").length() > 0) {
+  //         roamPublish.metadata(jsonObject.getJSONObject("NativeMap"));
+  //       }
+  //       roamPublish.metadata(jsonObject.getJSONObject("NativeMap"));
+  //     } catch (JSONException e) {
+  //     }
+  //   }
+  //   Roam.publishOnly(roamPublish.build(), new PublishCallback() {
+  //     @Override
+  //     public void onSuccess(String s) {
 
-      }
+  //     }
 
-      @Override
-      public void onError(RoamError roamError) {
+  //     @Override
+  //     public void onError(RoamError roamError) {
 
-      }
-    });
-  }
+  //     }
+  //   });
+  // }
 
-  @ReactMethod
-  public void stopPublishing() {
-    Roam.stopPublishing(new PublishCallback() {
-      @Override
-      public void onSuccess(String s) {
 
-      }
 
-      @Override
-      public void onError(RoamError roamError) {
+  // @ReactMethod
+  // public void stopPublishing() {
+  //   Roam.stopPublishing(new PublishCallback() {
+  //     @Override
+  //     public void onSuccess(String s) {
 
-      }
-    });
-  }
+  //     }
+
+  //     @Override
+  //     public void onError(RoamError roamError) {
+
+  //     }
+  //   });
+  // }
 
   @ReactMethod
   public void batchProcess(boolean enable, int syncHour) {
     try {
 
-      RoamBatchPublish roamBatchPublish = new RoamBatchPublish.Builder()
-      .appId()
-           .userId()
-            .geofenceEvents()
-            .locationEvents()
-            .nearbyEvents()
-            .geofenceEvents()
-            .tripsEvents()
-            .locationListener()
-            .eventListener()
-            .altitude()
-            .course()
-            .speed()
-            .horizontalAccuracy()
-            .verticalAccuracy()
-            .appContext()
-            .allowMocked()
-            .batteryRemaining()
-            .batterySaver()
-            .batteryStatus()
-            .activity()
-            .airplaneMode()
-            .deviceManufacturer()
-            .deviceModel()
-            .trackingMode()
-            .locationPermission()
-            .networkStatus()
-            .gpsStatus()
-            .osVersion()
-            .recordedAt()
-            .tzOffset()
-            .androidSdkVersion()
-            .androidReleaseVersion()
-            .networkType()
-            .networkState()
-            .buildId()
-            .buildType()
-            .buildVersionIncremental()
-            .kernelVersion()
-            .installedApplication()
-            .aaid()
-            .ipAddress()
-            .deviceName()
-            .wifiSsid()
-            .localeCountry()
-            .localeLanguage()
-            .carrierName()
-            .appInstallationDate()
-            .appVersion()
-            .publicIpAddress()
-            .build();
-      
-      RoamBatch.setConfig(enable, syncHour, roamBatchPublish);
-      Log.d("RNRoam", "batchProcess called with enable: " + enable + ", syncHour: " + syncHour + ",roamBatchPublish" + roamBatchPublish);
+      // Using simplified enableAll() approach for batch publishing configuration
+      RoamBatchPublish roamBatchPublish = new RoamBatchPublish.Builder().enableAll().build();
+      Roam.setConfig(true, roamBatchPublish);
+      Log.d("RNRoam", "batchProcess called with enable: " + enable + ", syncHour: " + syncHour + ", roamBatchPublish: " + roamBatchPublish);
 
     } catch (Exception e) {
       Log.e("RNRoam", "Error in batchProcess", e);

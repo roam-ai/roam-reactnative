@@ -320,3 +320,10 @@ Added:
 
 - Updated the Roam SDK to latest versions.
 - Added additional data points to location listener
+
+## 0.2.0-beta.2
+
+- Updated the Roam SDK to the latest version.
+- Integrated GCP support.
+
+

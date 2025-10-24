@@ -17,10 +17,11 @@ import com.roam.sdk.models.NetworkListener;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamLocation;
 import com.roam.sdk.models.RoamLocationReceived;
-import com.roam.sdk.models.RoamTripStatus;
+// import com.roam.sdk.models.RoamTripStatus; // Not available in SDK 0.2.0
 import com.roam.sdk.models.events.RoamEvent;
 import com.roam.sdk.service.RoamReceiver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,10 +52,13 @@ public class RNRoamReceiver extends RoamReceiver {
     }
 
     @Override
-    public void onLocationUpdated(Context context, List<RoamLocation> locationList) {
-        super.onLocationUpdated(context, locationList);
+    public void onLocationUpdated(Context context, RoamLocation roamLocation) {
+        super.onLocationUpdated(context, roamLocation);
         ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
         mReactNativeHost = reactApplication.getReactNativeHost();
+        // Create a single-item list for compatibility with mapForLocationList
+        List<RoamLocation> locationList = new ArrayList<>();
+        locationList.add(roamLocation);
         WritableArray array = RNRoamUtils.mapForLocationList(locationList);
         sendEvent("location", array);
     }
@@ -105,6 +109,8 @@ public class RNRoamReceiver extends RoamReceiver {
         sendEvent("location_received", map);
     }
 
+    // Disabled: RoamTripStatus class not available in SDK 0.2.0
+    /*
     @Override
     public void onReceiveTrip(Context context, List<RoamTripStatus> list) {
         super.onReceiveTrip(context, list);
@@ -112,6 +118,7 @@ public class RNRoamReceiver extends RoamReceiver {
         mReactNativeHost = reactApplication.getReactNativeHost();
         sendEvent("trip_status", RNRoamUtils.mapForTripStatusListener(list));
     }
+    */
 
     @Override
     public void onError(Context context, RoamError roamError) {

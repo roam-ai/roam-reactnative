@@ -17,10 +17,8 @@ Pod::Spec.new do |s|
   s.platform       = :ios, '10.0'
 
   s.preserve_paths = 'LICENSE', 'README.md', 'package.json', 'index.js'
-  s.source_files   = './*.{h,m}'
+    s.source_files   = 'ios/*.{h,m}'
 
   s.dependency 'React'
-  #  s.dependency 'roam-ios/Roam', '0.1.30-beta.9'
-   s.dependency 'roam-ios/RoamBatchConnector', '0.1.34'
-   s.dependency 'roam-ios/RoamGeofence', '0.1.34'
+  s.dependency 'roam-ios/Roam', '0.2.0'
 end

@@ -408,7 +408,7 @@ const publishAndSave = (jsonMetadata) => {
 }
 
 const batchProcess = (enable, syncHour) => {
-  NativeModules.RNRoam.batchProcess(enable, syncHour);
+ NativeModules.RNRoam.batchProcess(enable, syncHour);
 };
 
 const stopPublishing = () => {
