@@ -325,5 +325,3 @@ Added:
 
 - Updated the Roam SDK to the latest version.
 - Integrated GCP support.
-
-
