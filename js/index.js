@@ -408,16 +408,16 @@ const publishAndSave = (jsonMetadata) => {
 }
 
 const batchProcess = (enable, syncHour) => {
- NativeModules.RNRoam.batchProcess(enable, syncHour);
-};
+  NativeModules.RNRoam.batchProcess(enable, syncHour)
+}
 
 const stopPublishing = () => {
   NativeModules.RNRoam.stopPublishing()
 }
 
 const createGeofence = (geofence) => {
-  NativeModules.RNRoam.createGeofence(geofence);
-};
+  NativeModules.RNRoam.createGeofence(geofence)
+}
 
 const startTracking = (trackingMode) => {
   NativeModules.RNRoam.startTracking(trackingMode)
