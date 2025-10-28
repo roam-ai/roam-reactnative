@@ -222,7 +222,7 @@ static WritableArray mapForLocationList(List<RoamLocation> locationList) {
         map.putString("wifiChannelWidth", roamLocation.getWifiChannelWidth());
         map.putString("wifiSubnetMask", roamLocation.getWifiSubnetMask());
         map.putString("wifiLeaseDuration", roamLocation.getWifiLeaseDuration());
-  map.putString("hiddenWifiDetectionDetails", roamLocation.getHiddenWifiDetectionDetails());
+        map.putString("hiddenWifiDetectionDetails", roamLocation.getHiddenWifiDetectionDetails());
         map.putString("scanNearbyWifi", roamLocation.getScanNearbyWifi());
         map.putString("networkInterfaceName", roamLocation.getNetworkInterfaceName());
         map.putString("dnsServer", roamLocation.getDnsServer());
@@ -240,7 +240,7 @@ static WritableArray mapForLocationList(List<RoamLocation> locationList) {
         map.putString("cellidBasedLocation", roamLocation.getCellidBasedLocation());
         map.putString("carrierConfigManager", roamLocation.getCarrierConfigManager());
         map.putString("publicIpAddressApi", roamLocation.getPublicIpAddressApi());
- System.out.println("map" + map);
+        System.out.println("map" + map);
         array.pushMap(map);
     }
     return array;

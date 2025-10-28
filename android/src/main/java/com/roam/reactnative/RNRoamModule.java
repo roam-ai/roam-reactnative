@@ -8,9 +8,14 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.common.annotations.VisibleForTesting;
+import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
@@ -47,18 +52,91 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
+@ReactModule(name = "RNRoam")
 public class RNRoamModule extends ReactContextBaseJavaModule {
   ReactApplicationContext reactContext;
+  private static RNRoamModule instance;
 
   public RNRoamModule(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
+    instance = this; // Store instance for RNRoamReceiver to use
+  }
+
+  // Static method to get the current instance for RNRoamReceiver
+  public static RNRoamModule getInstance() {
+    return instance;
+  }
+
+  // Method to emit events to JavaScript
+  public void sendEvent(String eventName, Object params) {
+    android.util.Log.d("RNRoamModule", "sendEvent called with eventName: " + eventName + ", params: " + params);
+    try {
+      if (reactContext != null && reactContext.hasActiveReactInstance()) {
+        // Try multiple approaches for New Architecture compatibility
+        boolean success = false;
+
+        // Method 1: RCTNativeAppEventEmitter (preferred for New Architecture)
+        try {
+          reactContext.getJSModule(RCTNativeAppEventEmitter.class).emit(eventName, params);
+          android.util.Log.d("RNRoamModule", "Successfully emitted event via RCTNativeAppEventEmitter: " + eventName);
+          success = true;
+        } catch (Exception e1) {
+          android.util.Log.w("RNRoamModule", "RCTNativeAppEventEmitter failed: " + e1.getMessage());
+        }
+
+        // Method 2: DeviceEventManagerModule (fallback)
+        if (!success) {
+          try {
+            reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
+            android.util.Log.d("RNRoamModule", "Successfully emitted event via DeviceEventManagerModule: " + eventName);
+            success = true;
+          } catch (Exception e2) {
+            android.util.Log.w("RNRoamModule", "DeviceEventManagerModule also failed: " + e2.getMessage());
+          }
+        }
+
+        if (!success) {
+          android.util.Log.e("RNRoamModule", "All event emission methods failed for: " + eventName);
+        }
+      } else {
+        android.util.Log.w("RNRoamModule", "React context not active, cannot emit event: " + eventName);
+      }
+    } catch (Exception e) {
+      android.util.Log.e("RNRoamModule", "Failed to emit event: " + eventName, e);
+    }
   }
 
   @Override
   public String getName() {
     return "RNRoam";
+  }
+
+  // Required for New Architecture event emitter support
+  @Override
+  public Map<String, Object> getConstants() {
+    final Map<String, Object> constants = new HashMap<>();
+    return constants;
+  }
+
+  // Support for event names in New Architecture
+  @VisibleForTesting
+  public String[] getEventNames() {
+    return new String[]{"location", "events", "location_received", "error", "locationAuthorizationChange", "connectivityChangeEvent"};
+  }
+
+  // Required methods for NativeEventEmitter support in New Architecture
+  @ReactMethod
+  public void addListener(String eventName) {
+    // Keep: Required for RN built in Event Emitter Calls.
+  }
+
+  @ReactMethod
+  public void removeListeners(double count) {
+    // Keep: Required for RN built in Event Emitter Calls.
   }
 
 
@@ -1229,5 +1307,6 @@ public void requestPhoneStatePermission() {
       Roam.requestActivityPermission(activity);
     }
   }
+
 
 }
