@@ -112,6 +112,7 @@ const startTracking = () => {
       )
     }
 ```
+
 # Finally, lets do some javascript
 
 ## Import module
