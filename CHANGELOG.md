@@ -331,4 +331,9 @@ Added:
 - Updated the Roam SDK to the latest version.
 - Added support for the New Architecture.
 
+## 0.2.0
+
+- Updated the Roam SDK to the latest version.
+- Added support for the New Architecture.
+- Integrated GCP support.
 
