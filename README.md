@@ -68,6 +68,20 @@ Before making any changes to your javascript code, you would need to integrate a
 `AppDelegate.mm`
 
 ```xml
+
+#import <CoreData/CoreData.h>
+#import <CoreLocation/CoreLocation.h>
+#import <Roam/Roam-Swift.h>
+
+[Roam initialize:@"YOUR-SECRET-KEY" :nil :nil];
+
+```
+**(OR)**
+
+
+`AppDelegate.swift`
+
+```xml
 import CoreData
 import CoreLocation
 import Roam
@@ -82,9 +96,8 @@ Import & Initialise the SDK in your `android/app/src/main/java/MainApplication` 
 
 ```jsx
 import com.roam.sdk.Roam;
-import com.roam.reactnative.RNRoamReceiver;
 
-Roam.initialize(this, "YOUR-SECRET-KEY", RNRoamReceiver())
+Roam.initializeSimplifiedSDK(this, "YOUR-SECRET-KEY")
 ```
 
 Import and initialise the SDK in your `AndroidManifest.xml` file:

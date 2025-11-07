@@ -7,7 +7,7 @@ def safeExtGet(prop, fallback) {
 buildscript {
     repositories {
         google()
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.0'
@@ -35,6 +35,7 @@ android {
 
 repositories {
     google()
+    jcenter()
     mavenCentral()
     maven {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
@@ -47,7 +48,6 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
-    api 'io.github.roam-sdk:roam-android:0.2.0'
-    implementation 'com.google.code.gson:gson:2.8.9'
+    api 'com.roam.sdk:roam-android:0.1.42-beta.1'
 }
   

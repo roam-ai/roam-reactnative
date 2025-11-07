@@ -9,23 +9,35 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.roam.sdk.models.BatchLocation;
+import com.roam.sdk.models.BatchReceiverConfig;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamLocation;
+import com.roam.sdk.models.RoamTripStatus;
+import com.roam.sdk.models.RoamUser;
+import com.roam.sdk.models.TrackingConfig;
+import com.roam.sdk.models.centroid.Centroid;
+import com.roam.sdk.models.centroid.CentroidCoordinate;
+import com.roam.sdk.models.centroid.Positions;
+import com.roam.sdk.models.createtrip.Coordinates;
 import com.roam.sdk.models.events.RoamEvent;
-// Note: Many SDK classes are not available in version 0.2.0
-// The following imports have been commented out as they don't exist in the current SDK version:
-// import com.roam.sdk.models.BatchLocation;
-// import com.roam.sdk.models.BatchReceiverConfig;
-// import com.roam.sdk.models.RoamTripStatus;
-// import com.roam.sdk.models.RoamUser;
-// import com.roam.sdk.models.TrackingConfig;
-// import com.roam.sdk.models.centroid.Centroid;
-// import com.roam.sdk.models.centroid.CentroidCoordinate;
-// import com.roam.sdk.models.centroid.Positions;
-// import com.roam.sdk.models.createtrip.Coordinates;
-// import com.roam.sdk.trips_v2.RoamTrip;
-// import com.roam.sdk.trips_v2.models.*;
-// import com.roam.sdk.trips_v2.request.RoamTripStops;
+import com.roam.sdk.trips_v2.RoamTrip;
+import com.roam.sdk.trips_v2.models.EndLocation;
+import com.roam.sdk.trips_v2.models.Error;
+import com.roam.sdk.trips_v2.models.Errors;
+import com.roam.sdk.trips_v2.models.Events;
+import com.roam.sdk.trips_v2.models.Geometry;
+import com.roam.sdk.trips_v2.models.RoamActiveTripsResponse;
+import com.roam.sdk.trips_v2.models.RoamDeleteTripResponse;
+import com.roam.sdk.trips_v2.models.RoamSyncTripResponse;
+import com.roam.sdk.trips_v2.models.RoamTripResponse;
+import com.roam.sdk.trips_v2.models.Routes;
+import com.roam.sdk.trips_v2.models.StartLocation;
+import com.roam.sdk.trips_v2.models.Stop;
+import com.roam.sdk.trips_v2.models.TripDetails;
+import com.roam.sdk.trips_v2.models.Trips;
+import com.roam.sdk.trips_v2.models.User;
+import com.roam.sdk.trips_v2.request.RoamTripStops;
 
 import org.json.JSONObject;
 
@@ -81,8 +93,6 @@ class RNRoamUtils {
         return "DISABLED";
     }
 
-    // Disabled: RoamUser class not available in SDK 0.2.0
-    /*
     static WritableMap mapForUser(RoamUser roamUser) {
         if (roamUser == null) {
             return null;
@@ -110,11 +120,8 @@ class RNRoamUtils {
         }
         return map;
     }
-    */
 
 
-    // Disabled: BatchReceiverConfig class not available in SDK 0.2.0
-    /*
     static WritableArray mapForBatchReceiverConfig(List<BatchReceiverConfig> configs){
         WritableArray array = Arguments.createArray();
         for (BatchReceiverConfig config: configs){
@@ -126,7 +133,6 @@ class RNRoamUtils {
         }
         return array;
     }
-    */
 
 static WritableArray mapForLocationList(List<RoamLocation> locationList) {
     WritableArray array = Arguments.createArray();
@@ -136,9 +142,11 @@ static WritableArray mapForLocationList(List<RoamLocation> locationList) {
         
         map.putString("userId", TextUtils.isEmpty(roamLocation.getUserId()) ? " " : roamLocation.getUserId());
         
-        // Fixed: getBatchLocations() method not available in SDK 0.2.0
-        // Always use the regular location mapping since batch locations are not supported
-        map.putMap("location", RNRoamUtils.mapForLocation(roamLocation.getLocation()));
+        if (locationList.size() > 1) {
+            map.putMap("location", RNRoamUtils.mapForBatchLocation(roamLocation.getBatchLocations()));
+        } else {
+            map.putMap("location", RNRoamUtils.mapForLocation(roamLocation.getLocation()));
+        }
 
         map.putString("activity", TextUtils.isEmpty(roamLocation.getActivity()) ? " " : roamLocation.getActivity());
 
@@ -177,6 +185,7 @@ static WritableArray mapForLocationList(List<RoamLocation> locationList) {
         map.putString("appInstallationDate", roamLocation.getAppInstallationDate());
         map.putString("appVersion", roamLocation.getAppVersion());
         map.putString("testCentroid", roamLocation.getTestCentroid());
+
         map.putString("appName", roamLocation.getAppName());
         map.putString("systemName", roamLocation.getSystemName());
         map.putString("sdkVersion", roamLocation.getSdkVersion());
@@ -186,6 +195,7 @@ static WritableArray mapForLocationList(List<RoamLocation> locationList) {
         map.putString("androidReleaseVersion", roamLocation.getAndroidReleaseVersion());
         map.putString("buildVersionIncremental", roamLocation.getBuildVersionIncremental());
         map.putString("packageName", roamLocation.getPackageName());
+
         map.putString("mcc", roamLocation.getMcc());
         map.putString("mnc", roamLocation.getMnc());
         map.putString("iso", roamLocation.getIso());
@@ -222,8 +232,10 @@ static WritableArray mapForLocationList(List<RoamLocation> locationList) {
         map.putString("wifiChannelWidth", roamLocation.getWifiChannelWidth());
         map.putString("wifiSubnetMask", roamLocation.getWifiSubnetMask());
         map.putString("wifiLeaseDuration", roamLocation.getWifiLeaseDuration());
+        // map.putBoolean("hiddenWifiDetection", roamLocation.getHiddenWifiDetection());
         map.putString("hiddenWifiDetectionDetails", roamLocation.getHiddenWifiDetectionDetails());
         map.putString("scanNearbyWifi", roamLocation.getScanNearbyWifi());
+
         map.putString("networkInterfaceName", roamLocation.getNetworkInterfaceName());
         map.putString("dnsServer", roamLocation.getDnsServer());
         map.putString("vpnActive", roamLocation.getVpnActive());
@@ -240,14 +252,18 @@ static WritableArray mapForLocationList(List<RoamLocation> locationList) {
         map.putString("cellidBasedLocation", roamLocation.getCellidBasedLocation());
         map.putString("carrierConfigManager", roamLocation.getCarrierConfigManager());
         map.putString("publicIpAddressApi", roamLocation.getPublicIpAddressApi());
+
+
+
+        // map.putMap("centroid", RNRoamUtils.mapForCentroid(roamLocation.getCentroid()));
+        // System.out.println("Mapped centroid: " + RNRoamUtils.mapForCentroid(roamLocation.getCentroid()));
+        // System.out.println("centroid" + roamLocation.getCentroid());
         System.out.println("map" + map);
         array.pushMap(map);
     }
     return array;
 }
 
-// Disabled: Centroid classes not available in SDK 0.2.0
-/*
 static WritableMap mapForCentroid(Centroid centroid) {
        System.out.println("Centroid..."+centroid);
      if (centroid == null) {
@@ -281,13 +297,10 @@ static WritableMap mapForCentroid(Centroid centroid) {
     }
     return map;
 }
-*/
 
 
 
 
-    // Disabled: RoamTripStatus class not available in SDK 0.2.0
-    /*
     static WritableArray mapForTripStatusListener(List<RoamTripStatus> list){
         WritableArray array = Arguments.createArray();
         for (RoamTripStatus roamTripStatus: list) {
@@ -308,10 +321,7 @@ static WritableMap mapForCentroid(Centroid centroid) {
         }
         return array;
     }
-    */
 
-    // Disabled: TrackingConfig class not available in SDK 0.2.0
-    /*
     static WritableMap mapForTrackingConfig(TrackingConfig config){
         WritableMap writableMap = Arguments.createMap();
         writableMap.putInt("accuracy", config.getAccuracy());
@@ -320,7 +330,6 @@ static WritableMap mapForCentroid(Centroid centroid) {
         writableMap.putBoolean("discardLocation", config.getDiscardLocation());
         return writableMap;
     }
-    */
 
     static WritableMap mapForRoamEvent(RoamEvent roamEvent){
         if (roamEvent == null) return null;
@@ -368,8 +377,6 @@ static WritableMap mapForCentroid(Centroid centroid) {
         return map;
     }
 
-    // Disabled: BatchLocation class not available in SDK 0.2.0
-    /*
     static WritableMap mapForBatchLocation(BatchLocation location) {
         if (location == null) {
             return null;
@@ -382,7 +389,6 @@ static WritableMap mapForCentroid(Centroid centroid) {
         map.putDouble("speed", location.getSpeed());
         return map;
     }
-    */
 
     static WritableMap mapForError(RoamError roamError) {
         WritableMap map = Arguments.createMap();
@@ -391,9 +397,6 @@ static WritableMap mapForCentroid(Centroid centroid) {
         return map;
     }
 
-    // Disabled: All trip-related methods below are not available in SDK 0.2.0
-    // These methods use classes from com.roam.sdk.trips_v2.* packages which don't exist
-    /*
     static WritableMap mapForRoamTripResponse(RoamTripResponse roamTripResponse){
         if (roamTripResponse == null) return null;
         WritableMap map = Arguments.createMap();
@@ -804,6 +807,5 @@ static WritableMap mapForCentroid(Centroid centroid) {
         }
         return roamTripBuilder.build();
     }
-    */
 
 }

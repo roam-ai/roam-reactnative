@@ -415,7 +415,7 @@ const stopPublishing = () => {
   NativeModules.RNRoam.stopPublishing()
 }
 
-const createGeofence = (geofence) => { 
+const createGeofence = (geofence) => {
   NativeModules.RNRoam.createGeofence(geofence);
 };
 

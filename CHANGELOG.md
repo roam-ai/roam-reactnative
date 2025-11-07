@@ -337,3 +337,8 @@ Added:
 - Added support for the New Architecture.
 - Integrated GCP support.
 
+## 0.1.22-beta.1
+
+- Updated the Roam SDK to the latest version.
+- Added support for the New Architecture.
+- Offline trips.

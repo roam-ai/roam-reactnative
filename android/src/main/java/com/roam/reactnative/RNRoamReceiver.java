@@ -5,50 +5,56 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.facebook.react.HeadlessJsTaskService;
+import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactInstanceManager;
+import com.facebook.react.ReactNativeHost;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 import com.roam.sdk.models.NetworkListener;
 import com.roam.sdk.models.RoamError;
 import com.roam.sdk.models.RoamLocation;
 import com.roam.sdk.models.RoamLocationReceived;
-// import com.roam.sdk.models.RoamTripStatus; // Not available in SDK 0.2.0
+import com.roam.sdk.models.RoamTripStatus;
 import com.roam.sdk.models.events.RoamEvent;
 import com.roam.sdk.service.RoamReceiver;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class RNRoamReceiver extends RoamReceiver {
+    private ReactNativeHost mReactNativeHost;
+
+    private void invokeSendEvent(ReactContext reactContext, String eventName, Object data) {
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
+    }
 
     private void sendEvent(final String eventName, final Object data) {
-        try {
-            android.util.Log.d("RNRoamReceiver", "sendEvent called with eventName: " + eventName);
-
-            // Use the RNRoamModule instance for event emission (New Architecture compatible)
-            RNRoamModule moduleInstance = RNRoamModule.getInstance();
-            if (moduleInstance != null) {
-                moduleInstance.sendEvent(eventName, data);
-                android.util.Log.d("RNRoamReceiver", "Successfully delegated event to RNRoamModule: " + eventName);
-            } else {
-                android.util.Log.e("RNRoamReceiver", "RNRoamModule instance is null, cannot emit event: " + eventName);
+        final ReactInstanceManager reactInstanceManager = mReactNativeHost.getReactInstanceManager();
+        ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
+        if (reactContext == null) {
+            reactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
+                @Override
+                public void onReactContextInitialized(ReactContext reactContext) {
+                    invokeSendEvent(reactContext, eventName, data);
+                    reactInstanceManager.removeReactInstanceEventListener(this);
+                }
+            });
+            if (!reactInstanceManager.hasStartedCreatingInitialContext()) {
+                reactInstanceManager.createReactContextInBackground();
             }
-        } catch (Exception e) {
-            android.util.Log.e("RNRoamReceiver", "Failed to send event: " + eventName, e);
+        } else {
+            invokeSendEvent(reactContext, eventName, data);
         }
     }
 
     @Override
-    public void onLocationUpdated(Context context, RoamLocation roamLocation) {
-        super.onLocationUpdated(context, roamLocation);
-        // Create a single-item list for compatibility with mapForLocationList
-        List<RoamLocation> locationList = new ArrayList<>();
-        locationList.add(roamLocation);
+    public void onLocationUpdated(Context context, List<RoamLocation> locationList) {
+        super.onLocationUpdated(context, locationList);
+        ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
+        mReactNativeHost = reactApplication.getReactNativeHost();
         WritableArray array = RNRoamUtils.mapForLocationList(locationList);
         sendEvent("location", array);
     }
@@ -56,6 +62,8 @@ public class RNRoamReceiver extends RoamReceiver {
     @Override
     public void onEventReceived(Context context, RoamEvent roamEvent) {
         super.onEventReceived(context, roamEvent);
+        ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
+        mReactNativeHost = reactApplication.getReactNativeHost();
         WritableMap map = RNRoamUtils.mapForRoamEvent(roamEvent);
         sendEvent("events", map);
     }
@@ -63,6 +71,8 @@ public class RNRoamReceiver extends RoamReceiver {
     @Override
     public void onLocationReceived(Context context, RoamLocationReceived roamLocationReceived) {
         super.onLocationReceived(context, roamLocationReceived);
+        ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
+        mReactNativeHost = reactApplication.getReactNativeHost();
         WritableMap map = Arguments.createMap();
         if (roamLocationReceived.getUser_id() != null) {
             map.putString("userId", roamLocationReceived.getUser_id());
@@ -95,8 +105,6 @@ public class RNRoamReceiver extends RoamReceiver {
         sendEvent("location_received", map);
     }
 
-    // Disabled: RoamTripStatus class not available in SDK 0.2.0
-    /*
     @Override
     public void onReceiveTrip(Context context, List<RoamTripStatus> list) {
         super.onReceiveTrip(context, list);
@@ -104,11 +112,12 @@ public class RNRoamReceiver extends RoamReceiver {
         mReactNativeHost = reactApplication.getReactNativeHost();
         sendEvent("trip_status", RNRoamUtils.mapForTripStatusListener(list));
     }
-    */
 
     @Override
     public void onError(Context context, RoamError roamError) {
         super.onError(context, roamError);
+        ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
+        mReactNativeHost = reactApplication.getReactNativeHost();
         WritableMap map = Arguments.createMap();
         map.putString("code", roamError.getCode());
         map.putString("message", roamError.getMessage());
@@ -128,6 +137,8 @@ public class RNRoamReceiver extends RoamReceiver {
     @Override
     public void onConnectivityChange(Context context, NetworkListener networkListener) {
         super.onConnectivityChange(context, networkListener);
+        ReactApplication reactApplication = (ReactApplication) context.getApplicationContext();
+        mReactNativeHost = reactApplication.getReactNativeHost();
         WritableMap map = Arguments.createMap();
         map.putString("type", networkListener.getType());
         map.putBoolean("isConnected", networkListener.getIsConnected());
