@@ -76,8 +76,8 @@ Before making any changes to your javascript code, you would need to integrate a
 [Roam initialize:@"YOUR-SECRET-KEY" :nil :nil];
 
 ```
-**(OR)**
 
+**(OR)**
 
 `AppDelegate.swift`
 
@@ -125,6 +125,7 @@ const startTracking = () => {
       )
     }
 ```
+
 # Finally, lets do some javascript
 
 ## Import module
