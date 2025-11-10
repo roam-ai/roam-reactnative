@@ -347,3 +347,9 @@ Added:
 
 - Updated the Roam SDK to the latest version.
 - Fixed the offline trips issue.
+
+## 0.1.23
+
+- Updated the Roam SDK to the latest version.
+- Fixed the offline trips issue.
+- Updated GCP initialization process.

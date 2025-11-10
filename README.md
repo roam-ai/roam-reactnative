@@ -98,7 +98,7 @@ Before making any changes to your javascript code, you would need to integrate a
 5. After import, add the below code under the Application class `onCreate()` method. The SDK must be initialised before calling any of the other SDK methods.
 
    ```java
-   Roam.initialize(this, "YOUR-SDK-KEY-GOES-HERE");
+   Roam.initializeSimplifiedSDK(this, "YOUR-SDK-KEY-GOES-HERE");
    ```
 
 ### iOS
