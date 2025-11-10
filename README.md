@@ -63,68 +63,85 @@ react: 15.4.2
 
 Before making any changes to your javascript code, you would need to integrate and initialize Roam SDK in your Android and iOS applications.
 
-**IOS:**
+### Android
 
-`AppDelegate.mm`
+1. Add the following to the build script `{repositories {}}` section of the `build.gradle` (Project)file
 
-```xml
+   ```java
+   mavenCentral()
+   ```
 
-#import <CoreData/CoreData.h>
-#import <CoreLocation/CoreLocation.h>
-#import <Roam/Roam-Swift.h>
+2. Install the SDK to your project via `Gradle` in Android Studio, add the maven below in your project `build.gradle` file.
 
-[Roam initialize:@"YOUR-SECRET-KEY" :nil :nil];
+   ```java
+   repositories {
+       maven {
+           url 'https://com-roam-android.s3.amazonaws.com/'
+       }
+   }
+   ```
 
-```
-**(OR)**
+3. Add the dependencies below in your `app build.gradle` file. Then sync Gradle.
 
+   ```
+   dependencies {
+       implementation 'com.roam.sdk:roam-android:0.1.42-beta.1'
+   }
+   ```
 
-`AppDelegate.swift`
+4. Before initializing the SDK, the below must be imported in your Main Activity.
 
-```xml
-import CoreData
-import CoreLocation
-import Roam
+   ```java
+   import com.roam.sdk.Roam;
+   ```
 
-Roam.initialize("YOUR-SECRET-KEY")
+5. After import, add the below code under the Application class `onCreate()` method. The SDK must be initialised before calling any of the other SDK methods.
 
-```
+   ```java
+   Roam.initialize(this, "YOUR-SDK-KEY-GOES-HERE");
+   ```
 
-**Android:**
+### iOS
 
-Import & Initialise the SDK in your `android/app/src/main/java/MainApplication` file:
+1. Run `cd ios` && `pod install`
+2. Then, configure the information property list file `Info.plist` with an XML snippet that contains data about your app. You need to add strings for `NSLocationWhenInUseUsageDescription` in the `Info.plist` file to prompt the user during location permissions for foreground location tracking. For background location tracking, you also need to add a string for `NSLocationAlwaysUsageDescription` and `NSLocationAlwaysAndWhenInUseUsageDescription` in the same` Info.plist` file.
 
-```jsx
-import com.roam.sdk.Roam;
+   ```xml
+   <key>NSLocationWhenInUseUsageDescription</key>
+   <string>Add description for foreground only location usage.</string>
+   <key>NSLocationAlwaysUsageDescription</key>
+   <string>Add description for background location usage. iOS 10 and below"</string>
+   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+   <string>Add description for background location usage. iOS 11 and above</string>
+   ```
 
-Roam.initializeSimplifiedSDK(this, "YOUR-SECRET-KEY")
-```
+   ![Screenshot 2021-06-25 at 8 40 46 PM](https://user-images.githubusercontent.com/19217956/123445597-aa8cf380-d5f5-11eb-9188-15ad742f11a8.png)
 
-Import and initialise the SDK in your `AndroidManifest.xml` file:
+3. Next you need to enable`Background fetch` and` Location updates` under `Project Setting` > `Capabilities` > `Background Modes`.
 
-```xml
- <service
-  android:name="com.roam.reactnative.LocationService"
-  android:enabled="true"
-  android:exported="false"
-  android:foregroundServiceType="location" />
-```
+   ![Screenshot 2021-06-25 at 8 38 24 PM](https://user-images.githubusercontent.com/19217956/123445386-74e80a80-d5f5-11eb-85d6-e06ef4300734.png)
 
-Add `setForegroundNotification` in startTracking
+4. Import Roam into your `AppDelegate` file.
 
-```
-const startTracking = () => {
-    if(Platform.OS === 'android'){
-      Roam.setForegroundNotification(
-        true,
-        "<App Name>",
-        "Tap to open",
-        "mipmap/ic_launcher",
-        "<Package Name>.MainActivity",
-        "com.roam.reactnative.LocationService"
-      )
-    }
-```
+   ```objective-c
+   #import <Roam/Roam.h>
+   ```
+
+5. Initialize the SDK in your `AppDelegate` class before calling any other Roam methods under this `application:didFinishLaunchingWithOptions:`
+
+   ```objective-c
+   - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+   {
+     [Roam initialize:@"YOUR-PUBLISHABLE-KEY" :NULL :NULL];
+   }
+   ```
+
+### Manual Linking
+
+1. Open the iOS module files, located inside `node_modules/roam-reactnative/ios/`.
+2. Open the app workspace file `(AppName.xcworkspace)` in Xcode.
+3. Move the `RNRoam.h` and `RNRoam.m` files to your project. When shown a popup window, select `Create groups`.
+
 # Finally, lets do some javascript
 
 ## Import module

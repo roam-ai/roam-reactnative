@@ -192,6 +192,7 @@ const requestLocationPermission = () => {
   NativeModules.RNRoam.requestLocationPermission();
 };
 
+
 const requestPhoneStatePermission = () => {
   NativeModules.RNRoam.requestPhoneStatePermission();
 };
@@ -465,6 +466,9 @@ const publishOnly = (array: any, jsonMetadata: any) => {
   NativeModules.RNRoam.publishOnly(array, jsonMetadata);
 };
 
+
+
+
 const publishAndSave = (jsonMetadata: any) => {
   NativeModules.RNRoam.publishAndSave(jsonMetadata);
 };
@@ -506,6 +510,18 @@ export const createGeofence = (geofence: { [key: string]: any }) => {
     console.error('createGeofence method is not available');
   }
 };
+
+// export const getAllGeofences = (geofences: "") => {
+//   // Logic for fetching geofences
+//   console.log('Fetching all geofences');
+  
+//   // Ensure the correct argument is passed - a callback function
+//   NativeModules.RNRoam.getAllGeofences((geofences: "") => {
+//     console.log('Received geofences:', geofences);
+//   });
+// };
+
+
 
 const startTracking = (trackingMode: any) => {
   NativeModules.RNRoam.startTracking(trackingMode);

@@ -342,3 +342,8 @@ Added:
 - Updated the Roam SDK to the latest version.
 - Added support for the New Architecture.
 - Offline trips.
+
+## 0.1.22-beta.2
+
+- Updated the Roam SDK to the latest version.
+- Fixed the offline trips issue.

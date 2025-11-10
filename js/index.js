@@ -183,6 +183,8 @@ const requestLocationPermission = () => {
   NativeModules.RNRoam.requestLocationPermission()
 }
 
+
+
 const requestPhoneStatePermission = () => {
   NativeModules.RNRoam.requestPhoneStatePermission()
 }
@@ -408,16 +410,53 @@ const publishAndSave = (jsonMetadata) => {
 }
 
 const batchProcess = (enable, syncHour) => {
+  // console.log('batchProcess called with: --> 1', { enable, syncHour });
+
   NativeModules.RNRoam.batchProcess(enable, syncHour);
 };
+
 
 const stopPublishing = () => {
   NativeModules.RNRoam.stopPublishing()
 }
 
+// IOS
+
 const createGeofence = (geofence) => {
+  
   NativeModules.RNRoam.createGeofence(geofence);
 };
+
+
+// Android
+
+// const createGeofence = (geofence) => {
+// console.log('createGeofence called with:', geofence);
+
+//   NativeModules.RNRoam.createGeofence();
+// }
+
+
+
+// const getAllGeofences = (geofences) => {
+//   NativeModules.RNRoam.getAllGeofences((error, geofences) => {
+//     if (error) {
+//       console.error("Error fetching geofences:", error);
+//       return;
+//     }
+  
+//     console.log(`Geofences count: ${geofences.length}`);
+    
+//     geofences.forEach((geofence) => {
+//       if (geofence.type === "Circular") {
+//         console.log(`Circular Geofence - Radius: ${geofence.radius}`);
+//         console.log(`Center: Latitude: ${geofence.center.latitude}, Longitude: ${geofence.center.longitude}`);
+//       } else if (geofence.type === "Polygon") {
+//         console.log(`Polygon Geofence - Coordinates: ${JSON.stringify(geofence.coordinates)}`);
+//       }
+//     });
+//   })}
+
 
 const startTracking = (trackingMode) => {
   NativeModules.RNRoam.startTracking(trackingMode)

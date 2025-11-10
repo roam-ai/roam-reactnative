@@ -48,6 +48,7 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
-    api 'com.roam.sdk:roam-android:0.1.42-beta.1'
+    implementation 'com.roam.sdk:roam-android:0.1.42-beta.1'
+ 
 }
   
