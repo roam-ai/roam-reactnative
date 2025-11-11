@@ -94,13 +94,13 @@ const Publish = {
 const createUser = (
   description: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.createUser(
     description,
     null,
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
@@ -122,7 +122,7 @@ const toggleEvents = (
   location: any,
   movingGeofence: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.toggleEvents(
     geofence,
@@ -130,7 +130,7 @@ const toggleEvents = (
     location,
     movingGeofence,
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
@@ -138,13 +138,13 @@ const toggleListener = (
   location: any,
   event: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.toggleListener(
     location,
     event,
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
@@ -222,7 +222,7 @@ class RoamTrip {
     stops: any,
     isLocal: any,
     tripId: any,
-    userId: any
+    userId: any,
   ) {
     this.metadata = metadata;
     this.description = description;
@@ -249,7 +249,7 @@ class RoamTripStop {
     name: any,
     address: any,
     geometryRadius: any,
-    geometry: any
+    geometry: any,
   ) {
     this.id = id;
     this.metadata = metadata;
@@ -282,7 +282,7 @@ class RoamCustomTrackingOptions {
     allowBackgroundLocationUpdates: any,
     pausesLocationUpdatesAutomatically: any,
     showsBackgroundLocationIndicator: any,
-    accuracyFilter: any
+    accuracyFilter: any,
   ) {
     this.desiredAccuracy = desiredAccuracy;
     this.updateInterval = updateInterval;
@@ -361,12 +361,12 @@ function roamTripToMap(roamTrip: any) {
 const createTrip = (
   roamTrip: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.createTrip(
     roamTripToMap(roamTrip),
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
@@ -375,14 +375,14 @@ const startQuickTrip = (
   trackingMode: any,
   customTrackingOption: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.startQuickTrip(
     roamTripToMap(roamTrip),
     trackingMode,
     roamCustomTrackingOptionsToMap(customTrackingOption),
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
@@ -393,12 +393,12 @@ const startTrip = (tripId: any, successCallback: any, errorCallback: any) => {
 const updateTrip = (
   roamTrip: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.updateTrip(
     roamTripToMap(roamTrip),
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
@@ -406,13 +406,13 @@ const endTrip = (
   tripId: any,
   forceStopTracking: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.endTrip(
     tripId,
     forceStopTracking,
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
@@ -435,7 +435,7 @@ const getTrip = (tripId: any, successCallback: any, errorCallback: any) => {
 const getActiveTrips = (
   isLocal: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.getActiveTrips(isLocal, successCallback, errorCallback);
 };
@@ -443,7 +443,7 @@ const getActiveTrips = (
 const getTripSummary = (
   tripId: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.getTripSummary(tripId, successCallback, errorCallback);
 };
@@ -535,7 +535,7 @@ const startTrackingCustom = (
   showBackIndicator: any,
   distanceFilter: any,
   accuracyFilter: any,
-  updateInterval: any
+  updateInterval: any,
 ) => {
   NativeModules.RNRoam.startTrackingCustom(
     allowBackground,
@@ -545,7 +545,7 @@ const startTrackingCustom = (
     showBackIndicator,
     distanceFilter,
     accuracyFilter,
-    updateInterval
+    updateInterval,
   );
 };
 
@@ -557,7 +557,7 @@ const startSelfTrackingCustom = (
   showBackIndicator: any,
   distanceFilter: any,
   accuracyFilter: any,
-  updateInterval: any
+  updateInterval: any,
 ) => {
   NativeModules.RNRoam.startSelfTrackingCustom(
     allowBackground,
@@ -567,7 +567,7 @@ const startSelfTrackingCustom = (
     showBackIndicator,
     distanceFilter,
     accuracyFilter,
-    updateInterval
+    updateInterval,
   );
 };
 
@@ -578,12 +578,12 @@ const startTrackingTimeInterval = (timeInterval: any, desiredAccuracy: any) => {
 const startTrackingDistanceInterval = (
   distance: any,
   stationary: any,
-  desiredAccuracy: any
+  desiredAccuracy: any,
 ) => {
   NativeModules.RNRoam.startTrackingDistanceInterval(
     distance,
     stationary,
-    desiredAccuracy
+    desiredAccuracy,
   );
 };
 
@@ -601,7 +601,7 @@ const setForegroundNotification = (
   description: any,
   image: any,
   activity: any,
-  roamService: any
+  roamService: any,
 ) => {
   NativeModules.RNRoam.setForegroundNotification(
     enabled,
@@ -609,7 +609,7 @@ const setForegroundNotification = (
     description,
     image,
     activity,
-    roamService
+    roamService,
   );
 };
 
@@ -625,13 +625,13 @@ const getCurrentLocation = (
   desiredAccuracy: any,
   accuracy: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.getCurrentLocation(
     desiredAccuracy,
     accuracy,
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
@@ -642,12 +642,12 @@ const updateCurrentLocation = (desiredAccuracy: any, accuracy: any) => {
 const getCurrentLocationIos = (
   accuracy: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.getCurrentLocationIos(
     accuracy,
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
@@ -677,23 +677,23 @@ const startSelfTracking = (trackingMode: any) => {
 
 const startSelfTrackingTimeInterval = (
   timeInterval: any,
-  desiredAccuracy: any
+  desiredAccuracy: any,
 ) => {
   NativeModules.RNRoam.startSelfTrackingTimeInterval(
     timeInterval,
-    desiredAccuracy
+    desiredAccuracy,
   );
 };
 
 const startSelfTrackingDistanceInterval = (
   distance: any,
   stationary: any,
-  desiredAccuracy: any
+  desiredAccuracy: any,
 ) => {
   NativeModules.RNRoam.startSelfTrackingDistanceInterval(
     distance,
     stationary,
-    desiredAccuracy
+    desiredAccuracy,
   );
 };
 
@@ -729,14 +729,14 @@ const setBatchReceiverConfig = (
   batchCount: any,
   batchWindow: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.setBatchReceiverConfig(
     networkState,
     batchCount,
     batchWindow,
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
@@ -754,7 +754,7 @@ const setTrackingConfig = (
   source: any,
   discardLocation: any,
   successCallback: any,
-  errorCallback: any
+  errorCallback: any,
 ) => {
   NativeModules.RNRoam.setTrackingConfig(
     accuracy,
@@ -762,7 +762,7 @@ const setTrackingConfig = (
     source,
     discardLocation,
     successCallback,
-    errorCallback
+    errorCallback,
   );
 };
 
