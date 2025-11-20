@@ -353,3 +353,8 @@ Added:
 - Updated the Roam SDK to the latest version.
 - Fixed the offline trips issue.
 - Updated GCP initialization process.
+
+## 0.1.24
+
+- Updated the Roam SDK to the latest version.
+- Fixed the AWS framework issue.
