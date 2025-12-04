@@ -358,3 +358,8 @@ Added:
 
 - Updated the Roam SDK to the latest version.
 - Fixed the AWS framework issue.
+
+## 0.1.25
+
+- Updated the Roam SDK to the latest version.
+- Fixed the distance tracking issue
